@@ -30,11 +30,17 @@
     };
   };
 
-    environment.systemPackages = lib.attrValues {
+  environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git
       neovim
       ;
+  };
+
+  environment.shell = lib.attrValues {
+     inherit (pkgs)
+     zsh
+     ;
   };
 
   system.stateVersion = "23.11";
