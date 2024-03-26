@@ -24,6 +24,10 @@ in
         bottom
         eza
         bat
+	fd
+	procs
+	sd
+	du-dust
 
         jq
         glow
@@ -32,6 +36,11 @@ in
 
   programs = {
     starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    zoxide = {
       enable = true;
       enableZshIntegration = true;
     };
