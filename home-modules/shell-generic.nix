@@ -14,8 +14,15 @@ in
       inherit homeSwitch;
 
       vim = "nvim";
+      direnv-init = ''echo "use flake" >> .envrc'';
       ".." = "cd ..";
       "..." = "cd ../..";
+      top = "btm";
+      btop = "btm";
+      ls = "eza";
+      cat = "bat -pp";
+      tree = "erd --layout inverted --icons --human";
+      grep = "rg";
       } // (
         if isLinux then
           { inherit nixosSwitch; }

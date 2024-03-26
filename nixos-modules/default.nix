@@ -53,7 +53,7 @@ in
     ];
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     fira-code
     (nerdfonts.override { fonts = ["FiraCode"]; })
   ];
@@ -126,6 +126,10 @@ in
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+
+    blueman.enable = true;
+    thermald.enable = true;
+    upower.enable = true;
     openssh.enable = true;
   };
 
@@ -133,5 +137,4 @@ in
     dconf.enable = true;
     zsh.enable = true;
   };
-
 }
