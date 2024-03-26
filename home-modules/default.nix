@@ -6,6 +6,7 @@
       shell-generic
       shell-utils
       zsh
+      linux
       ;
   };
 
