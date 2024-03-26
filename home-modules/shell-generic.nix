@@ -1,4 +1,4 @@
-{ config, osConfig, pkgs, ...}:
+{ config, osConfig, pkgs, ... }:
 let
   inherit (osConfig.networking) hostName;
   inherit (pkgs.stdenv) isLinux;
@@ -23,15 +23,15 @@ in
       cat = "bat -pp";
       tree = "erd --layout inverted --icons --human";
       grep = "rg";
-      } // (
-        if isLinux then
-          { inherit nixosSwitch; }
-	else {}
-      );
+    } // (
+      if isLinux then
+        { inherit nixosSwitch; }
+      else { }
+    );
 
-      sessionVariables = {
-	EDITOR = "nvim";
-	VISUAL = "nvim";
-      };
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
+  };
 }

@@ -3,12 +3,12 @@ let
   inherit (lib) attrValues;
   systemPackages = attrValues {
     inherit (pkgs)
-    bash
-    zsh
-    coreutils
-    usbutils
-    home-manager
-    ;
+      bash
+      zsh
+      coreutils
+      usbutils
+      home-manager
+      ;
   };
 in
 {
@@ -55,7 +55,7 @@ in
 
   fonts.packages = with pkgs; [
     fira-code
-    (nerdfonts.override { fonts = ["FiraCode"]; })
+    (nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
 
   networking = {
@@ -89,10 +89,10 @@ in
       enable = true;
       wheelNeedsPassword = true;
       extraRules = [{
-	groups = [ "wheel" ];
-	commands = builtins.map
-	  (command: { inherit command; options = [ "NOPASSWD" ]; })
-	  [ "${pkgs.systemd}/bin/shutdown" "${pkgs.systemd}/bin/reboot" ];
+        groups = [ "wheel" ];
+        commands = builtins.map
+          (command: { inherit command; options = [ "NOPASSWD" ]; })
+          [ "${pkgs.systemd}/bin/shutdown" "${pkgs.systemd}/bin/reboot" ];
       }];
     };
   };

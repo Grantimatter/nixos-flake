@@ -1,4 +1,4 @@
-{ config, inputs, lib, modulesPath, pkgs, ...}:
+{ config, inputs, lib, modulesPath, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -30,7 +30,7 @@
     };
   };
 
-    environment.systemPackages = lib.attrValues {
+  environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git
       neovim

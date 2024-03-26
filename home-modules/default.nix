@@ -6,7 +6,7 @@
       shell-generic
       shell-utils
       zsh
-    ;
+      ;
   };
 
   home = {

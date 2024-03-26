@@ -19,22 +19,22 @@ in
     packages = (attrValues) {
       inherit (pkgs)
 
-	ripgrep
-	ripgrep-all
+        ripgrep
+        ripgrep-all
 
-	# LSPs
-	rust-analyzer
-	nil
+        # LSPs
+        rust-analyzer
+        nil
 
-	# Linters
-	clippy
-	shellcheck
+        # Linters
+        clippy
+        shellcheck
 
-	# Formatters
-	rustfmt
-	nixpkgs-fmt
-	beautysh
-      ;
+        # Formatters
+        rustfmt
+        nixpkgs-fmt
+        beautysh
+        ;
     };
   };
 }

@@ -9,13 +9,13 @@
     ez-configs = {
       url = "github:ehllie/ez-configs";
       inputs = {
-	nixpkgs.follows = "nixpkgs";
-	flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
       };
     };
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    
+
     # Community Inputs
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
@@ -23,10 +23,10 @@
     };
   };
 
-  outputs = inputs@{ flake-parts, ez-configs, ...}:
-    flake-parts.lib.mkFlake{ inherit inputs; } {
+  outputs = inputs@{ flake-parts, ez-configs, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-	inputs.ez-configs.flakeModule
+        inputs.ez-configs.flakeModule
       ];
 
       systems = [
@@ -37,28 +37,28 @@
       ];
 
       ezConfigs = {
-	root = ./.;
-	globalArgs = { inherit inputs; };
+        root = ./.;
+        globalArgs = { inherit inputs; };
       };
 
-      perSystem = { pkgs, lib, system, ...}: {
+      perSystem = { pkgs, lib, system, ... }: {
 
         _module.args.pkgs = import inputs.nixpkgs {
-	  inherit system;
-	  overlays = [];
+          inherit system;
+          overlays = [ ];
         };
         devShells.default = pkgs.mkShell {
-	  name = "default-shell";
-	  packages = lib.attrValues {
-	    inherit (pkgs)
-	      age
-	      cloudflared
-	      nixos-rebuild
-	      sops
-	      ssh-to-age
-	      ;
-	  };
-	};
+          name = "default-shell";
+          packages = lib.attrValues {
+            inherit (pkgs)
+              age
+              cloudflared
+              nixos-rebuild
+              sops
+              ssh-to-age
+              ;
+          };
+        };
       };
-  };
+    };
 }

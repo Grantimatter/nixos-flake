@@ -5,30 +5,30 @@ let
 in
 {
   home.packages = attrValues
-  {
-    inherit (pkgs)
-    cargo
-    rustc
+    {
+      inherit (pkgs)
+        cargo
+        rustc
 
-    git
-    gh
-    lazygit
-    cloudflared
+        git
+        gh
+        lazygit
+        cloudflared
 
-    ffmpeg
-    wget
-    zip
-    unzip
+        ffmpeg
+        wget
+        zip
+        unzip
 
-    erdtree
-    bottom
-    eza
-    bat
+        erdtree
+        bottom
+        eza
+        bat
 
-    jq
-    glow
-    ;
-  };
+        jq
+        glow
+        ;
+    };
 
   programs = {
     starship = {
@@ -36,20 +36,20 @@ in
       enableZshIntegration = true;
     };
 
-  git = {
-    enable = true;
-    extraConfig = {
-      init.defaultBranch = "main";
-      merge.conflictStyle = "diff3";
+    git = {
+      enable = true;
+      extraConfig = {
+        init.defaultBranch = "main";
+        merge.conflictStyle = "diff3";
+      };
     };
-  };
 
-  ssh.enable = true;
+    ssh.enable = true;
 
-  direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
   };
 }

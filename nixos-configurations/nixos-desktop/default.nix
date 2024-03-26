@@ -39,8 +39,8 @@
 
   environment.shell = lib.attrValues {
     inherit (pkgs)
-    zsh
-    ;
+      zsh
+      ;
   };
 
   system.stateVersion = "23.11";
