@@ -42,10 +42,6 @@ in
       init.defaultBranch = "main";
       merge.conflictStyle = "diff3";
     };
-    signing = { 
-      key = null;
-      signByDefault = true;
-    };
   };
 
   ssh.enable = true;
