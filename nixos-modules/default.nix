@@ -104,12 +104,6 @@ in
     autoUpgrade.channel = "https://nixos/channels/nixos-23.11";
   };
 
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-    useOSProber = true;
-  };
-
   services = {
     xserver = {
       enable = true;

@@ -1,11 +1,14 @@
 { config, inputs, lib, modulesPath, pkgs, ... }:
 {
   imports = [
-    ./harware-configuration.nix
+    ./hardware-configuration.nix
+    ../nvidia.nix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   nixpkgs.hostPlatform = "x86_64-linux";
+
+  boot.loader.systemd-boot.enable = true;
 
   services.openssh = {
     enable = true;
@@ -34,12 +37,6 @@
     inherit (pkgs)
       git
       neovim
-      ;
-  };
-
-  environment.shell = lib.attrValues {
-    inherit (pkgs)
-      zsh
       ;
   };
 

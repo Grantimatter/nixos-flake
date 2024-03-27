@@ -7,6 +7,12 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+    useOSProber = true;
+  };
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
