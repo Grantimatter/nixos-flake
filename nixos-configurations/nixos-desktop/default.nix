@@ -37,7 +37,12 @@
     inherit (pkgs)
       git
       neovim
+      thunderbird
       ;
+  };
+
+  programs = {
+    steam.enable = true;
   };
 
   system.stateVersion = "23.11";
