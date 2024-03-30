@@ -1,0 +1,2 @@
+warning: Git tree '/home/grant/nixos-flake' is dirty
+error: flake 'git+file:///home/grant/nixos-flake' does not provide attribute 'packages.x86_64-linux.homeConfigurations."nixos-desktop@grant".activationPackage', 'legacyPackages.x86_64-linux.homeConfigurations."nixos-desktop@grant".activationPackage' or 'homeConfigurations."nixos-desktop@grant".activationPackage'

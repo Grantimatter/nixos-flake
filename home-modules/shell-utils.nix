@@ -11,7 +11,6 @@ in
         rustc
 
         git
-        gh
         lazygit
         cloudflared
 
@@ -53,10 +52,11 @@ in
       extraConfig = {
         init.defaultBranch = "main";
         merge.conflictStyle = "diff3";
-	credential."https://github.com".helper = "!${
-	  pkgs.gh
-	}/bin/gh auth git-credential";
-      };
+       };
+     };
+
+    gh = {
+      enable = true;
     };
 
     ssh.enable = true;
