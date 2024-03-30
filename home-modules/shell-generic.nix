@@ -4,8 +4,8 @@ let
   inherit (pkgs.stdenv) isLinux;
   inherit (config.home) username;
 
-  homeSwitch = "home-manager switch --flake '.#${username}@${hostName}'";
-  nixosSwitch = "nixos-rebuild switch --flake '.#${hostName}'";
+  homeSwitch = "home-manager switch --flake '/home/${username}/nixos-flake/#${username}@${hostName}'";
+  nixosSwitch = "nixos-rebuild switch --flake '/home/${username}/nixos-flake/#${hostName}'";
 in
 {
   home = {

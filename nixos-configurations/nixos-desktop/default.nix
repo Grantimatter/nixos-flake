@@ -16,7 +16,7 @@
   };
 
   networking = {
-    hostName = "desktop-nix";
+    hostName = "nixos-desktop";
     networkmanager.enable = true;
   };
 

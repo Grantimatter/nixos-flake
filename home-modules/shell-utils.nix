@@ -47,9 +47,15 @@ in
 
     git = {
       enable = true;
+      diff-so-fancy = {
+        enable = true;
+      };
       extraConfig = {
         init.defaultBranch = "main";
         merge.conflictStyle = "diff3";
+	credential."https://github.com".helper = "!${
+	  pkgs.gh
+	}/bin/gh auth git-credential";
       };
     };
 
