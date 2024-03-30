@@ -5,15 +5,30 @@ let
   packages = attrValues {
     inherit (pkgs)
       libreoffice
-      firefox
+      dmenu
+      spectacle
+ 
+      prismlauncher
       discord
-      steam
-      thunderbird
       vlc
+      spotify
+      blender
+      joplin-desktop
     ;
   };
 in
 {
+  programs.firefox.enable = true;
+
+  programs.thunderbird = {
+    enable = true;
+    profiles = {
+      
+    };
+  };
+
+  services.spotifyd.enable = true;
+
   home = {
     inherit packages;
   };

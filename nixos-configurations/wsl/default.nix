@@ -2,28 +2,25 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../nvidia.nix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.hostPlatfrom = "x86_64-linux";
 
   boot.loader.systemd-boot.enable = true;
-
-  services.openssh = {
+  service.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
   };
-
-  services.tailscale.enable = true;
+  service.tailscale.enable = true;
 
   networking = {
-    hostName = "nixos-desktop";
+    hostName = "wsl";
     networkmanager.enable = true;
   };
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = "experimental-features = nix-command flakes"
     settings.trusted-users = [
       "root"
     ];
@@ -37,14 +34,10 @@
 
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
-      git
-      neovim
-      ;
-  };
-
-  programs = {
-    steam.enable = true;
-  };
+    git
+    neovim
+    ;
+  }
 
   system.stateVersion = "23.11";
 }

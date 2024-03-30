@@ -30,6 +30,7 @@ in
 
         jq
         glow
+	killall
         ;
     };
 

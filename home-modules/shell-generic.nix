@@ -5,7 +5,7 @@ let
   inherit (config.home) username;
 
   homeSwitch = "home-manager switch --flake '/home/${username}/nixos-flake/#${username}@${hostName}'";
-  nixosSwitch = "nixos-rebuild switch --flake '/home/${username}/nixos-flake/#${hostName}'";
+  nixosSwitch = "sudo nixos-rebuild switch --flake '/home/${username}/nixos-flake/#${hostName}'";
 in
 {
   home = {
