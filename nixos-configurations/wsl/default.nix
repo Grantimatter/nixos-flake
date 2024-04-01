@@ -18,8 +18,6 @@ with lib;
     enable = true;
   };
 
-  nix.package = pkgs.nixFlakes;
-
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
@@ -32,6 +30,7 @@ with lib;
   };
 
   nix = {
+    package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
     settings.trusted-users = [
       "root"
