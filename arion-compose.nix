@@ -1,18 +1,17 @@
 { pkgs, ... }:
 let
   server = {
-    dir = "/home/homelab/server";
-    config = "/home/homelab/server/config";
-    data = "/home/homelab/server/data";
-    backups = "/home/homelab/server/backups";
+    dir = "/etc/homelab";
+    config = "/etc/homelab/config";
+    data = "/etc/homelab/data";
+    backup = "/etc/homelab/backup";
   };
   
-  network_proxy = "reverse-proxy";
-  traefik_service_labels = {
-    ""
-  };
+#  traefik_service_labels = {
+#    "";
+#  };
 
-  volume_docker_sock = "/var/run/docker/sock:/var/run/docker:/var/run/docker.sock:ro";
+  volume_docker_sock = "/var/run/docker.sock:/var/run/docker:ro";
   dns_email = "wiswellgrant@gmail.com";
   dns_token = "SECRETHERE";
   
@@ -20,9 +19,12 @@ in
 {
   config.project.name = "homelab";
 
+  config.docker-compose.volumes = {
+  };
+
   config.networks = {
     reverse-proxy = {
-      name = "${network_proxy}";
+      name = "reverse-proxy";
       ipam = {
 	config = [{
 	  subnet = "172.32.0.0/16";
@@ -40,7 +42,7 @@ in
 	stop_signal = "SIGINT";
 	ports = [ "80:80" "443:443" "2456:2456/udp" ];
 	volumes = [ "${volume_docker_sock}" ];
-	networks = [ "${network_proxy}" ];
+	networks = [ "reverse-proxy" ];
 	environment = {
 	  CF_API_EMAIL = "${dns_email}";
 	  CF_DNS_TOKEN = "${dns_token}";
@@ -57,21 +59,21 @@ in
         container_name = "portainer";
 	stop_signal = "SIGINT";
 	ports = [ "9000:9000" ];
-	networks = [ "${network_proxy}" ];
+	networks = [ "reverse-proxy" ];
 	volumes = [
 	  "${volume_docker_sock}"
-	  "${server_data}/portainer:/data"
+	  "${server.data}/portainer:/data"
 	];
       };
     };
 
     paperless = {
       service = {
-	image = "paperless-ngx/paperless-ngx";
+	image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
 	container_name = "paperless";
 	ports = [ "8000:8000" ];
-	networks = [ "${network_proxy}" ];
-	volumes = [ "${server_dir}/paperles-ngx:/usr/src/paperless/consume" ];
+	networks = [ "reverse-proxy" ];
+	volumes = [ "${server.data}/paperles-ngx:/usr/src/paperless/consume" ];
       };
     };
 
@@ -80,14 +82,41 @@ in
 	image = "lscr.io/linuxserver/duplicati:latest";
 	container_name = "duplicati";
 	ports = [ "8200:8200" ];
-	networks = [ "${network_proxy}" ];
+	networks = [ "reverse-proxy" ];
 	volumes = [
 	  "${server.config}/duplicati:/config"
 	  "${server.config}:/source/config"
 	  "${server.data}:/source/data"
-	  "${server.backups}:/backups"
+	  "${server.backup}:/backup"
 	];
       };
+    };
+
+    transmission-openvpn = {
+    service = {
+      image = "haugene/transmission-openvpn";
+      container_name = "transmission";
+      capabilities = {
+	NET_ADMIN = true;
+      };
+#      "logging" = {
+#        driver = "json-file";
+#        options.max-size = "10m";
+#      };
+      ports = [ "9091:9091" ];
+      networks = [ "reverse-proxy" ];
+      volumes = [
+	"${server.config}/transmission:/config"
+	"${server.data}/transmission:/data"
+      ];
+      environment = {
+	OPENVPN_PROVIDER = "PIA";
+	OPENVPN_CONFIG = "";
+	OPENVPN_USERNAME = "";
+	OPENVPN_PASSWORD = "";
+	LOCAL_NETWORK = "192.168.50.0/16";
+      };
+    };
     };
 
   };
