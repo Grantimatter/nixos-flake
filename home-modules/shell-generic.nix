@@ -34,4 +34,4 @@ in
       VISUAL = "nvim";
     };
   };
-}
+} 

@@ -1,26 +1,38 @@
 { config, inputs, lib, modulesPath, pkgs, ... }:
+let
+  nixos-wsl = builtins.fetchGit { 
+    url = "https://github.com/nix-community/NixOS-WSL";
+    rev = "34eda458bd3f6bad856a99860184d775bc1dd588";
+  };
+in
+with lib;
 {
   imports = [
-    ./hardware-configuration.nix
+    "${nixos-wsl}/modules"
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  nixpkgs.hostPlatfrom = "x86_64-linux";
+  nixpkgs.hostPlatform = "x86_64-linux";
 
-  boot.loader.systemd-boot.enable = true;
-  service.openssh = {
+  wsl = {
+    enable = true;
+  };
+
+  nix.package = pkgs.nixFlakes;
+
+  services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
   };
-  service.tailscale.enable = true;
+
+  services.tailscale.enable = true;
 
   networking = {
-    hostName = "wsl";
     networkmanager.enable = true;
   };
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes"
+    extraOptions = "experimental-features = nix-command flakes";
     settings.trusted-users = [
       "root"
     ];
@@ -37,7 +49,7 @@
     git
     neovim
     ;
-  }
+  };
 
   system.stateVersion = "23.11";
 }

@@ -1,16 +1,26 @@
-{pkgs, ...}:
+{ config, inputs, lib, pkgs, modulesPath, ...}:
 {
   imports = [
-    ./hardware-configuration.nix
     ../wsl/default.nix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
+
+  nixpkgs.hostPlatform = "x86_64-linux";
+  networking.hostName = "homelab";
 
   environment.systemPackages = [
     pkgs.arion
   ];
 
-  virtualization.docker.enable = true;
+  users.users.homelab = {
+    isNormalUser = true;
+    home = "/home/homelab";
+    description = "Home Lab Server";
+    extraGroups = [ "docker" ];
+    initialPassword = "password";
+  };
+
+  virtualisation.docker.enable = true;
 
   users.extraUsers.homelab.extraGroups = ["docker"];
 }

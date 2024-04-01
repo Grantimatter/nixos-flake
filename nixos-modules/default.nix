@@ -80,6 +80,9 @@ in
     description = "Grant";
     extraGroups = [ "wheel" "networkmanager" "docker" ];
     initialPassword = "password";
+    openssh.authorizedKeys.keys = [ 
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFY4/o4gfaJwr/B0+aB51QwiOI4jGCYodnCWM7Pj8iYH grant wiswell@Grant-Desktop" 
+    ];
   };
 
   security = {
@@ -105,15 +108,6 @@ in
   };
 
   services = {
-    xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-      desktopManager.xterm.enable = false;
-      excludePackages = [ pkgs.xterm ];
-      layout = "us";
-      xkbVariant = "";
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;
