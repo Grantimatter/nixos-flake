@@ -1,0 +1,10 @@
+keys:
+  - &grant
+  - &homelab
+
+creation_rules:
+  - path_regex: sops/builder/
+    key_groups:
+      - age:
+        - *grant
+        - *homelab

@@ -7,6 +7,7 @@
 
     history = {
       ignoreSpace = true;
+      path = "${config.xdg.cacheHome}/zsh/history";
     };
   };
 }

@@ -5,7 +5,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   networking.hostName = "homelab";
 
   environment.systemPackages = [

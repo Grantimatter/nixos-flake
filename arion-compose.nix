@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   server = {
     dir = "/etc/homelab";
@@ -20,6 +20,18 @@ in
   config.project.name = "homelab";
 
   config.docker-compose.volumes = {
+    nas-safe = {
+      
+    };
+
+    nas-mass = {
+      name = "nas-mass";
+      driver_opts = {
+        type = "cifs";
+	o = "";
+	device = "";
+      };
+    };
   };
 
   config.networks = {
@@ -85,6 +97,19 @@ in
 	networks = [ "reverse-proxy" ];
 	volumes = [
 	  "${server.config}/duplicati:/config"
+	  "${server.config}:/source/config"
+	  "${server.data}:/source/data"
+	  "${server.backup}:/backup"
+	];
+      };
+    };
+
+    restic = {
+      service = {
+	image = "restic/restic";
+	container_name = "restic";
+	volumes = [
+	  "${server.config}/restic:/config"
 	  "${server.config}:/source/config"
 	  "${server.data}:/source/data"
 	  "${server.backup}:/backup"

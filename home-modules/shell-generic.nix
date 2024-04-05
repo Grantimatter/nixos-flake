@@ -23,6 +23,7 @@ in
       cat = "bat -pp";
       tree = "erd --layout inverted --icons --human";
       grep = "rg";
+      cd = "z";
     } // (
       if isLinux then
         { inherit nixosSwitch; }
@@ -32,6 +33,12 @@ in
     sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
+      SOPS_AGE_KEY_FILE = config.xdg.configHome + "/sops/keys/age/keys.txt";
     };
   };
+
+  xdg.configFile."powershell/Microsoft.PowerShell_profile.ps1".text = ''
+    Invoke-Expressin (&staship init powershell)
+    Set-PSReadlineOption -EditMode Vi -ViModeIndicator Cursor
+  '';
 } 

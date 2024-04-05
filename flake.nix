@@ -21,10 +21,15 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ flake-parts, ez-configs, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+  outputs = inputs: inputs.flake-parts.lib.mkFlake
+    { inherit inputs; }
+    {
       imports = [
         inputs.ez-configs.flakeModule
       ];
@@ -45,7 +50,7 @@
 
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
-          overlays = [ ];
+          overlays = [ inputs.sops-nix.overlays.default ];
         };
         devShells.default = pkgs.mkShell {
           name = "default-shell";
