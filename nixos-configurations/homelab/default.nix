@@ -2,6 +2,8 @@
 {
   imports = [
     ../wsl/default.nix
+    inputs.sops-nix.nixosModules.default
+    inputs.arion.nixosModules.arion
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
@@ -13,6 +15,11 @@
     pkgs.arion
   ];
 
+#  sops.secrets.homelab-credentials = {
+#    name = "homelab-credentials.json";
+#    sopsFile = ../../secrets/homelab-credentials.yaml;
+#  };
+
   users.users.homelab = {
     isNormalUser = true;
     home = "/home/homelab";
@@ -21,7 +28,15 @@
     initialPassword = "password";
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.arion = {
+    backend = "docker";
+    projects.homelab = {
+      serviceName = "homelab";
+      settings = {
+        imports = [ ./arion-compose.nix ];
+      };
+    };
+  };
 
   users.extraUsers.homelab.extraGroups = ["docker"];
 }

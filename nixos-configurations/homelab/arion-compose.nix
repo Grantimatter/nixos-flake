@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, config, ... }:
 let
   server = {
     dir = "/etc/homelab";
@@ -12,11 +12,11 @@ let
 #  };
 
   volume_docker_sock = "/var/run/docker.sock:/var/run/docker:ro";
-  dns_email = "wiswellgrant@gmail.com";
-  dns_token = "SECRETHERE";
-  
 in
 {
+  imports = [
+#    inputs.sops-nix.nixosModules.default
+  ];
   config.project.name = "homelab";
 
   config.docker-compose.volumes = {
@@ -56,8 +56,8 @@ in
 	volumes = [ "${volume_docker_sock}" ];
 	networks = [ "reverse-proxy" ];
 	environment = {
-	  CF_API_EMAIL = "${dns_email}";
-	  CF_DNS_TOKEN = "${dns_token}";
+	  CF_API_EMAIL = "";
+	  CF_DNS_TOKEN = "";
 	};
 	labels = {
 	  "traefik.enable" = "true";
