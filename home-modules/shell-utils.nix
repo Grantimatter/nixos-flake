@@ -42,6 +42,7 @@ in
 
     zoxide = {
       enable = true;
+      enableBashIntegration = true;
       enableZshIntegration = true;
     };
 
@@ -59,6 +60,22 @@ in
     gh = {
       enable = true;
     };
+
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+    };
+
+    alacritty = {
+      enable = true;
+    };
+
+    #wezterm = {
+    #  enable = true;
+    #  enableBashIntegration = true;
+    #  enableZshIntegration = true;
+    #};
 
     ssh.enable = true;
 

@@ -44,11 +44,17 @@
     };
   };
 
+  
+
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git
       neovim
       ;
+     inherit (pkgs.gnomeExtensions)
+       hide-top-bar
+       pixel-saver
+       ;
   };
 
   system.stateVersion = "23.11";
