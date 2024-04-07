@@ -15,19 +15,22 @@
     };
   };
 
-  dconf = {
+  xsession = {
     enable = true;
-    settings = {
-      "org/gnome/interface".color-scheme = "prefer-dark";
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-	binding = "<Ctrl><Alt>t";
-	command = "alacritty";
-	name = "Alacritty Terminal";
+    windowManager.i3 = rec {
+      enable = true;
+      config = {
+	modifier = "Mod4";
       };
     };
   };
 
   programs.zsh = {
     enable = true;
+  };
+
+  programs.nixvim = {
+    enable = true;
+    defaultEditor = true;
   };
 }

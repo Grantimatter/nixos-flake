@@ -89,6 +89,26 @@ in
       };
     };
 
+    backrest = {
+      service = {
+        image = "garethgeorge/backrest";
+	container_name = "backrest";
+	ports = [ "9898:9898" ];
+	networks = [ "reverse-proxy" ];
+	volumes = [
+	  "${server.config}/backrest:/config"
+	  "${server.data}/backrest:/data"
+	  "${server.cache}/backrest:/cache"
+	  "${server.data}:/userdata"
+	];
+	environment = {
+	  BACKREST_CONFIG = "/config/config.json";
+	  BACKREST_DATA = "/data";
+	  XDG_CACHE_HOME = "/cache";
+	};
+      };
+    };
+
     duplicati = {
       service = {
 	image = "lscr.io/linuxserver/duplicati:latest";
@@ -97,19 +117,6 @@ in
 	networks = [ "reverse-proxy" ];
 	volumes = [
 	  "${server.config}/duplicati:/config"
-	  "${server.config}:/source/config"
-	  "${server.data}:/source/data"
-	  "${server.backup}:/backup"
-	];
-      };
-    };
-
-    restic = {
-      service = {
-	image = "restic/restic";
-	container_name = "restic";
-	volumes = [
-	  "${server.config}/restic:/config"
 	  "${server.config}:/source/config"
 	  "${server.data}:/source/data"
 	  "${server.backup}:/backup"

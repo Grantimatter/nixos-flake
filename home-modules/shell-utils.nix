@@ -22,6 +22,8 @@ in
         erdtree
         bottom
         eza
+	ripgrep
+	ripgrep-all
         bat
 	fd
 	procs

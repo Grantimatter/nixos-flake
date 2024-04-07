@@ -2,7 +2,8 @@
 {
   imports = lib.attrValues {
     inherit (ezModules)
-      neovim
+#      neovim
+      nixvim
       shell-generic
       shell-utils
       zsh

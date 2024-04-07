@@ -9,6 +9,7 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot.loader.systemd-boot.enable = true;
+  boot.plymouth.enable = true;
 
   services.openssh = {
     enable = true;
@@ -18,9 +19,14 @@
   services.tailscale.enable = true;
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    desktopManager.xterm.enable = false;
+
+    #displayManager.gdm.enable = true;
+    #desktopManager.gnome.enable = true;
+    #desktopManager.xterm.enable = false;
+    displayManager.lightdm.enable = true;
+    displayManager.defaultSession = "none+i3";
+    windowManager.i3.enable = true;
+
     excludePackages = [ pkgs.xterm ];
     layout = "us";
     xkbVariant = "";
@@ -44,17 +50,26 @@
     };
   };
 
-  
+#  hardware.nvidia.dynamicBoost.enable = true;
+
+  hardware.nvidia = {
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+      sync.enable = true;
+    };
+  };
 
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git
       neovim
       ;
-     inherit (pkgs.gnomeExtensions)
-       hide-top-bar
-       pixel-saver
-       ;
+#     inherit (pkgs.gnomeExtensions)
+#       hide-top-bar
+#       pixel-saver
+#       blur-my-shell
+#       ;
   };
 
   system.stateVersion = "23.11";
