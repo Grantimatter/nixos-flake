@@ -20,7 +20,7 @@ in
       top = "btm";
       btop = "btm";
       ls = "eza";
-      cat = "bat -pp";
+      cat = "bat -p";
       tree = "erd --layout inverted --icons --human";
       grep = "rg";
       cd = "z";
