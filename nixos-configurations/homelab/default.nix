@@ -19,7 +19,7 @@
     name = "homelab-credentials.yaml";
     owner = "homelab";
     group = "homelab";
-    sopsFile = ../../secrets/homelab-credentials;
+    sopsFile = ../secrets/homelab-credentials;
   };
 
   users.users.homelab = {
