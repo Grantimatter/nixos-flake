@@ -15,10 +15,12 @@
     pkgs.arion
   ];
 
-#  sops.secrets.homelab-credentials = {
-#    name = "homelab-credentials.json";
-#    sopsFile = ../../secrets/homelab-credentials.yaml;
-#  };
+  sops.secrets.homelab-credentials = {
+    name = "homelab-credentials.yaml";
+    owner = "homelab";
+    group = "homelab";
+    sopsFile = ../../secrets/homelab-credentials;
+  };
 
   users.users.homelab = {
     isNormalUser = true;
