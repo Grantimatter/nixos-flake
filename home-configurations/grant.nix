@@ -29,6 +29,9 @@
     enable = true;
   };
 
+  programs.autorandr.enable = true;
+  services.autorandr.enable = true;
+
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
