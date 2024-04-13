@@ -151,5 +151,21 @@ in
     };
     };
 
+    watcharr.service = {
+      image = "ghcr.io/sbondco/watcharr:latest";
+      container_name = "watcharr";
+      ports = [ "3080" "3080" ];
+      volumes = [
+        "${server.data}/watcharr:/data"
+      ];    
+    };
+
+    wizarr.service = {
+      image = "ghcr.io/wizarrrr/wizarr:latest";
+      container_name = "wizarr";
+      ports = [ "5690" "5690" ];
+      volumes = [ "${server.data}/wizarr:/data/database" ];
+    };
+
   };
 }
