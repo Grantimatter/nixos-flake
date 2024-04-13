@@ -16,6 +16,7 @@ with lib;
 
   wsl = {
     enable = true;
+    defaultUser = "grant";
   };
 
   services.openssh = {
