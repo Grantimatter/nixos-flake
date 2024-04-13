@@ -39,6 +39,7 @@ in
   programs = {
     starship = {
       enable = true;
+      enableBashIntegration = true;
       enableZshIntegration = true;
     };
 
@@ -83,6 +84,7 @@ in
 
     direnv = {
       enable = true;
+      enableBashIntegration = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };

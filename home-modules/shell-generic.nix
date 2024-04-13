@@ -24,7 +24,8 @@ in
       tree = "erd --layout inverted --icons --human";
       grep = "rg";
       cd = "z";
-      nix-shell= "nix-shell --command zsh";
+      nixshell = "nix-shell -c zsh";
+      nixdev = "nix develop -c zsh";
     } // (
       if isLinux then
         { inherit nixosSwitch; }
