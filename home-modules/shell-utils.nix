@@ -29,8 +29,12 @@ in
 	procs
 	sd
 	du-dust
+	rustscan
 
         jq
+	tailspin
+	jless
+	grex
         glow
 	killall
         ;
@@ -51,9 +55,7 @@ in
 
     git = {
       enable = true;
-      diff-so-fancy = {
-        enable = true;
-      };
+      delta.enable = true;
       extraConfig = {
         init.defaultBranch = "main";
         merge.conflictStyle = "diff3";
@@ -74,11 +76,17 @@ in
       enable = true;
     };
 
-    #wezterm = {
-    #  enable = true;
-    #  enableBashIntegration = true;
-    #  enableZshIntegration = true;
-    #};
+    atuin = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
+
+    skim = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
 
     ssh.enable = true;
 
