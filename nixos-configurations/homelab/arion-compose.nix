@@ -1,11 +1,12 @@
-{ pkgs, config, inputs, ... }:
+{ config, lib, ... }:
 let
+  HOME = builtins.getEnv "HOME";
   server = rec {
-    dir = /etc/homelab;
-    config = dir + /config;
-    data   = dir + /data;
-    backup = dir + /backup;
-    cache  = dir + /cache;
+    dir = HOME + "/homelab";
+    config = dir + "/config";
+    data   = dir + "/data";
+    backup = dir + "/backup";
+    cache  = dir + "/cache";
   };
   
 #  traefik_service_labels = rec {
@@ -16,8 +17,8 @@ let
 in
 {
   imports = [
-    inputs.sops-nix.nixosModules.default
-    (modulesPath + "/installer/scan/not-detected.nix"
+    #inputs.sops-nix.nixosModules.default
+    #(modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   config.project.name = "homelab";
@@ -157,7 +158,7 @@ in
     watcharr.service = {
       image = "ghcr.io/sbondco/watcharr:latest";
       container_name = "watcharr";
-      ports = [ "3080" "3080" ];
+      ports = [ "3080:3080" ];
       volumes = [
         "${server.data}/watcharr:/data"
       ];    
@@ -166,7 +167,7 @@ in
     wizarr.service = {
       image = "ghcr.io/wizarrrr/wizarr:latest";
       container_name = "wizarr";
-      ports = [ "5690" "5690" ];
+      ports = [ "5690:5690" ];
       volumes = [ "${server.data}/wizarr:/data/database" ];
     };
 

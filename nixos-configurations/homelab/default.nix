@@ -1,10 +1,9 @@
-{ config, inputs, lib, pkgs, modulesPath, ...}:
+{ config, inputs, lib, pkgs, ...}:
 {
   imports = [
     ../wsl/default.nix
     inputs.sops-nix.nixosModules.default
     inputs.arion.nixosModules.arion
-    (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
@@ -14,11 +13,6 @@
   environment.systemPackages = [
     pkgs.arion
   ];
-
-  sops.secrets.homelab-credentials = {
-    format = "ini";
-    sopsFile = ../../sops/homelab-credentials.ini;
-  };
 
   users.users.homelab = {
     isNormalUser = true;
