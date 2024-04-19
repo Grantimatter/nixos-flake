@@ -11,6 +11,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.plymouth.enable = true;
 
+  programs.steam.enable = true;
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
