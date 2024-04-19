@@ -16,10 +16,8 @@
   ];
 
   sops.secrets.homelab-credentials = {
-    name = "homelab-credentials.yaml";
-    owner = "homelab";
-    group = "homelab";
-    sopsFile = ../../sops/homelab-credentials;
+    format = "ini";
+    sopsFile = ../../sops/homelab-credentials.ini;
   };
 
   users.users.homelab = {

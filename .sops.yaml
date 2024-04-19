@@ -4,7 +4,7 @@ keys:
   - &server_homelab age16mlz4u3wje9lhvcasemywxtcmhhrpwq96fvrz5fywp8dqr0uyg5qfr5k9q
 
 creation_rules:
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: sops/[^/]+\.(yaml|json|env|ini|toml)$
     key_groups:
       - age:
         - *user_grant

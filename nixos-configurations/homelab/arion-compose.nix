@@ -1,13 +1,14 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 let
-  server = {
-    dir = "/etc/homelab";
-    config = "/etc/homelab/config";
-    data = "/etc/homelab/data";
-    backup = "/etc/homelab/backup";
+  server = rec {
+    dir = /etc/homelab;
+    config = dir + /config;
+    data   = dir + /data;
+    backup = dir + /backup;
+    cache  = dir + /cache;
   };
   
-#  traefik_service_labels = {
+#  traefik_service_labels = rec {
 #    "";
 #  };
 
@@ -15,8 +16,10 @@ let
 in
 {
   imports = [
-#    inputs.sops-nix.nixosModules.default
+    inputs.sops-nix.nixosModules.default
+    (modulesPath + "/installer/scan/not-detected.nix"
   ];
+
   config.project.name = "homelab";
 
   config.docker-compose.volumes = {
