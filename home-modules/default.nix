@@ -4,6 +4,7 @@
     inherit (ezModules)
 #      neovim
       nixvim
+      helix
       shell-generic
       shell-utils
       zsh
