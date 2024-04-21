@@ -41,16 +41,31 @@ in
     };
 
   programs = {
+    wezterm = {
+      enable = true;
+    };
+
+    nushell = {
+      enable = true;
+    };
+
+    carapace = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+    
     starship = {
       enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+    #  enableBashIntegration = true;
+    #  enableZshIntegration = true;
+    #  enableNushellIntegration = true;
     };
 
     zoxide = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
+      enableNushellIntegration = true;
     };
 
     git = {
@@ -66,34 +81,36 @@ in
       enable = true;
     };
 
-    zellij = {
-      enable = true;
-      enableZshIntegration = true;
-      enableBashIntegration = true;
-    };
+    #zellij = {
+    #  enable = true;
+    #  enableZshIntegration = true;
+    #  enableBashIntegration = true;
+    #};
 
-    alacritty = {
-      enable = true;
-    };
+    #alacritty = {
+    #  enable = true;
+    #};
 
     atuin = {
       enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+    #  enableBashIntegration = true;
+    #  enableZshIntegration = true;
+      enableNushellIntegration = true;
     };
 
     skim = {
       enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+    #  enableBashIntegration = true;
+    #  enableZshIntegration = true;
     };
 
     ssh.enable = true;
 
     direnv = {
       enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+    #  enableBashIntegration = true;
+    #  enableZshIntegration = true;
+      enableNushellIntegration = true;
       nix-direnv.enable = true;
     };
   };
