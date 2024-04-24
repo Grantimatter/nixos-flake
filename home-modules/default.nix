@@ -3,7 +3,8 @@
   imports = lib.attrValues {
     inherit (ezModules)
 #      neovim
-      nixvim
+#      nixvim
+      wezterm
       helix
       shell-generic
       shell-utils

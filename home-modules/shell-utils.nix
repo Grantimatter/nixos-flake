@@ -41,9 +41,6 @@ in
     };
 
   programs = {
-    wezterm = {
-      enable = true;
-    };
 
     nushell = {
       enable = true;
