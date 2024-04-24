@@ -4,10 +4,11 @@ let
   inherit (lib) optionals attrValues;
   inherit (config.home) homeDirectory;
 in
+{
   programs.wezterm = {
     enable = true;
     enableZshIntegration = true;
-    extraConfig = {
+    extraConfig = 
       ''
       -- Pull in the wezterm API
       local wezterm = require 'wezterm'
@@ -25,6 +26,6 @@ in
       -- and finally, return the configuration to wezterm
 
       return config
-      ''
-    };
-};
+      '';
+   };
+}
