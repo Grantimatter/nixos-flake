@@ -8,7 +8,7 @@ in
   programs.helix = {
     enable = true;
     settings = {
-     theme = "catpuccin_mocha"; 
+     theme = "catppuccin_mocha"; 
       editor = {
         line-number = "relative";
         lsp.display-messages = true;
