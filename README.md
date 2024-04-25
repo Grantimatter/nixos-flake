@@ -12,20 +12,18 @@
 ### Rebuild NixOS configuration
 ```sh
 sudo nixos-rebuild switch --flake .#<host>
+
+# Alias
+nixosSwitch
 ```
-  **Alias**
-  ```sh
-  nixosSwitch
-  ```
 
 ### Rebuild Home Manager configuration
 ```sh
 home-manager switch --flake .#<username>@<host>
+
+# Alias
+homeSwitch
 ```
-  **Alias**
-  ```sh
-  homeSwitch
-  ```
 
 ### Open / Create Encrypted Files
 **Assuming you already have an age key that sops can use**
@@ -39,3 +37,4 @@ sops ./secrets/<file>
 ```
 
 ## General Tips
+TODO
