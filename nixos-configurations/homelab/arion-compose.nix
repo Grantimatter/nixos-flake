@@ -1,8 +1,7 @@
 { config, lib, ... }:
 let
-  HOME = builtins.getEnv "HOME";
   server = rec {
-    dir = HOME + "/homelab";
+    dir = config.xdg.configHome + "/homelab";
     config = dir + "/config";
     data   = dir + "/data";
     backup = dir + "/backup";
