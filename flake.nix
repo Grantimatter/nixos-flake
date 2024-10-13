@@ -3,7 +3,8 @@
 
   inputs = {
     # Nix Inputs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
@@ -22,7 +23,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -54,11 +55,14 @@
         globalArgs = { inherit inputs; };
       };
 
-      perSystem = { pkgs, lib, system, ... }: {
+      perSystem = { pkgs, pkgs-unstable, lib, system, ... }: {
 
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
           overlays = [ inputs.sops-nix.overlays.default ];
+        };
+        _module.args.pkgs-unstable = import inputs.nixpkgs-unspable {
+          inherit system;
         };
         devShells.default = pkgs.mkShell {
           name = "default-shell";

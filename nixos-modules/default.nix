@@ -3,8 +3,17 @@ let
   inherit (lib) attrValues;
   systemPackages = attrValues {
     inherit (pkgs)
+      # Hyprland
+      kitty
+      egl-wayland
+      hyprpaper
+
+      dolphin
+
+      # Core
       bash
       zsh
+      nnn
       coreutils
       usbutils
       home-manager
@@ -17,7 +26,6 @@ in
   virtualisation.docker.enable = true;
   console.keyMap = "us";
   systemd.services.upower.enable = true;
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   hardware.bluetooth.enable = true;
 
@@ -106,7 +114,7 @@ in
     stateVersion = "23.11";
     autoUpgrade.enable = true;
     autoUpgrade.allowReboot = true;
-    autoUpgrade.channel = "https://nixos/channels/nixos-23.11";
+    autoUpgrade.channel = "https://nixos/channels/nixos-24.05";
   };
 
   services = {
@@ -121,10 +129,16 @@ in
     thermald.enable = true;
     upower.enable = true;
     openssh.enable = true;
+    tailscale.enable = true;
+    displayManager.sddm.enable = true;
   };
 
   programs = {
     dconf.enable = true;
     zsh.enable = true;
+    hyprland.enable = true;
+    waybar.enable = true;
   };
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
