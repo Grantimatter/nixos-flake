@@ -7,6 +7,7 @@ let
       kitty
       egl-wayland
       hyprpaper
+      eww-wayland
 
       dolphin
 
