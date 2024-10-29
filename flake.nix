@@ -34,6 +34,7 @@
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake
@@ -55,14 +56,11 @@
         globalArgs = { inherit inputs; };
       };
 
-      perSystem = { pkgs, pkgs-unstable, lib, system, ... }: {
+      perSystem = { pkgs, lib, system, ... }: {
 
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
           overlays = [ inputs.sops-nix.overlays.default ];
-        };
-        _module.args.pkgs-unstable = import inputs.nixpkgs-unspable {
-          inherit system;
         };
         devShells.default = pkgs.mkShell {
           name = "default-shell";

@@ -6,9 +6,15 @@
       helix
       shell-generic
       shell-utils
+      eza
+      nushell
       zsh
+      fish
+      kitty
       xdg
       linux
+      eww
+      hyprland
       ;
   };
 

@@ -4,9 +4,9 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
   
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
     ];
   };
@@ -17,7 +17,7 @@
 
   hardware.nvidia = {
     modesetting.enable = true;
-#    powerManagement.enable = false;
+    powerManagement.enable = false;
     powerManagement.finegrained = false;
     open = true;
     nvidiaSettings = true;

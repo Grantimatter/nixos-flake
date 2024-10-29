@@ -9,6 +9,7 @@ in
       inherit (pkgs)
         cargo
         rustc
+        python3
 
         git
         lazygit
@@ -22,39 +23,37 @@ in
         erdtree
         bottom
         eza
-	ripgrep
-	ripgrep-all
+	      ripgrep
+      	ripgrep-all
         bat
-	fd
-	procs
-	sd
-	du-dust
-	rustscan
-
+      	fd
+      	procs
+      	sd
+      	du-dust
+      	rustscan
+        
         jq
-	tailspin
-	jless
-	grex
+      	tailspin
+      	jless
+      	grex
         glow
-	killall
+	      killall
         ;
     };
 
   programs = {
 
-    nushell = {
-      enable = true;
-    };
-
     carapace = {
       enable = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
       enableNushellIntegration = true;
     };
     
     starship = {
       enable = true;
     #  enableBashIntegration = true;
-    #  enableZshIntegration = true;
+      enableZshIntegration = true;
     #  enableNushellIntegration = true;
     };
 

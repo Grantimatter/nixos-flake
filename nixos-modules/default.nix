@@ -1,13 +1,15 @@
-{ inputs, lib, modulesPath, pkgs, ... }:
+{ inputs, lib, modulesPath, pkgs, system, ... }:
 let
   inherit (lib) attrValues;
   systemPackages = attrValues {
     inherit (pkgs)
       # Hyprland
+      hyprshot
       kitty
       egl-wayland
       hyprpaper
-      eww-wayland
+      eww
+      polkit-kde-agent
 
       dolphin
 
@@ -20,6 +22,7 @@ let
       home-manager
       ;
   };
+
 in
 {
   time.timeZone = "US/Central";
@@ -30,6 +33,23 @@ in
   hardware.pulseaudio.enable = false;
   hardware.bluetooth.enable = true;
 
+  systemd = {
+    user.services."polkit-agent" = {
+      description = "polkit-kde-agent for Hyprland";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     #../overlays
@@ -39,7 +59,7 @@ in
 
   environment = {
     pathsToLink = [ "/share/zsh" ];
-    inherit systemPackages;
+    systemPackages = systemPackages ++ [ inputs.zen-browser.packages.x86_64-linux.default ];
   };
 
   nix = {
@@ -81,7 +101,7 @@ in
     #servers = ["us.pool.ntp.org"];
   };
 
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.nushell;
 
   users.users.grant = {
     isNormalUser = true;
@@ -98,6 +118,7 @@ in
 
   security = {
     rtkit.enable = true;
+    polkit.enable = true;
 
     sudo = {
       enable = true;
@@ -138,7 +159,7 @@ in
     dconf.enable = true;
     zsh.enable = true;
     hyprland.enable = true;
-    waybar.enable = true;
+    # waybar.enable = true;
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
