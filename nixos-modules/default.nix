@@ -159,6 +159,7 @@ in
     dconf.enable = true;
     zsh.enable = true;
     hyprland.enable = true;
+    gamescope.enable = true;
     # waybar.enable = true;
   };
 

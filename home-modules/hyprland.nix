@@ -22,6 +22,7 @@
       "tag +opac, class:(discord)"
       "opacity 0.9 override 0.70 override, tag:term"
       "opacity 0.9 override 0.6 override, tag:opac"
+      # "immediate, class:^(gamescope)$"
     ];
 
     monitor = ", highres@highrr, auto, 1, bitdepth, 10, vrr, 1";
@@ -103,7 +104,7 @@
       "LIBVA_DRIVER_NAME,nvidia"
       "XDG_SESSION_TYPE,wayland"
       "GBM_BACKEND,nvidia-drm"
-      "__GLX_VENDORLIBRARY_NAME,nvidia"
+      "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       "__GL_GSYNC_ALLOWED,1"
       "NVD_BACKEND,direct"
     ];
@@ -122,7 +123,6 @@
     input = {
       sensitivity = 0.5;
       accel_profile = "flat";
-      # force_no_accel = 1;
     };
 
     xwayland = {
