@@ -10,7 +10,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "module_blacklist=amdgpu" ];
-  hardware.nvidia.forceFullCompositionPipeline = true;
+  hardware.nvidia.forceFullCompositionPipeline = false;
   #hardware.nvidia.powerManagement.enable = true;
 
   services.openssh = {

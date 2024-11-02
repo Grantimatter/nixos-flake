@@ -8,8 +8,13 @@ let
       kitty
       egl-wayland
       hyprpaper
+      hyprcursor
       eww
       polkit-kde-agent
+      xwaylandvideobridge
+
+      # Theming
+      catppuccin-cursors
 
       dolphin
 
@@ -160,6 +165,10 @@ in
     zsh.enable = true;
     hyprland.enable = true;
     gamescope.enable = true;
+    gamescope.args = [
+      "--expose-wayland"
+      "--adaptive-sync"
+    ];
     # waybar.enable = true;
   };
 

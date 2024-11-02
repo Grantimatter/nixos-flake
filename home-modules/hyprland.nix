@@ -1,12 +1,44 @@
-{ config, pkgs, ...}:
+{ config, pkgs, lib, ...}:
+let
+  theme_config = builtins.readFile (
+      builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/catppuccin/hyprland/refs/heads/main/themes/mocha.conf";
+        sha256 = "4b154dbd96637ee3c0db207dc40d041c712713d788409005541214b838922314";
+      });
+  theme_name = "catppuccin-mocha-maroon";
+  theme_pkg = "${pkgs.catppuccin-cursors.mochaMaroon}";
+  cursor_size = "38";
+  wallpaper = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
+    sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
+  };
+  wallpaper1 = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/refs/heads/main/os/nix-black-4k.png";
+    sha256 = "1d165878a0e67c0e7791bddf671b8d5af47c704f7ab4baea3d9857e3ecf89590";
+  };
+in
 {
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
   programs.wofi.enable = true;
 
+  # wayland.windowManager.hyprland.extraConfig = theme_config;
+
   # Hyprland Config
+
+  wayland.windowManager.hyprland.importantPrefixes = [
+    "#Catppuccin Theme"
+    "$"
+    "bezier"
+    "name"
+    "source"
+  ];
+  
   wayland.windowManager.hyprland.settings = {
+    # inherit theme_config;
+    "#Catppuccin Theme" = theme_config;
+    "$theme" = "${theme_name}";
     "$terminal" = "kitty";
     "$fileManager" = "nnn";
     "$menu" = "wofi --show drun";
@@ -22,7 +54,13 @@
       "tag +opac, class:(discord)"
       "opacity 0.9 override 0.70 override, tag:term"
       "opacity 0.9 override 0.6 override, tag:opac"
-      # "immediate, class:^(gamescope)$"
+      "immediate, class:(gamescope)"
+      # xwaylandvideobridge
+      "opacity 0.0 override, class:^(xwaylandvideobridge)$"
+      "noanim, class:^(xwaylandvideobridge)$"
+      "noinitialfocus, class:^(xwaylandvideobridge)$"
+      "maxsize 1 1, class:^(xwaylandvideobridge)$"
+      "noblur, class:^(xwaylandvideobridge)$z"
     ];
 
     monitor = ", highres@highrr, auto, 1, bitdepth, 10, vrr, 1";
@@ -84,7 +122,7 @@
 
     exec-once = [
       #"waybar"
-      #"hyprpaper"
+      "hyprpaper"
       # "systemctl --user start plasma-polkit-agent"
       "systemctl --user start polkit-agent"
     ];
@@ -94,26 +132,40 @@
     };
 
     env = [
-      "XCURSORSIZE,24"
-      "HYPRCURSOR_SIZE,24"
-      "SDL_VIDEODRIVER,wayland"
       "MOZ_ENABLE_WAYLAND,1"
       "NIXOS_OZONE_WL,1"
+
+      # Toolkit env
+      "SDL_VIDEODRIVER,wayland"
+      "GDK_BACKEND,wayland,x11"
+      "GDK_SCALE,1.25"
+      "CLUTTER_BACKEND,wayland"
+
+      # XDG env
+      "XDG_CURRENT_DESKTOP,Hyprland"
+      "XDG_SESSION_TYPE,wayland"
+      "XDG_SESSION_DESKTOP,Hyprland"
       
       # Nvidia env
-      "LIBVA_DRIVER_NAME,nvidia"
-      "XDG_SESSION_TYPE,wayland"
       "GBM_BACKEND,nvidia-drm"
       "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+      "LIBVA_DRIVER_NAME,nvidia"
       "__GL_GSYNC_ALLOWED,1"
+      "__GL_VRR_ALLOWED,1"
       "NVD_BACKEND,direct"
+
+      # Theme
+      "HYPRCURSOR_THEME,$theme"
+      "HYPRCURSOR_SIZE,${cursor_size}"
+      "XCURSOR_THEME,$theme"
+      "XCURSORSIZE,${cursor_size}"
     ];
 
     general = {
       gaps_in = 6;
       gaps_out = 10;
       border_size = 1;
-      "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+      "col.active_border" = "$red $rosewater 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
       allow_tearing = true;
@@ -126,6 +178,7 @@
     };
 
     xwayland = {
+      force_zero_scaling = true;
       use_nearest_neighbor = false;
     };
 
@@ -195,10 +248,24 @@
     };
   };
 
-  # services.hyprpaper = {
-  #   enable = true;
-  #   settings = {
-      
-  #   };
-  # };
+  # Cursor Theme
+  home.file.".local/share/icons/${theme_name}".source = "${theme_pkg}/share/icons/${theme_name}-cursors";
+
+  # Wallpaper
+  home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = [
+        "${wallpaper}"
+      ];
+
+      wallpaper = [
+        ",${wallpaper}"
+      ];
+
+      splash = false;
+    };
+  };
 }
