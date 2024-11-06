@@ -9,8 +9,8 @@ let
       spectacle
  
       prismlauncher
-#      webcord-vencord
-      # vesktop
+      webcord-vencord
+      vesktop
       discord
       vlc
       spotify

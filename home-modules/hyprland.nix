@@ -22,6 +22,7 @@ in
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
   programs.wofi.enable = true;
+  programs.mangohud.enable = true;
 
   # wayland.windowManager.hyprland.extraConfig = theme_config;
 
@@ -54,7 +55,6 @@ in
       "tag +opac, class:(discord)"
       "opacity 0.9 override 0.70 override, tag:term"
       "opacity 0.9 override 0.6 override, tag:opac"
-      "immediate, class:(gamescope)"
       # xwaylandvideobridge
       "opacity 0.0 override, class:^(xwaylandvideobridge)$"
       "noanim, class:^(xwaylandvideobridge)$"
@@ -125,6 +125,9 @@ in
       "hyprpaper"
       # "systemctl --user start plasma-polkit-agent"
       "systemctl --user start polkit-agent"
+      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "dbus-update-activation-environment --systemd --all"
+      "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
     ];
 
     cursor = {
@@ -164,8 +167,8 @@ in
     general = {
       gaps_in = 6;
       gaps_out = 10;
-      border_size = 1;
-      "col.active_border" = "$red $rosewater 45deg";
+      border_size = 2;
+      "col.active_border" = "$red $mauve 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
       allow_tearing = true;
@@ -266,6 +269,39 @@ in
       ];
 
       splash = false;
+    };
+  };
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+        general = {
+          lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
+          before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
+          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+        };
+
+      listener = [
+        {
+          timeout = 150;                                    # 2.5min.
+          "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
+        }
+
+        {
+          timeout = 300;                                    # 5min
+          on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
+        }
+        {
+          timeout = 330;                                    # 5.5min
+          on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
+          on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
+        }
+        {
+          timeout = 1800;                                  # 30min
+          on-timeout = "systemctl suspend";                # suspend pc
+        }
+      ];
     };
   };
 }

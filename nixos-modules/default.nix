@@ -158,7 +158,9 @@ in
     openssh.enable = true;
     tailscale.enable = true;
     displayManager.sddm.enable = true;
+    hypridle.enable = true;
   };
+
 
   programs = {
     dconf.enable = true;
@@ -167,9 +169,18 @@ in
     gamescope.enable = true;
     gamescope.args = [
       "--expose-wayland"
+      "--backend wayland"
+      "-W 3840"
+      "-H 2160"
+      "-w 3840"
+      "-h 2160"
+      "-f"
+      "-r 144"
+      "-o 144"
+      "--mangoapp"
       "--adaptive-sync"
     ];
-    # waybar.enable = true;
+    hyprlock.enable = true;
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
