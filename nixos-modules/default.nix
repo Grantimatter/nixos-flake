@@ -166,18 +166,20 @@ in
     dconf.enable = true;
     zsh.enable = true;
     hyprland.enable = true;
+    gamemode.enable = true;
     gamescope.enable = true;
     gamescope.args = [
       "--expose-wayland"
       "--backend wayland"
+      "--hdr-enabled"
+      # "--immediate-flips"
       "-W 3840"
       "-H 2160"
       "-w 3840"
       "-h 2160"
-      "-f"
+      "-b"
       "-r 144"
       "-o 144"
-      "--mangoapp"
       "--adaptive-sync"
     ];
     hyprlock.enable = true;

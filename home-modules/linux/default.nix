@@ -15,6 +15,7 @@ let
       vlc
       spotify
       blender
+      gimp
       joplin-desktop
     ;
   };

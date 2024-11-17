@@ -18,6 +18,17 @@
     settings.PasswordAuthentication = false;
   };
 
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+    # user = "grant";
+  };
+  services.jellyfin = {
+    enable = true;
+  };
+
+  services.deluge.enable = true;
+
   services.xserver = {
     enable = true;
 #    displayManager.gdm.enable = true;
