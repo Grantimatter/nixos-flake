@@ -13,10 +13,92 @@
   hardware.nvidia.forceFullCompositionPipeline = false;
   #hardware.nvidia.powerManagement.enable = true;
 
+  fileSystems."/mnt/nvme0n1p2" = {
+    device = "/dev/disk/by-uuid/3A828F16828ED633";
+    fsType = "ntfs-3g";
+    options = ["rw" "uid=1000" "x-gvfs-show"];
+  };
+
+  fileSystems."/mnt/sdb2" = {
+    device = "/dev/disk/by-uuid/3E0C584A0C57FB7B";
+    fsType = "ntfs";
+    neededForBoot = false;
+    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+  };
+
+  fileSystems."/mnt/NVMEG" = {
+    device = "/dev/disk/by-uuid/70EC442EEC43ECC2";
+    fsType = "ntfs";
+    neededForBoot = false;
+    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+  };
+
+  fileSystems."/mnt/Games" = {
+    device = "/dev/disk/by-uuid/ee7603cd-7a67-4b24-a6c2-eecb0a92075c";
+    neededForBoot = false;
+    fsType = "ext4";
+    options = [ "nofail" "rw" "x-gvfs-show" "x-initrd.mount" ];
+    # options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+  };
+  
+  fileSystems."/mnt/sda2" = {
+    device = "/dev/disk/by-uuid/C076DEC576DEBB7C";
+    fsType = "ntfs";
+    neededForBoot = false;
+    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+  };
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
   };
+
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "smbnix";
+        "netbios name" = "smbnix";
+        "security" = "user";
+        "hosts allow" = "192.168.0. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+      "public" = {
+        "path" = "/mnt/Shares/Public";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "username";
+        "force group" = "groupname";
+      };
+      "private" = {
+        "path" = "/mnt/Shares/Private";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "username";
+        "force group" = "groupname";
+      };
+    };
+  };
+
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
+  networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
 
   services.plex = {
     enable = true;
@@ -59,21 +141,28 @@
     };
   };
 
-  environment.systemPackages = lib.attrValues {
-    inherit (pkgs)
+  environment.systemPackages = with pkgs; [
       # Dev
       git
       helix
+      
+      # Gamedev
+      godot_4      
+      unityhub
 
+      # Downloads
+      motrix
+      
       # Gaming
       lutris
       atlauncher
-      ;
-  };
+  ];
 
   programs = {
     steam.enable = true;
+    steam.protontricks.enable = true;
     java.enable = true;
+    partition-manager.enable = true;
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

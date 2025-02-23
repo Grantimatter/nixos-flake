@@ -19,7 +19,11 @@
   };
 
   home = {
-    packages = [ pkgs.bitwarden-cli ];
+    packages = [
+      pkgs.bitwarden-cli
+      pkgs.calibre
+      pkgs.obsidian
+    ];
   };
 
   nixpkgs.config = import ../nixpkgs-config.nix;

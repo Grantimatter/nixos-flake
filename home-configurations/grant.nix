@@ -4,6 +4,7 @@
     username = "grant";
     stateVersion = "23.11";
     homeDirectory = "/home/grant";
+    sessionPath = [ "$HOME/.local/share/cargo/bin" ];
   };
 
   programs.git = {

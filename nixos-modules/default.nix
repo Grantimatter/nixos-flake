@@ -35,6 +35,7 @@ in
   virtualisation.docker.enable = true;
   console.keyMap = "us";
   systemd.services.upower.enable = true;
+  systemd.enableEmergencyMode = false;
   hardware.pulseaudio.enable = false;
   hardware.bluetooth.enable = true;
 
