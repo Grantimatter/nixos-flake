@@ -6,7 +6,7 @@
     enableZshIntegration = true;
     enableFishIntegration = true;
     enableNushellIntegration = true;
-    icons = true;
+    icons = "auto";
     git = true;
 
     extraOptions = [

@@ -157,6 +157,19 @@
       lutris
       atlauncher
       shadps4
+      # shadps4.overrideAttrs (oa: {
+      #   version = "0.6.0";
+
+      #   src = fetchFromGitHub {
+      #     owner = "shadps4-emu";
+      #     repo = "shadPS4";
+      #     tag = "v.0.6.0";
+      #     fetchSubmodules = true;
+      #     hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
+      #   };
+
+      #   patches = [];
+      # })
   ];
 
   programs = {

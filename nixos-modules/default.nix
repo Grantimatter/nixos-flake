@@ -1,8 +1,6 @@
-{ inputs, lib, modulesPath, pkgs, system, ... }:
+{ inputs, modulesPath, pkgs, ... }:
 let
-  inherit (lib) attrValues;
-  systemPackages = attrValues {
-    inherit (pkgs)
+  systemPackages = with pkgs; [
       # Hyprland
       hyprshot
       kitty
@@ -10,13 +8,10 @@ let
       hyprpaper
       hyprcursor
       eww
-      polkit-kde-agent
-      xwaylandvideobridge
+      kdePackages.xwaylandvideobridge
 
       # Theming
       catppuccin-cursors
-
-      dolphin
 
       # Core
       bash
@@ -25,8 +20,9 @@ let
       coreutils
       usbutils
       home-manager
-      ;
-  };
+
+      kdePackages.polkit-kde-agent-1
+    ];
 
 in
 {
@@ -48,7 +44,7 @@ in
 
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;
@@ -90,7 +86,8 @@ in
 
   fonts.packages = with pkgs; [
     fira-code
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    # (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    nerd-fonts.fira-code
   ];
 
   networking = {

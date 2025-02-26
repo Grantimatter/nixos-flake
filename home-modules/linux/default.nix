@@ -2,11 +2,10 @@
 let
   inherit (lib) attrValues;
   
-  packages = attrValues {
-    inherit (pkgs)
+  packages = with (pkgs); [
       libreoffice
       dmenu
-      spectacle
+      kdePackages.spectacle
  
       prismlauncher
       webcord-vencord
@@ -17,8 +16,7 @@ let
       blender
       gimp
       joplin-desktop
-    ;
-  };
+  ];
 in
 {
   programs.firefox = {

@@ -33,7 +33,7 @@ in
       	rustscan
         
         jq
-      	tailspin
+      	# tailspin # Commented due to build error
       	jless
       	grex
         glow
