@@ -63,7 +63,7 @@ in
       "noblur, class:^(xwaylandvideobridge)$z"
     ];
 
-    monitor = ", highres@highrr, auto, 1, bitdepth, 10, vrr, 1";
+    monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
     
     bind = [
       "$mod, F, fullscreen, 1"

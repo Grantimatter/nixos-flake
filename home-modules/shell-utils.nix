@@ -52,15 +52,16 @@ in
     
     starship = {
       enable = true;
-    #  enableBashIntegration = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
       enableZshIntegration = true;
-    #  enableNushellIntegration = true;
     };
 
     zoxide = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
+      enableFishIntegration = true;
       enableNushellIntegration = true;
     };
 
@@ -89,23 +90,26 @@ in
 
     atuin = {
       enable = true;
-    #  enableBashIntegration = true;
-    #  enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
       enableNushellIntegration = true;
     };
 
     skim = {
       enable = true;
-    #  enableBashIntegration = true;
-    #  enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
     };
 
     ssh.enable = true;
 
     direnv = {
       enable = true;
-    #  enableBashIntegration = true;
-    #  enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      # enableFishIntegration = true;
       enableNushellIntegration = true;
       nix-direnv.enable = true;
     };

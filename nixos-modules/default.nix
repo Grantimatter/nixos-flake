@@ -107,7 +107,7 @@ in
     #servers = ["us.pool.ntp.org"];
   };
 
-  users.defaultUserShell = pkgs.nushell;
+  users.defaultUserShell = pkgs.fish;
 
   users.users.grant = {
     isNormalUser = true;
@@ -166,6 +166,7 @@ in
   programs = {
     dconf.enable = true;
     zsh.enable = true;
+    fish.enable = true;
     hyprland.enable = true;
     gamemode.enable = true;
     gamescope.enable = true;

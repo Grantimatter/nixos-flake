@@ -156,6 +156,7 @@
       # Gaming
       lutris
       atlauncher
+      shadps4
   ];
 
   programs = {
