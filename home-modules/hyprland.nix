@@ -12,6 +12,10 @@ let
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
   };
+  yazi_theme = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/mocha/catppuccin-mocha-maroon.toml";
+    sha256 = "f96ac4212db7bd6f50166dd73b3e802768fd508d3ed5d184a5789ba2e1bcff17";
+  };
   wallpaper1 = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/refs/heads/main/os/nix-black-4k.png";
     sha256 = "1d165878a0e67c0e7791bddf671b8d5af47c704f7ab4baea3d9857e3ecf89590";
@@ -43,6 +47,7 @@ in
     "$terminal" = "kitty";
     "$fileManager" = "nnn";
     "$menu" = "wofi --show drun";
+    "$menu2" = "anyrun";
 
     "$mod" = "SUPER";
     "$shiftmod" = "SUPER_SHIFT";
@@ -63,7 +68,9 @@ in
       "noblur, class:^(xwaylandvideobridge)$z"
     ];
 
-    monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
+    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
+    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10";
+    monitor = ", highres@highrr, auto, 1.25, vrr, 1";
     
     bind = [
       "$mod, F, fullscreen, 1"
@@ -74,6 +81,7 @@ in
       "$mod, E, exec, $fileManager"
       "$mod, V, togglefloating,"
       "$mod, R, exec, $menu"
+      "$mod, W, exec, $menu2"
 
       "$shiftmod, S, exec, hyprshot -m region --clipboard-only"
       "$shiftmod, W, exec, hyprshot -m window --clipboard-only"
@@ -124,6 +132,7 @@ in
       #"waybar"
       "hyprpaper"
       # "systemctl --user start plasma-polkit-agent"
+      "walker --gapplication-service"
       "systemctl --user start polkit-agent"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "dbus-update-activation-environment --systemd --all"
@@ -136,13 +145,17 @@ in
 
     env = [
       "MOZ_ENABLE_WAYLAND,1"
+
+      # Electron
       "NIXOS_OZONE_WL,1"
+      "ELECTRON_OZONE_PLATFORM_HINT,auto"
 
       # Toolkit env
       "SDL_VIDEODRIVER,wayland"
       "GDK_BACKEND,wayland,x11"
       "GDK_SCALE,1.25"
       "CLUTTER_BACKEND,wayland"
+      "QT_QPA_PLATFORM,wayland-egl"
 
       # XDG env
       "XDG_CURRENT_DESKTOP,Hyprland"
@@ -198,11 +211,11 @@ in
       rounding = 8;
       dim_inactive = true;
       dim_strength = 0.15;
-      drop_shadow = 1;
-      shadow_range = 20;
-      shadow_render_power = 2;
-      "col.shadow" = "rgba(00000044)";
-      shadow_offset = "0 0";
+      # drop_shadow = 1;
+      # shadow_range = 20;
+      # shadow_render_power = 2;
+      # "col.shadow" = "rgba(00000044)";
+      # shadow_offset = "0 0";
       blur = {
         enabled = 1;
         size = 4;
@@ -224,10 +237,10 @@ in
     master = {
       #new_is_master = false;
       new_on_top = false;
-      no_gaps_when_only = false;
+      # no_gaps_when_only = false;
       orientation = "top";
       mfact = 0.6;
-      always_center_master = false;
+      # always_center_master = false;
     };
 
     misc = {
@@ -256,6 +269,9 @@ in
 
   # Wallpaper
   home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
+
+  # Yazi Theme
+  home.file.".config/yazi/theme.toml".source = "${yazi_theme}";
 
   services.hyprpaper = {
     enable = true;

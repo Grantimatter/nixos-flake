@@ -1,10 +1,36 @@
 { config, inputs, lib, modulesPath, pkgs, ... }:
+let
+   shadps4b = pkgs.shadps4.overrideAttrs (oa: {
+        version = "0.6.0";
+        
+        src = pkgs.fetchFromGitHub {
+          owner = "shadps4-emu";
+          repo = "shadPS4";
+          tag = "v.0.6.0";
+          fetchSubmodules = true;
+          hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
+        };
+
+        patches = [];
+  });
+in
 {
   imports = [
     ./hardware-configuration.nix
     ../nvidia.nix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
+
+  # shadps4 = pkgs.shadps4.overrideAttrs (finalAttrs: previousAttrs: {
+  #   version = "0.6.0";
+  #   src = fetchFromGitHub {
+  #     owner = "shadps4-emu";
+  #     repo = "shadPS4";
+  #     tag = "v.0.6.0";
+  #     fetchSubmodules = true;
+  #     hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
+  #   };
+  # });
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
@@ -110,15 +136,16 @@
   };
 
   services.deluge.enable = true;
+  services.greetd.enable = true;
 
   services.xserver = {
     enable = true;
-#    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    # displayManager.gdm.enable = true;
+    # desktopManager.gnome.enable = true;
     desktopManager.xterm.enable = false;
-#    displayManager.lightdm.enable = true;
-#    displayManager.defaultSession = "none+i3";
-#    windowManager.i3.enable = true;
+    # displayManager.lightdm.enable = true;
+    # displayManager.defaultSession = "none+i3";
+    # windowManager.i3.enable = true;
     excludePackages = [ pkgs.xterm ];
 #    layout = "us";
   };
@@ -156,27 +183,24 @@
       # Gaming
       lutris
       atlauncher
-      shadps4
-      # shadps4.overrideAttrs (oa: {
-      #   version = "0.6.0";
 
-      #   src = fetchFromGitHub {
-      #     owner = "shadps4-emu";
-      #     repo = "shadPS4";
-      #     tag = "v.0.6.0";
-      #     fetchSubmodules = true;
-      #     hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
-      #   };
+      # Nvidia
+      nvidia-vaapi-driver
 
-      #   patches = [];
-      # })
-  ];
+      # Hyprland
+      xdg-desktop-portal-hyprland
+      greetd.tuigreet
+      # shadps4b
+      shadps4b
+    ];
 
   programs = {
     steam.enable = true;
     steam.protontricks.enable = true;
     java.enable = true;
     partition-manager.enable = true;
+    obs-studio.enable = true;
+    obs-studio.enableVirtualCamera = true;
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
