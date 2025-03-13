@@ -13,7 +13,7 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" "fbdev"];
 
   hardware.nvidia = {
     modesetting.enable = true;

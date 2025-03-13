@@ -7,7 +7,7 @@ let
       });
   theme_name = "catppuccin-mocha-maroon";
   theme_pkg = "${pkgs.catppuccin-cursors.mochaMaroon}";
-  cursor_size = "38";
+  cursor_size = "28";
   wallpaper = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
@@ -45,7 +45,7 @@ in
     "#Catppuccin Theme" = theme_config;
     "$theme" = "${theme_name}";
     "$terminal" = "kitty";
-    "$fileManager" = "nnn";
+    "$fileManager" = "yazi";
     "$menu" = "wofi --show drun";
     "$menu2" = "anyrun";
 
@@ -70,7 +70,12 @@ in
 
     # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
     # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10";
-    monitor = ", highres@highrr, auto, 1.25, vrr, 1";
+    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
+    monitor = [
+      # "desc: Hisense Electric Co. Ltd. Hisense 0x00000001, 3840x2160@120, auto, 1.25, bitdepth, 10, vrr, 1"
+      # "HDMI-A-1, 3840x2160@119.88, 0x0, 1.25, bitdepth, 10, vrr, 1"
+      ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1"      
+    ];
     
     bind = [
       "$mod, F, fullscreen, 1"
@@ -94,10 +99,14 @@ in
       "ALT, E, movefocus, d"
 
       # Swap windows
-      "ALTCTRL, N, swapwindow, l"
-      "ALTCTRL, O, swapwindow, r"
-      "ALTCTRL, I, swapwindow, u"
-      "ALTCTRL, E, swapwindow, d"
+      "ALTCTRL, N, movewindow, l"
+      "ALTCTRL, O, movewindow, r"
+      "ALTCTRL, I, movewindow, u"
+      "ALTCTRL, E, movewindow, d"
+
+      # Move Monitors
+      "ALT, 1, movewindow, mon:0"
+      "ALT, 2, movewindow, mon:1"
 
       # Toggle Horizontal / Vertical Split
       "$mod, T, layoutmsg, togglesplit"
@@ -153,7 +162,7 @@ in
       # Toolkit env
       "SDL_VIDEODRIVER,wayland"
       "GDK_BACKEND,wayland,x11"
-      "GDK_SCALE,1.25"
+      "GDK_SCALE,1.00"
       "CLUTTER_BACKEND,wayland"
       "QT_QPA_PLATFORM,wayland-egl"
 
@@ -175,6 +184,18 @@ in
       "HYPRCURSOR_SIZE,${cursor_size}"
       "XCURSOR_THEME,$theme"
       "XCURSORSIZE,${cursor_size}"
+
+      # Extra
+      "_JAVA_AWT_WM_NONREPARENTING=1"
+      "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+      "WLR_NO_HARDWARE_CURSORS,1"
+      "__NV_PRIME_RENDER_OFFLOAD,1"
+      "__VK_LAYER_NV_optimus,NVIDIA_only"
+      "PROTON_ENABLE_NGX_UPDATER,1"
+      "WLR_DRM_NO_ATOMIC,1"
+      "WLR_USE_LIBINPUT,1"
+      "__GL_MaxFramesAllowed,1"
+      "WLR_RENDERER_ALLOW_SOFTWARE,1"
     ];
 
     general = {

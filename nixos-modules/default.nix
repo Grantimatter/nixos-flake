@@ -21,7 +21,15 @@ let
       usbutils
       home-manager
 
+      # Audio
+      libbs2b
+      pavucontrol
+      qjackctl
+
       kdePackages.polkit-kde-agent-1
+      # wine64
+      # wine-wayland
+      wine64Packages.wayland
     ];
 
 in
@@ -33,6 +41,7 @@ in
   systemd.services.upower.enable = true;
   systemd.enableEmergencyMode = false;
   hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.extraConfig = "load-module module-combine-sink";
   hardware.bluetooth.enable = true;
 
   systemd = {
@@ -110,7 +119,7 @@ in
     isNormalUser = true;
     home = "/home/grant";
     description = "Grant";
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio"];
     initialPassword = "password";
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFY4/o4gfaJwr/B0+aB51QwiOI4jGCYodnCWM7Pj8iYH grant wiswell@Grant-Desktop"
@@ -148,6 +157,7 @@ in
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      jack.enable = true;
     };
 
     blueman.enable = true;
@@ -165,21 +175,23 @@ in
     zsh.enable = true;
     fish.enable = true;
     hyprland.enable = true;
+    # hyprland.withUWSM = true;
     gamemode.enable = true;
     gamescope.enable = true;
+    gamescope.capSysNice = true;
     gamescope.args = [
       "--expose-wayland"
-      "--backend wayland"
-      "--hdr-enabled"
+      # "--backend wayland"
+      # "--hdr-enabled"
       # "--immediate-flips"
       "-W 3840"
       "-H 2160"
       "-w 3840"
       "-h 2160"
-      "-b"
+      # "-b"
       "-r 144"
       "-o 144"
-      "--adaptive-sync"
+      # "--adaptive-sync"
     ];
     hyprlock.enable = true;
   };

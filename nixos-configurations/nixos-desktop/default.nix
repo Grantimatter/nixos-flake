@@ -21,21 +21,17 @@ in
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  # shadps4 = pkgs.shadps4.overrideAttrs (finalAttrs: previousAttrs: {
-  #   version = "0.6.0";
-  #   src = fetchFromGitHub {
-  #     owner = "shadps4-emu";
-  #     repo = "shadPS4";
-  #     tag = "v.0.6.0";
-  #     fetchSubmodules = true;
-  #     hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
-  #   };
-  # });
-
   nixpkgs.hostPlatform = "x86_64-linux";
 
   boot.loader.systemd-boot.enable = true;
-  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "module_blacklist=amdgpu" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "module_blacklist=amdgpu" "nvidia_drm.fbdev=1" "nvidia_drm.modeset=1" "nvidia_modeset.hdmi_deepcolor=1" "hdmi_deepcolor=1" "nvidia-modeset.hdmi_deepcolor=1"];
+  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  # boot.extraModProbeConfig = ''
+  # options nvidia_drm modeset=1
+  # options nvidia_drm fbdev=1
+  # '';
+
   hardware.nvidia.forceFullCompositionPipeline = false;
   #hardware.nvidia.powerManagement.enable = true;
 
@@ -136,12 +132,19 @@ in
   };
 
   services.deluge.enable = true;
-  services.greetd.enable = true;
+  services.greetd = {
+    enable = true;    
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd hyprland --user-menu --theme 'text=white;container=black;time=red;border=red;title=blue;prompt=green;input=grey' -r";
+      };
+    };
+  };
 
   services.xserver = {
     enable = true;
     # displayManager.gdm.enable = true;
-    # desktopManager.gnome.enable = true;
+    desktopManager.gnome.enable = true;
     desktopManager.xterm.enable = false;
     # displayManager.lightdm.enable = true;
     # displayManager.defaultSession = "none+i3";
@@ -183,6 +186,7 @@ in
       # Gaming
       lutris
       atlauncher
+      dualsensectl
 
       # Nvidia
       nvidia-vaapi-driver
@@ -190,13 +194,22 @@ in
       # Hyprland
       xdg-desktop-portal-hyprland
       greetd.tuigreet
-      # shadps4b
       shadps4b
+      nautilus
+      kdePackages.dolphin
+      # shadps4
+      
+      # Creation
+      kdePackages.kdenlive
+      ardour
+      audacity
     ];
 
   programs = {
     steam.enable = true;
+    steam.extraCompatPackages = with pkgs; [ proton-ge-bin ];
     steam.protontricks.enable = true;
+    steam.gamescopeSession.enable = true;
     java.enable = true;
     partition-manager.enable = true;
     obs-studio.enable = true;
