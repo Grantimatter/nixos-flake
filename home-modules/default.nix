@@ -23,6 +23,7 @@
       pkgs.bitwarden-cli
       pkgs.calibre
       pkgs.obsidian
+      pkgs.zettlr
     ];
   };
 

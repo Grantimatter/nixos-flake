@@ -7,7 +7,6 @@ in
 {
   programs.neovim = {
     enable = true;
-    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     extraConfig = ''
@@ -23,7 +22,7 @@ in
         ripgrep-all
 
         # LSPs
-        rust-analyzer
+        # rust-analyzer
         nil
 
         # Linters
@@ -31,7 +30,7 @@ in
         shellcheck
 
         # Formatters
-        rustfmt
+        # rustfmt
         nixpkgs-fmt
         beautysh
         ;

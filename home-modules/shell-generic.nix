@@ -33,8 +33,8 @@ in
     );
 
     sessionVariables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
+      EDITOR = "hx";
+      VISUAL = "hx";
       SOPS_AGE_KEY_FILE = config.xdg.configHome + "/sops/keys/age/keys.txt";
     };
   };

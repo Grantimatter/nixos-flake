@@ -26,7 +26,41 @@ in
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
   programs.wofi.enable = true;
-  programs.mangohud.enable = true;
+
+  programs.mangohud = {
+    enable = true;
+    enableSessionWide = true;
+    settings = {
+      toggle_hud = "Shift_L+F12";
+      no_display = true;
+      
+      cpu_temp = true;
+      gpu_temp = true;
+      throttling_status = true;
+
+      procmem = true;
+      procmem_shared = true;
+      procmem_virt = true;
+      ram = true;
+      vram = true;
+      gpu_core_clock = true;
+      gpu_mem_clock = true;
+      gpu_voltage = true;
+      swap = true;
+      resolution = true;
+      show_fps_limit = true;
+
+      io_read = true;
+      io_write = true;
+
+      frametime = true;
+
+      arch = true;
+      display_server = true;
+      gamemode = true;
+      wine = true;
+    };
+  };
 
   # wayland.windowManager.hyprland.extraConfig = theme_config;
 
@@ -46,8 +80,9 @@ in
     "$theme" = "${theme_name}";
     "$terminal" = "kitty";
     "$fileManager" = "yazi";
-    "$menu" = "wofi --show drun";
-    "$menu2" = "anyrun";
+    # "$menu" = "wofi --show drun";
+    "$menu" = "rofi -show drun";
+    "$window" = "rofi -show window";
 
     "$mod" = "SUPER";
     "$shiftmod" = "SUPER_SHIFT";
@@ -58,8 +93,8 @@ in
       "tag +term, class:(wezterm)"
       # "tag +opac, class:(steam)"
       "tag +opac, class:(discord)"
-      "opacity 0.9 override 0.70 override, tag:term"
-      "opacity 0.9 override 0.6 override, tag:opac"
+      "opacity 0.9 override 0.85 override, tag:term"
+      "opacity 0.9 override 0.85 override, tag:opac"
       # xwaylandvideobridge
       "opacity 0.0 override, class:^(xwaylandvideobridge)$"
       "noanim, class:^(xwaylandvideobridge)$"
@@ -74,7 +109,8 @@ in
     monitor = [
       # "desc: Hisense Electric Co. Ltd. Hisense 0x00000001, 3840x2160@120, auto, 1.25, bitdepth, 10, vrr, 1"
       # "HDMI-A-1, 3840x2160@119.88, 0x0, 1.25, bitdepth, 10, vrr, 1"
-      ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1"      
+      "DP-3, highres@highrr, auto, 1.25"
+      ", highres@highrr, auto, 1"
     ];
     
     bind = [
@@ -86,7 +122,7 @@ in
       "$mod, E, exec, $fileManager"
       "$mod, V, togglefloating,"
       "$mod, R, exec, $menu"
-      "$mod, W, exec, $menu2"
+      "$mod, W, exec, $window"
 
       "$shiftmod, S, exec, hyprshot -m region --clipboard-only"
       "$shiftmod, W, exec, hyprshot -m window --clipboard-only"
@@ -141,8 +177,9 @@ in
       #"waybar"
       "hyprpaper"
       # "systemctl --user start plasma-polkit-agent"
+      # "systemctl --user start polkit-agent"
+      "systemctl --user start hyprpolkitagent"
       "walker --gapplication-service"
-      "systemctl --user start polkit-agent"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
@@ -231,7 +268,7 @@ in
     decoration = {
       rounding = 8;
       dim_inactive = true;
-      dim_strength = 0.15;
+      dim_strength = 0.05;
       # drop_shadow = 1;
       # shadow_range = 20;
       # shadow_render_power = 2;
@@ -239,7 +276,7 @@ in
       # shadow_offset = "0 0";
       blur = {
         enabled = 1;
-        size = 4;
+        size = 16;
         ignore_opacity = 1;
         xray = 1;
         new_optimizations = 1;

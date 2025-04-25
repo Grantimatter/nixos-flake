@@ -1,0 +1,3 @@
+[submodule "nixos-configurations/homelab/home-lab"]
+	path = nixos-configurations/homelab/home-lab
+	url = https://github.com/Grantimatter/home-lab.git

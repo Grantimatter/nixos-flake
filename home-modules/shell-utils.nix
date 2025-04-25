@@ -7,8 +7,8 @@ in
   home.packages = attrValues
     {
       inherit (pkgs)
-        cargo
-        rustc
+        # cargo
+        # rustc
         python3
 
         git
@@ -30,7 +30,7 @@ in
       	procs
       	sd
       	du-dust
-      	rustscan
+      	# rustscan
         
         jq
       	# tailspin # Commented due to build error

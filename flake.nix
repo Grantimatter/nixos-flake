@@ -26,14 +26,18 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Rust Overlay
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    arion = {
-      url = "github:hercules-ci/arion";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
     zen-browser.url = "github:MarceColl/zen-browser-flake";
   };
 
@@ -60,7 +64,8 @@
 
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
-          overlays = [ inputs.sops-nix.overlays.default ];
+          overlays = [ inputs.sops-nix.overlays.default inputs.rust-overlay.overlays.default ];
+          environment.systemPackages = [ pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default) ];
         };
         devShells.default = pkgs.mkShell {
           name = "default-shell";

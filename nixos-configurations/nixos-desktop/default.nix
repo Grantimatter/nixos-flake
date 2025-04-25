@@ -77,14 +77,13 @@ in
 
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
     settings = {
       global = {
+        security = "user";
         "workgroup" = "WORKGROUP";
         "server string" = "smbnix";
         "netbios name" = "smbnix";
-        "security" = "user";
         "hosts allow" = "192.168.0. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
         "guest account" = "nobody";
@@ -187,6 +186,8 @@ in
       lutris
       atlauncher
       dualsensectl
+      umu-launcher
+      heroic
 
       # Nvidia
       nvidia-vaapi-driver
@@ -203,13 +204,22 @@ in
       kdePackages.kdenlive
       ardour
       audacity
+
+      # Desktop
+      rofi-wayland
     ];
 
   programs = {
     steam.enable = true;
-    steam.extraCompatPackages = with pkgs; [ proton-ge-bin ];
-    steam.protontricks.enable = true;
+    steam.extraCompatPackages = with pkgs; [
+      proton-ge-bin
+      gamemode
+    ];
+    # steam.extraPackages = (pkgs: with pkgs; [
+    #   gamemode
+    # ]);
     steam.gamescopeSession.enable = true;
+    steam.protontricks.enable = true;
     java.enable = true;
     partition-manager.enable = true;
     obs-studio.enable = true;

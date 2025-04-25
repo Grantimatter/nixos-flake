@@ -7,6 +7,7 @@ in
 {
   programs.helix = {
     enable = true;
+    defaultEditor = true;
     settings = {
      theme = "catppuccin_mocha"; 
       editor = {
@@ -14,7 +15,12 @@ in
         lsp.display-messages = true;
       };
     };
-    
+    languages.language = [{
+        name = "rust";
+        auto-format = true;
+        formatter.command = "rustfmt";
+        formatter.args = ["+nightly"];
+    }];
   };
 
   home = {
@@ -22,7 +28,7 @@ in
       inherit (pkgs)
         # LSPs
         nil
-        rust-analyzer
+        # rust-analyzer
         marksman
         lua-language-server
         typescript-language-server
@@ -40,7 +46,7 @@ in
         shellcheck
 
         # Formatters
-        rustfmt
+        # rustfmt
         nixpkgs-fmt
         ;
     };

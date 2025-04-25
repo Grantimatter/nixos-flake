@@ -1,7 +1,8 @@
-{ inputs, modulesPath, pkgs, ... }:
+{ inputs, modulesPath, pkgs,  ... }:
 let
   systemPackages = with pkgs; [
       # Hyprland
+      hyprpolkitagent
       hyprshot
       kitty
       egl-wayland
@@ -26,10 +27,13 @@ let
       pavucontrol
       qjackctl
 
+      # Input
+      evtest
+
       kdePackages.polkit-kde-agent-1
       # wine64
       # wine-wayland
-      wine64Packages.wayland
+      # wine64Packages.wayland
     ];
 
 in
@@ -40,29 +44,30 @@ in
   console.keyMap = "us";
   systemd.services.upower.enable = true;
   systemd.enableEmergencyMode = false;
-  hardware.pulseaudio.enable = false;
-  hardware.pulseaudio.extraConfig = "load-module module-combine-sink";
+  services.pulseaudio.enable = false;
+  services.pulseaudio.extraConfig = "load-module module-combine-sink";
   hardware.bluetooth.enable = true;
 
   systemd = {
-    user.services."polkit-agent" = {
-      description = "polkit-kde-agent for Hyprland";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
+    # user.services."polkit-agent" = {
+    #   description = "polkit-kde-agent for Hyprland";
+    #   wantedBy = [ "graphical-session.target" ];
+    #   wants = [ "graphical-session.target" ];
+    #   after = [ "graphical-session.target" ];
 
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
+    #   serviceConfig = {
+    #     Type = "simple";
+    #     ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+    #     Restart = "on-failure";
+    #     RestartSec = 1;
+    #     TimeoutStopSec = 10;
+    #   };
+    # };
   };
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    # inputs.rust-overlay.overlays.default
     #../overlays
   ];
 
@@ -167,6 +172,10 @@ in
     tailscale.enable = true;
     displayManager.sddm.enable = true;
     hypridle.enable = true;
+    input-remapper = {
+      enable = true;
+      enableUdevRules = true;
+    };
   };
 
 
@@ -177,22 +186,23 @@ in
     hyprland.enable = true;
     # hyprland.withUWSM = true;
     gamemode.enable = true;
-    gamescope.enable = true;
-    gamescope.capSysNice = true;
-    gamescope.args = [
-      "--expose-wayland"
-      # "--backend wayland"
-      # "--hdr-enabled"
-      # "--immediate-flips"
-      "-W 3840"
-      "-H 2160"
-      "-w 3840"
-      "-h 2160"
-      # "-b"
-      "-r 144"
-      "-o 144"
-      # "--adaptive-sync"
-    ];
+    gamemode.enableRenice = true;
+    # gamescope.enable = true;
+    # gamescope.capSysNice = true;
+    # gamescope.args = [
+    #   "--expose-wayland"
+    #   # "--backend wayland"
+    #   # "--hdr-enabled"
+    #   # "--immediate-flips"
+    #   "-W 3840"
+    #   "-H 2160"
+    #   "-w 3840"
+    #   "-h 2160"
+    #   # "-b"
+    #   "-r 144"
+    #   "-o 144"
+    #   # "--adaptive-sync"
+    # ];
     hyprlock.enable = true;
   };
 
