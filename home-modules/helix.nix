@@ -15,12 +15,6 @@ in
         lsp.display-messages = true;
       };
     };
-    languages.language = [{
-        name = "rust";
-        auto-format = true;
-        formatter.command = "rustfmt";
-        formatter.args = ["+nightly"];
-    }];
   };
 
   home = {
