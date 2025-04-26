@@ -74,6 +74,10 @@ in
        };
      };
 
+    lazydocker = {
+      enable = true;
+    };
+
     yazi = {
       enable = true;
       enableBashIntegration = true;

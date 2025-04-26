@@ -3,19 +3,19 @@ let
   inherit (lib) attrValues;
   
   packages = with (pkgs); [
-      libreoffice
-      dmenu
-      kdePackages.spectacle
- 
-      prismlauncher
-      webcord-vencord
-      vesktop
-      discord
-      vlc
-      spotify
-      blender
-      gimp
-      joplin-desktop
+    libreoffice
+    dmenu
+    kdePackages.spectacle
+    prismlauncher
+    webcord-vencord
+    vesktop
+    discord
+    vlc
+    spotify
+    blender
+    gimp
+    wl-clipboard-rs
+    superfile
   ];
 in
 {

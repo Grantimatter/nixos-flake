@@ -12,7 +12,17 @@ in
      theme = "catppuccin_mocha"; 
       editor = {
         line-number = "relative";
+        scrolloff = 15;
+
         lsp.display-messages = true;
+        completion-timeout = 100;
+        completion-trigger-len = 1;
+
+        color-modes = true;
+        popup-border = "all";
+        clipboard-provider = "clipse";
+        indent-guides.render = true;
+        indent-guides.skip-levels = 2;
       };
     };
   };
@@ -40,7 +50,6 @@ in
         shellcheck
 
         # Formatters
-        # rustfmt
         nixpkgs-fmt
         ;
     };

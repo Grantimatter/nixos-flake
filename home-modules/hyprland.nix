@@ -24,7 +24,7 @@ in
 {
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
-  wayland.windowManager.hyprland.systemd.variables = ["--all"];
+  # wayland.windowManager.hyprland.systemd.variables = ["--all"];
   programs.wofi.enable = true;
 
   programs.mangohud = {
@@ -101,6 +101,10 @@ in
       "noinitialfocus, class:^(xwaylandvideobridge)$"
       "maxsize 1 1, class:^(xwaylandvideobridge)$"
       "noblur, class:^(xwaylandvideobridge)$z"
+      "float, class:(clipse)"
+      "size 622 652, class:(clipse)"
+      "stayfocused, class:(clipse)"
+      "opacity 0.8 override 0.75 override, class:(clipse)"
     ];
 
     # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
@@ -120,9 +124,10 @@ in
       "$mod, C, killactive,"
       "$mod, M, exit"
       "$mod, E, exec, $fileManager"
-      "$mod, V, togglefloating,"
+      "$mod, S, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod, W, exec, $window"
+      "$mod, V, exec, $terminal --class clipse -e 'clipse'"
 
       "$shiftmod, S, exec, hyprshot -m region --clipboard-only"
       "$shiftmod, W, exec, hyprshot -m window --clipboard-only"
@@ -183,6 +188,7 @@ in
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "clipse -listen"
     ];
 
     cursor = {
@@ -330,6 +336,8 @@ in
 
   # Yazi Theme
   home.file.".config/yazi/theme.toml".source = "${yazi_theme}";
+
+  services.clipse.enable = true;
 
   services.hyprpaper = {
     enable = true;

@@ -77,6 +77,12 @@ in
     pathsToLink = [ "/share/zsh" ];
     systemPackages = systemPackages ++ [ inputs.zen-browser.packages.x86_64-linux.default ];
   };
+  
+  documentation = {
+    enable = true;
+    man.enable = true;
+    dev.enable = true;
+  };
 
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
@@ -184,7 +190,7 @@ in
     zsh.enable = true;
     fish.enable = true;
     hyprland.enable = true;
-    # hyprland.withUWSM = true;
+    hyprland.withUWSM = true;
     gamemode.enable = true;
     gamemode.enableRenice = true;
     # gamescope.enable = true;
