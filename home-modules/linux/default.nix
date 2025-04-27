@@ -15,7 +15,6 @@ let
     blender
     gimp
     wl-clipboard-rs
-    superfile
   ];
 in
 {

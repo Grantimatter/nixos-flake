@@ -41,6 +41,8 @@ in
   time.timeZone = "US/Central";
   i18n.defaultLocale = "en_US.UTF-8";
   virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings.features.cdi = true;
+  virtualisation.docker.rootless.daemon.settings.featurse.cdi = true;
   console.keyMap = "us";
   systemd.services.upower.enable = true;
   systemd.enableEmergencyMode = false;

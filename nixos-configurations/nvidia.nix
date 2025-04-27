@@ -13,6 +13,10 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
+  environment.systemPackages = with pkgs; [
+    nvidia-container-toolkit
+  ];
+
   services.xserver.videoDrivers = [ "nvidia" "fbdev"];
 
   hardware.nvidia = {
@@ -24,5 +28,7 @@
     
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
+
+  hardware.nvidia-container-toolkit.enable = true;
 
 }

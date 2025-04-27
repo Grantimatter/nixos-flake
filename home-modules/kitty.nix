@@ -28,11 +28,11 @@
       "f7" = "layout_action rotate";
     };
     settings = {
-      tab_bar_edge = "top";
-      tab_bar_style = "powerline";
-      tab_powerline_style = "angled";
-      tab_bar_min_tabs = 1;
-      tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}:{title} {tab.active_wd}/{tab.active_exe}";
+      # tab_bar_edge = "top";
+      # tab_bar_style = "powerline";
+      # tab_powerline_style = "angled";
+      # tab_bar_min_tabs = 1;
+      # tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}:{title} {tab.active_wd}/{tab.active_exe}";
     };
   };
 }

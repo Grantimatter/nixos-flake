@@ -135,7 +135,7 @@ in
     enable = true;    
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd hyprland --user-menu --theme 'text=white;container=black;time=red;border=red;title=blue;prompt=green;input=grey' -r";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd uwsm start hyprland.desktop --user-menu --theme 'text=white;container=black;time=red;border=red;title=blue;prompt=green;input=grey' -r";
       };
     };
   };

@@ -43,6 +43,13 @@ in
 
   programs = {
 
+    superfile = {
+      enable = true;
+      settings = {
+        theme = "catppuccin";
+      };
+    };
+
     carapace = {
       enable = true;
       enableZshIntegration = true;

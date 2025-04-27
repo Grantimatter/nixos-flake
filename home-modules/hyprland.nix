@@ -16,14 +16,15 @@ let
     url = "https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/mocha/catppuccin-mocha-maroon.toml";
     sha256 = "f96ac4212db7bd6f50166dd73b3e802768fd508d3ed5d184a5789ba2e1bcff17";
   };
-  wallpaper1 = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/zhichaoh/catppuccin-wallpapers/refs/heads/main/os/nix-black-4k.png";
-    sha256 = "1d165878a0e67c0e7791bddf671b8d5af47c704f7ab4baea3d9857e3ecf89590";
-  };
+  rofi_theme = builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/catppuccin/rofi/refs/heads/main/themes/catppuccin-mocha.rasi";
+      sha256 = "eae7842c37d5f9ef16b7e4c234e02990c6e366373719462c28b9cdafeb1caf55";
+    };
 in
 {
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
+  home.sessionVariables.ROFI_WAYLAND = "1";
   # wayland.windowManager.hyprland.systemd.variables = ["--all"];
   programs.wofi.enable = true;
 
@@ -65,6 +66,12 @@ in
   # wayland.windowManager.hyprland.extraConfig = theme_config;
 
   # Hyprland Config
+  
+  wayland.windowManager.hyprland.plugins = [
+    pkgs.hyprlandPlugins.hypr-dynamic-cursors
+    pkgs.hyprlandPlugins.hy3
+    pkgs.hyprlandPlugins.hyprspace
+  ];
 
   wayland.windowManager.hyprland.importantPrefixes = [
     "#Catppuccin Theme"
@@ -78,14 +85,42 @@ in
     # inherit theme_config;
     "#Catppuccin Theme" = theme_config;
     "$theme" = "${theme_name}";
-    "$terminal" = "kitty";
-    "$fileManager" = "yazi";
+    "$terminal" = "uwsm-app -- kitty";
+    "$shell" = "fish";
+    # Yazi using fish function (y)
+    "$fileManager" = "$terminal -- $shell -c y";
     # "$menu" = "wofi --show drun";
-    "$menu" = "rofi -show drun";
+    "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
     "$window" = "rofi -show window";
 
     "$mod" = "SUPER";
     "$shiftmod" = "SUPER_SHIFT";
+
+    "plugin:dynamic-cursors" = {
+      mode = "tilt";
+      rotate = {
+        length = 16;
+      };
+      tilt = {
+        limit = 5000;
+        function = "negative_quadratic";
+      };
+      stretch = {
+        limit = 3000;
+        function = "quadratic";
+      };
+      shake = {
+        enabled = true;
+        nearest = true;
+        effects = true;
+        base = 4.0;
+      };
+      hyprcursor = {
+        enabled = true;
+        resolution = -1;
+        fallback = "default";
+      };
+    };
 
     windowrulev2 = [
       "suppressevent maximize, class:.*"
@@ -102,6 +137,7 @@ in
       "maxsize 1 1, class:^(xwaylandvideobridge)$"
       "noblur, class:^(xwaylandvideobridge)$z"
       "float, class:(clipse)"
+      "float, class:(floating)"
       "size 622 652, class:(clipse)"
       "stayfocused, class:(clipse)"
       "opacity 0.8 override 0.75 override, class:(clipse)"
@@ -122,16 +158,17 @@ in
       ", F11, fullscreen, 0"
       "$mod, Q, exec, $terminal"
       "$mod, C, killactive,"
-      "$mod, M, exit"
-      "$mod, E, exec, $fileManager"
+      "$mod, M, exec, uwsm stop"
+      "$mod, E, exec, $fileManager -- class floating"
       "$mod, S, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod, W, exec, $window"
-      "$mod, V, exec, $terminal --class clipse -e 'clipse'"
+      "$mod, V, exec, $terminal --class clipse -e clipse"
+      "$mod, A, overview:toggle"
 
-      "$shiftmod, S, exec, hyprshot -m region --clipboard-only"
-      "$shiftmod, W, exec, hyprshot -m window --clipboard-only"
-      "$shiftmod, M, exec, hyprshot, -m output --clipboard-only"
+      "$shiftmod, S, exec, uwsm-app -- hyprshot -m region --clipboard-only"
+      "$shiftmod, W, exec, uwsm-app -- hyprshot -m window --clipboard-only"
+      "$shiftmod, M, exec, uwsm-app -- hyprshot -m output --clipboard-only"
       
       # Move focus with mod + arrow keys
       "ALT, N, movefocus, l"
@@ -180,15 +217,15 @@ in
 
     exec-once = [
       #"waybar"
-      "hyprpaper"
+      "uwsm-app -- hyprpaper"
+      "uwsm-app -- clipse -listen"
       # "systemctl --user start plasma-polkit-agent"
       # "systemctl --user start polkit-agent"
       "systemctl --user start hyprpolkitagent"
       "walker --gapplication-service"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "dbus-update-activation-environment --systemd --all"
-      "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-      "clipse -listen"
+      "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP QT_QPA_PLATFORMTHEME"
     ];
 
     cursor = {
@@ -228,17 +265,17 @@ in
       "XCURSOR_THEME,$theme"
       "XCURSORSIZE,${cursor_size}"
 
-      # Extra
-      "_JAVA_AWT_WM_NONREPARENTING=1"
-      "QT_AUTO_SCREEN_SCALE_FACTOR,1"
-      "WLR_NO_HARDWARE_CURSORS,1"
-      "__NV_PRIME_RENDER_OFFLOAD,1"
-      "__VK_LAYER_NV_optimus,NVIDIA_only"
-      "PROTON_ENABLE_NGX_UPDATER,1"
-      "WLR_DRM_NO_ATOMIC,1"
-      "WLR_USE_LIBINPUT,1"
-      "__GL_MaxFramesAllowed,1"
-      "WLR_RENDERER_ALLOW_SOFTWARE,1"
+      # # Extra
+      # "_JAVA_AWT_WM_NONREPARENTING=1"
+      # "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+      # "WLR_NO_HARDWARE_CURSORS,1"
+      # "__NV_PRIME_RENDER_OFFLOAD,1"
+      # "__VK_LAYER_NV_optimus,NVIDIA_only"
+      # "PROTON_ENABLE_NGX_UPDATER,1"
+      # "WLR_DRM_NO_ATOMIC,1"
+      # "WLR_USE_LIBINPUT,1"
+      # "__GL_MaxFramesAllowed,1"
+      # "WLR_RENDERER_ALLOW_SOFTWARE,1"
     ];
 
     general = {
@@ -275,16 +312,21 @@ in
       rounding = 8;
       dim_inactive = true;
       dim_strength = 0.05;
-      # drop_shadow = 1;
+      shadow = {
+        enabled = true;
+        range = 4;
+        render_power = 3;
+      };
+      #shadow = 1;
       # shadow_range = 20;
       # shadow_render_power = 2;
       # "col.shadow" = "rgba(00000044)";
       # shadow_offset = "0 0";
       blur = {
         enabled = 1;
-        size = 16;
+        size = 8;
         ignore_opacity = 1;
-        xray = 1;
+        xray = false;
         new_optimizations = 1;
         noise = 0.03;
         contrast = 1.0;
@@ -336,6 +378,13 @@ in
 
   # Yazi Theme
   home.file.".config/yazi/theme.toml".source = "${yazi_theme}";
+
+  # Rofi theme
+  home.file.".config/rofi/${theme_name}.rasi".source = "${rofi_theme}";
+
+  programs.rofi = {
+    enable = true;
+  };
 
   services.clipse.enable = true;
 
