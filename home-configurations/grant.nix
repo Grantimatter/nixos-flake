@@ -16,6 +16,14 @@
     };
   };
 
+  programs.jujutsu = {
+    enable = true;
+  };
+
+  home.packages = with pkgs; [
+    lazyjj
+  ];
+
   programs.nnn.enable = true;
   # programs.obs-studio.enable = true;
 }
