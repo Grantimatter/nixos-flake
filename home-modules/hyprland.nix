@@ -85,11 +85,10 @@ in
     # inherit theme_config;
     "#Catppuccin Theme" = theme_config;
     "$theme" = "${theme_name}";
-    "$terminal" = "uwsm-app -- kitty";
-    "$shell" = "fish";
+    "$terminal" = "uwsm-app -- ghostty";
+    "$shell" = "ion";
     # Yazi using fish function (y)
     "$fileManager" = "$terminal -- $shell -c y";
-    # "$menu" = "wofi --show drun";
     "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
     "$window" = "rofi -show window";
 
@@ -124,7 +123,7 @@ in
 
     windowrulev2 = [
       "suppressevent maximize, class:.*"
-      "tag +term, class:(kitty)"
+      "tag +term, class:(ghostty)"
       "tag +term, class:(wezterm)"
       # "tag +opac, class:(steam)"
       "tag +opac, class:(discord)"
@@ -279,9 +278,9 @@ in
     ];
 
     general = {
-      gaps_in = 6;
-      gaps_out = 10;
-      border_size = 2;
+      gaps_in = 0;
+      gaps_out = 0;
+      border_size = 1;
       "col.active_border" = "$red $mauve 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
@@ -309,7 +308,7 @@ in
     };
     
     decoration = {
-      rounding = 8;
+      rounding = 4;
       dim_inactive = true;
       dim_strength = 0.05;
       shadow = {

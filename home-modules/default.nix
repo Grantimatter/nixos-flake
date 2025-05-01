@@ -8,6 +8,7 @@
       shell-utils
       eza
       nushell
+      ghostty
       zsh
       fish
       kitty
