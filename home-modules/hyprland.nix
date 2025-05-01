@@ -86,7 +86,7 @@ in
     "#Catppuccin Theme" = theme_config;
     "$theme" = "${theme_name}";
     "$terminal" = "uwsm-app -- ghostty";
-    "$shell" = "ion";
+    "$shell" = "fish";
     # Yazi using fish function (y)
     "$fileManager" = "$terminal -- $shell -c y";
     "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
