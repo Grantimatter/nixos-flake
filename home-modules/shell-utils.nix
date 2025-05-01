@@ -128,7 +128,7 @@ in
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
-      enableFishIntegration = true;
+      # enableFishIntegration = true;
       enableNushellIntegration = true;
       nix-direnv.enable = true;
     };

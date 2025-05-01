@@ -4,6 +4,10 @@
     enable = true;
 
     functions = {
+      fish_greeting = {
+        body = ''
+        '';  
+      };
       y = {
         body = ''
             set tmp (mktemp -t "yazi-cwd.XXXXXX")
