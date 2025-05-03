@@ -7,7 +7,7 @@ let
       });
   theme_name = "catppuccin-mocha-maroon";
   theme_pkg = "${pkgs.catppuccin-cursors.mochaMaroon}";
-  cursor_size = "28";
+  cursor_size = 32;
   wallpaper = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
@@ -70,7 +70,6 @@ in
   wayland.windowManager.hyprland.plugins = [
     pkgs.hyprlandPlugins.hypr-dynamic-cursors
     pkgs.hyprlandPlugins.hy3
-    pkgs.hyprlandPlugins.hyprspace
   ];
 
   wayland.windowManager.hyprland.importantPrefixes = [
@@ -121,25 +120,29 @@ in
       };
     };
 
+    "plugin:hy3" = {
+      no_gaps_when_only = 1;
+    };
+
     windowrulev2 = [
       "suppressevent maximize, class:.*"
-      "tag +term, class:(ghostty)"
-      "tag +term, class:(wezterm)"
+      "tag +term, class:.*ghostty"
+      "tag +term, class:.*wezterm"
+      "tag +floating, class:.*Calculator"
       # "tag +opac, class:(steam)"
-      "tag +opac, class:(discord)"
-      "opacity 0.9 override 0.85 override, tag:term"
-      "opacity 0.9 override 0.85 override, tag:opac"
+      # "tag +opac, class:(discord)"
+      "opacity 0.95 override 0.9 override, tag:term"
+      "opacity 0.95 override 0.9 override, tag:opac"
       # xwaylandvideobridge
-      "opacity 0.0 override, class:^(xwaylandvideobridge)$"
-      "noanim, class:^(xwaylandvideobridge)$"
-      "noinitialfocus, class:^(xwaylandvideobridge)$"
-      "maxsize 1 1, class:^(xwaylandvideobridge)$"
-      "noblur, class:^(xwaylandvideobridge)$z"
-      "float, class:(clipse)"
-      "float, class:(floating)"
-      "size 622 652, class:(clipse)"
-      "stayfocused, class:(clipse)"
-      "opacity 0.8 override 0.75 override, class:(clipse)"
+      "opacity 0.0 override, class:.*xwaylandvideobridge"
+      "noanim, class:.*xwaylandvideobridge"
+      "noinitialfocus, class:.*xwaylandvideobridge"
+      "maxsize 1 1, class:.*xwaylandvideobridge"
+      "noblur, class:.*xwaylandvideobridge"
+      "float, tag:floating"
+      "size 622 652, class:.*clipse"
+      "stayfocused, class:.*clipse"
+      "opacity 0.8 override 0.75 override, class:.*clipse"
     ];
 
     # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
@@ -148,7 +151,7 @@ in
     monitor = [
       # "desc: Hisense Electric Co. Ltd. Hisense 0x00000001, 3840x2160@120, auto, 1.25, bitdepth, 10, vrr, 1"
       # "HDMI-A-1, 3840x2160@119.88, 0x0, 1.25, bitdepth, 10, vrr, 1"
-      "DP-3, highres@highrr, auto, 1.25"
+      "DP-3, highres@highrr, auto, 1"
       ", highres@highrr, auto, 1"
     ];
     
@@ -156,34 +159,43 @@ in
       "$mod, F, fullscreen, 1"
       ", F11, fullscreen, 0"
       "$mod, Q, exec, $terminal"
-      "$mod, C, killactive,"
-      "$mod, M, exec, uwsm stop"
-      "$mod, E, exec, $fileManager -- class floating"
-      "$mod, S, togglefloating,"
+      "$mod, C, hy3:killactive,"
+      "$shiftmod, M, exec, uwsm stop"
+      "$mod, E, exec, $fileManager --class floating"
+      "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod, W, exec, $window"
-      "$mod, V, exec, $terminal --class clipse -e clipse"
-      "$mod, A, overview:toggle"
+      "$mod+CTRL, V, exec, $terminal --class clipse -e clipse"
+      "$mod, tab, hy3:togglefocuslayer"
+
+      "$mod, H, hy3:makegroup, h"
+      "$mod, V, hy3:makegroup, v"
+      "$mod, Z, hy3:makegroup, tab"
 
       "$shiftmod, S, exec, uwsm-app -- hyprshot -m region --clipboard-only"
       "$shiftmod, W, exec, uwsm-app -- hyprshot -m window --clipboard-only"
       "$shiftmod, M, exec, uwsm-app -- hyprshot -m output --clipboard-only"
       
+      # Move focus with mod + NEIO
+      "ALT, N, hy3:movefocus, l"
+      "ALT, O, hy3:movefocus, r"
+      "ALT, I, hy3:movefocus, u"
+      "ALT, E, hy3:movefocus, d"
       # Move focus with mod + arrow keys
-      "ALT, N, movefocus, l"
-      "ALT, O, movefocus, r"
-      "ALT, I, movefocus, u"
-      "ALT, E, movefocus, d"
+      "$mod, left, hy3:movefocus, l"
+      "$mod, right, hy3:movefocus, r"
+      "$mod, up, hy3:movefocus, u"
+      "$mod, down, hy3:movefocus, d"
 
-      # Swap windows
-      "ALTCTRL, N, movewindow, l"
-      "ALTCTRL, O, movewindow, r"
-      "ALTCTRL, I, movewindow, u"
-      "ALTCTRL, E, movewindow, d"
+      # Move windows with NEIO
+      "ALTCTRL, N, hy3:movewindow, l, once"
+      "ALTCTRL, O, hy3:movewindow, r, once"
+      "ALTCTRL, I, hy3:movewindow, u, once"
+      "ALTCTRL, E, hy3:movewindow, d, once"
 
       # Move Monitors
-      "ALT, 1, movewindow, mon:0"
-      "ALT, 2, movewindow, mon:1"
+      "ALTSHIFT, 1, hy3:movewindow, mon:0"
+      "ALTSHIFT, 2, hy3:movewindow, mon:1"
 
       # Toggle Horizontal / Vertical Split
       "$mod, T, layoutmsg, togglesplit"
@@ -191,8 +203,8 @@ in
       # Resize windows
       "ALT, L, resizeactive, -200 0"
       "ALT, apostrophe, resizeactive, 200 0"
-      "ALT, U, resizeactive, 0 100"
-      "ALT, Y, resizeactive, 0 -100"
+      "ALT, U, resizeactive, 0 -100"
+      "ALT, Y, resizeactive, 0 100"
 
       "$mod, U, workspace, previous"
     ]
@@ -203,7 +215,7 @@ in
         let ws = i + 1;
         in [
           "$mod, code:1${toString i}, workspace, ${toString ws}"
-          "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+          "$mod SHIFT, code:1${toString i}, hy3:movetoworkspace, ${toString ws}"
         ]
       )
       9)
@@ -241,7 +253,7 @@ in
       # Toolkit env
       "SDL_VIDEODRIVER,wayland"
       "GDK_BACKEND,wayland,x11"
-      "GDK_SCALE,1.00"
+      "GDK_THEME,${theme_name}"
       "CLUTTER_BACKEND,wayland"
       "QT_QPA_PLATFORM,wayland-egl"
 
@@ -260,13 +272,19 @@ in
 
       # Theme
       "HYPRCURSOR_THEME,$theme"
-      "HYPRCURSOR_SIZE,${cursor_size}"
+      "HYPRCURSOR_SIZE,${toString(cursor_size)}"
       "XCURSOR_THEME,$theme"
-      "XCURSORSIZE,${cursor_size}"
+      
+      # Scaling
+      "GDK_SCALE,1"
+      "GDK_DPI_SCALE = 6"
+      "QT_SCALE_FACTOR = \"6\""
+      "QT_AUTO_SCREEN_SCALE_FACTOR,0"
+      "XCURSOR_SIZE,${toString(cursor_size)}"
+      "XDG_SCALE_FACTOR, 6"
 
       # # Extra
       # "_JAVA_AWT_WM_NONREPARENTING=1"
-      # "QT_AUTO_SCREEN_SCALE_FACTOR,1"
       # "WLR_NO_HARDWARE_CURSORS,1"
       # "__NV_PRIME_RENDER_OFFLOAD,1"
       # "__VK_LAYER_NV_optimus,NVIDIA_only"
@@ -285,7 +303,7 @@ in
       "col.inactive_border" = "rgba(595959aa)";
 
       allow_tearing = true;
-      layout = "dwindle";
+      layout = "hy3";
     };
 
     input = {
@@ -385,6 +403,14 @@ in
     enable = true;
   };
 
+  gtk = {
+    enable = true;
+    cursorTheme = {
+      name = "${theme_name}";
+      size = cursor_size;
+    };
+  };
+
   services.clipse.enable = true;
 
   services.hyprpaper = {
@@ -402,36 +428,36 @@ in
     };
   };
 
-  services.hypridle = {
-    # enable = true;
-    settings = {
-        general = {
-          lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
-          before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
-          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
-        };
+  # services.hypridle = {
+  #   # enable = true;
+  #   settings = {
+  #       general = {
+  #         lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
+  #         before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
+  #         after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+  #       };
 
-      listener = [
-        {
-          timeout = 150;                                    # 2.5min.
-          "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
-          "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
-        }
+  #     listener = [
+  #       {
+  #         timeout = 150;                                    # 2.5min.
+  #         "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
+  #         "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
+  #       }
 
-        # {
-        #   timeout = 300;                                    # 5min
-        #   on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
-        # }
-        # {
-        #   timeout = 330;                                    # 5.5min
-        #   on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
-        #   on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
-        # }
-        # {
-        #   timeout = 1800;                                  # 30min
-        #   on-timeout = "systemctl suspend";                # suspend pc
-        # }
-      ];
-    };
-  };
+  #       # {
+  #       #   timeout = 300;                                    # 5min
+  #       #   on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
+  #       # }
+  #       # {
+  #       #   timeout = 330;                                    # 5.5min
+  #       #   on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
+  #       #   on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
+  #       # }
+  #       # {
+  #       #   timeout = 1800;                                  # 30min
+  #       #   on-timeout = "systemctl suspend";                # suspend pc
+  #       # }
+  #     ];
+  #   };
+  # };
 }
