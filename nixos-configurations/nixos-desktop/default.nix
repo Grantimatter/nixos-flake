@@ -33,6 +33,11 @@ in
   # '';
 
   hardware.nvidia.forceFullCompositionPipeline = false;
+
+  hardware.sane = {
+    enable = true;
+    brscan5.enable = true;
+  };
   #hardware.nvidia.powerManagement.enable = true;
 
   fileSystems."/mnt/nvme0n1p2" = {
@@ -207,6 +212,9 @@ in
 
       # Desktop
       rofi-wayland
+
+      # Printers (yay)
+      naps2
     ];
 
   programs = {
