@@ -87,7 +87,7 @@ in
     "$terminal" = "uwsm-app -- ghostty";
     "$shell" = "fish";
     # Yazi using fish function (y)
-    "$fileManager" = "$terminal -- $shell -c y";
+    "$fileManager" = "nautilus";
     "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
     "$window" = "rofi -show window";
 
@@ -129,6 +129,10 @@ in
       "tag +term, class:.*ghostty"
       "tag +term, class:.*wezterm"
       "tag +floating, class:.*Calculator"
+      "tag +floating, title:.*\(Bitwarden Password Manager\).*"
+      "tag +floating, class:.*SimpleScan"
+      "tag +floating, title:^(Save As)"
+      "tag +floating, class:naps2"
       # "tag +opac, class:(steam)"
       # "tag +opac, class:(discord)"
       "opacity 0.95 override 0.9 override, tag:term"
@@ -161,7 +165,7 @@ in
       "$mod, Q, exec, $terminal"
       "$mod, C, hy3:killactive,"
       "$shiftmod, M, exec, uwsm stop"
-      "$mod, E, exec, $fileManager --class floating"
+      "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod, W, exec, $window"

@@ -134,7 +134,7 @@ in
         nil
         lsp-ai
         
-        # rust-analyzer
+        rust-analyzer
         marksman
         lua-language-server
         typescript-language-server
