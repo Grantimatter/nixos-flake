@@ -149,14 +149,9 @@ in
       "opacity 0.8 override 0.75 override, class:.*clipse"
     ];
 
-    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
-    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10";
-    # monitor = ", highres@highrr, auto, 1.25, bitdepth, 10, vrr, 1";
     monitor = [
-      # "desc: Hisense Electric Co. Ltd. Hisense 0x00000001, 3840x2160@120, auto, 1.25, bitdepth, 10, vrr, 1"
-      # "HDMI-A-1, 3840x2160@119.88, 0x0, 1.25, bitdepth, 10, vrr, 1"
-      "DP-3, highres@highrr, auto, 1"
-      ", highres@highrr, auto, 1"
+      "DP-3, highres@highrr, auto, 1, vrr, 1"
+      # ", highres@highrr, auto, 1"
     ];
     
     bind = [
@@ -293,7 +288,7 @@ in
       # "__NV_PRIME_RENDER_OFFLOAD,1"
       # "__VK_LAYER_NV_optimus,NVIDIA_only"
       # "PROTON_ENABLE_NGX_UPDATER,1"
-      # "WLR_DRM_NO_ATOMIC,1"
+      "WLR_DRM_NO_ATOMIC,1"
       # "WLR_USE_LIBINPUT,1"
       # "__GL_MaxFramesAllowed,1"
       # "WLR_RENDERER_ALLOW_SOFTWARE,1"
@@ -325,7 +320,7 @@ in
     };
 
     render = {
-      explicit_sync = 0;
+      explicit_sync = 1;
       direct_scanout = true;
     };
     
@@ -432,36 +427,37 @@ in
     };
   };
 
-  # services.hypridle = {
-  #   # enable = true;
-  #   settings = {
-  #       general = {
-  #         lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
-  #         before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
-  #         after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
-  #       };
+  services.hypridle = {
+    enable = true;
+    settings = {
+        general = {
+          lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
+          before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
+          # before_sleep_cmd = "";
+          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+        };
 
-  #     listener = [
-  #       {
-  #         timeout = 150;                                    # 2.5min.
-  #         "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
-  #         "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
-  #       }
+      listener = [
+        {
+          timeout = 150;                                    # 2.5min.
+          "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
+        }
 
-  #       # {
-  #       #   timeout = 300;                                    # 5min
-  #       #   on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
-  #       # }
-  #       # {
-  #       #   timeout = 330;                                    # 5.5min
-  #       #   on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
-  #       #   on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
-  #       # }
-  #       # {
-  #       #   timeout = 1800;                                  # 30min
-  #       #   on-timeout = "systemctl suspend";                # suspend pc
-  #       # }
-  #     ];
-  #   };
-  # };
+        # {
+        #   timeout = 300;                                    # 5min
+        #   on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
+        # }
+        # {
+        #   timeout = 330;                                    # 5.5min
+        #   on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
+        #   on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
+        # }
+        # {
+        #   timeout = 1800;                                  # 30min
+        #   on-timeout = "systemctl suspend";                # suspend pc
+        # }
+      ];
+    };
+  };
 }

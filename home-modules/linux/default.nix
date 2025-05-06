@@ -12,6 +12,8 @@ let
     discord
     vlc
     spotify
+    # spotify-player
+    # spotify-qt
     blender
     gimp
     wl-clipboard-rs
