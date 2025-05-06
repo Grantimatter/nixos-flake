@@ -38,6 +38,8 @@ in
     enable = true;
     brscan5.enable = true;
   };
+
+  hardware.i2c.enable = true;
   #hardware.nvidia.powerManagement.enable = true;
 
   fileSystems."/mnt/nvme0n1p2" = {
@@ -78,6 +80,18 @@ in
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
+  };
+
+  services.printing = {
+    enable = true;
+    drivers = [
+      pkgs.brlaser
+    ];
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
   };
 
   services.samba = {
@@ -212,6 +226,8 @@ in
 
       # Desktop
       rofi-wayland
+      brightnessctl
+      ddcutil
 
       # Printers (yay)
       naps2
