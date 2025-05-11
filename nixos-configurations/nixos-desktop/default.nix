@@ -23,10 +23,44 @@ in
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  boot.loader.systemd-boot.enable = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "module_blacklist=amdgpu" "nvidia_drm.fbdev=1" "nvidia_drm.modeset=1" "nvidia_modeset.hdmi_deepcolor=1" "hdmi_deepcolor=1" "nvidia-modeset.hdmi_deepcolor=1"];
-  boot.kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  boot = {
+    plymouth = {
+      enable = true;
+      theme = "lone";
+      themePackages = with pkgs; [
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [
+            "lone"
+           ];
+        })
+      ];
+      # theme = "lone";
+    };
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    loader.systemd-boot = {
+      enable = true;
+      consoleMode = "max";
+      editor = false;
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "module_blacklist=amdgpu"
+      "nvidia_drm.fbdev=1"
+      "nvidia_drm.modeset=1"
+      "nvidia_modeset.hdmi_deepcolor=1"
+      "hdmi_deepcolor=1"
+      "nvidia-modeset.hdmi_deepcolor=1"
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+    loader.timeout = 0;
+    kernelModules = [ "snd-seq" "snd-rawmidi" ];
+  };
   # boot.extraModProbeConfig = ''
   # options nvidia_drm modeset=1
   # options nvidia_drm fbdev=1
@@ -150,23 +184,30 @@ in
   };
 
   services.deluge.enable = true;
+  services.deluge.web.enable = true;
   services.greetd = {
     enable = true;    
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd uwsm start hyprland.desktop --user-menu --theme 'text=white;container=black;time=red;border=red;title=blue;prompt=green;input=grey' -r";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet -r --remember-session --time --user-menu --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red";
       };
     };
+  };
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOuput = "tty";
+    StandardError = "journal";
+
+    TTYReset = true;
+    TTYHangup = true;
+    TTYVTDisallocate = true;
   };
 
   services.xserver = {
     enable = true;
-    # displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    # desktopManager.gnome.enable = true;
     desktopManager.xterm.enable = false;
-    # displayManager.lightdm.enable = true;
-    # displayManager.defaultSession = "none+i3";
-    # windowManager.i3.enable = true;
     excludePackages = [ pkgs.xterm ];
 #    layout = "us";
   };
@@ -228,6 +269,7 @@ in
       rofi-wayland
       brightnessctl
       ddcutil
+      librewolf-wayland
 
       # Printers (yay)
       naps2

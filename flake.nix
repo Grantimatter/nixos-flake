@@ -27,6 +27,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    catppuccin.url = "github:catppuccin/nix";
+
     # Rust Overlay
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -58,6 +60,13 @@
       ezConfigs = {
         root = ./.;
         globalArgs = { inherit inputs; };
+        earlyModuleArgs = {
+          catppuccin = {
+            flavor = "mocha";
+            accent = "mauve";
+            secondary = "pink";
+          };
+        };
       };
 
       perSystem = { pkgs, lib, system, ... }: {

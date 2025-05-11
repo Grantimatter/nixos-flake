@@ -1,32 +1,21 @@
-{ config, pkgs, lib, ...}:
+{ inputs, catppuccin, config, pkgs, lib, ...}:
 let
-  theme_config = builtins.readFile (
-      builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/catppuccin/hyprland/refs/heads/main/themes/mocha.conf";
-        sha256 = "4b154dbd96637ee3c0db207dc40d041c712713d788409005541214b838922314";
-      });
-  theme_name = "catppuccin-mocha-maroon";
-  theme_pkg = "${pkgs.catppuccin-cursors.mochaMaroon}";
+  cursor_theme = "catppuccin-${catppuccin.flavor}-${catppuccin.accent}-cursors";
   cursor_size = 32;
   wallpaper = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
   };
-  yazi_theme = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/mocha/catppuccin-mocha-maroon.toml";
-    sha256 = "f96ac4212db7bd6f50166dd73b3e802768fd508d3ed5d184a5789ba2e1bcff17";
-  };
-  rofi_theme = builtins.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/rofi/refs/heads/main/themes/catppuccin-mocha.rasi";
-      sha256 = "eae7842c37d5f9ef16b7e4c234e02990c6e366373719462c28b9cdafeb1caf55";
-    };
 in
 {
+  # imports = [
+  #   inputs.catppuccin.homeModules.catppuccin
+  # ];
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
-  home.sessionVariables.ROFI_WAYLAND = "1";
+  # home.sessionVariables.ROFI_WAYLAND = "1";
   # wayland.windowManager.hyprland.systemd.variables = ["--all"];
-  programs.wofi.enable = true;
+  # programs.wofi.enable = true;
 
   programs.mangohud = {
     enable = true;
@@ -73,7 +62,7 @@ in
   ];
 
   wayland.windowManager.hyprland.importantPrefixes = [
-    "#Catppuccin Theme"
+    # "#Catppuccin Theme"
     "$"
     "bezier"
     "name"
@@ -82,14 +71,17 @@ in
   
   wayland.windowManager.hyprland.settings = {
     # inherit theme_config;
-    "#Catppuccin Theme" = theme_config;
-    "$theme" = "${theme_name}";
+    # "#Catppuccin Theme" = theme_config;
+    # "$theme" = "${theme_name}";
     "$terminal" = "uwsm-app -- ghostty";
     "$shell" = "fish";
     # Yazi using fish function (y)
     "$fileManager" = "nautilus";
-    "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
-    "$window" = "rofi -show window";
+    # "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
+    "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes";
+    # "$run" = "uwsm-app fuzzel --";
+    # "$window" = "";
+    # "$window" = "rofi -show window";
 
     "$mod" = "SUPER";
     "$shiftmod" = "SUPER_SHIFT";
@@ -129,6 +121,7 @@ in
       "tag +term, class:.*ghostty"
       "tag +term, class:.*wezterm"
       "tag +floating, class:.*Calculator"
+      "tag +floating, title:.*clipse"
       "tag +floating, title:.*\(Bitwarden Password Manager\).*"
       "tag +floating, class:.*SimpleScan"
       "tag +floating, title:^(Save As)"
@@ -144,9 +137,9 @@ in
       "maxsize 1 1, class:.*xwaylandvideobridge"
       "noblur, class:.*xwaylandvideobridge"
       "float, tag:floating"
-      "size 622 652, class:.*clipse"
-      "stayfocused, class:.*clipse"
-      "opacity 0.8 override 0.75 override, class:.*clipse"
+      "size 622 652, title:.*clipse"
+      "stayfocused, title:.*clipse"
+      "opacity 0.8 override 0.75 override, title:.*clipse"
     ];
 
     monitor = [
@@ -164,7 +157,7 @@ in
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod, W, exec, $window"
-      "$mod+CTRL, V, exec, $terminal --class clipse -e clipse"
+      "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
       "$mod, tab, hy3:togglefocuslayer"
 
       "$mod, H, hy3:makegroup, h"
@@ -252,7 +245,7 @@ in
       # Toolkit env
       "SDL_VIDEODRIVER,wayland"
       "GDK_BACKEND,wayland,x11"
-      "GDK_THEME,${theme_name}"
+      # "GDK_THEME,${theme_name}"
       "CLUTTER_BACKEND,wayland"
       "QT_QPA_PLATFORM,wayland-egl"
 
@@ -270,17 +263,18 @@ in
       "NVD_BACKEND,direct"
 
       # Theme
-      "HYPRCURSOR_THEME,$theme"
+      "HYPRCURSOR_THEME,default"
       "HYPRCURSOR_SIZE,${toString(cursor_size)}"
-      "XCURSOR_THEME,$theme"
+      "XCURSOR_THEME,${cursor_theme}"
+      # "XCURSOR_THEME,catppuccin-${catppuccin-home.flavor}-${catppuccin-home.accent}-cursors"
       
       # Scaling
       "GDK_SCALE,1"
-      "GDK_DPI_SCALE = 6"
-      "QT_SCALE_FACTOR = \"6\""
+      "GDK_DPI_SCALE = 1"
+      "QT_SCALE_FACTOR = \"1\""
       "QT_AUTO_SCREEN_SCALE_FACTOR,0"
       "XCURSOR_SIZE,${toString(cursor_size)}"
-      "XDG_SCALE_FACTOR, 6"
+      "XDG_SCALE_FACTOR, 1"
 
       # # Extra
       # "_JAVA_AWT_WM_NONREPARENTING=1"
@@ -298,7 +292,7 @@ in
       gaps_in = 0;
       gaps_out = 0;
       border_size = 1;
-      "col.active_border" = "$red $mauve 45deg";
+      "col.active_border" = "\$${catppuccin.accent} \$${catppuccin.secondary} 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
       allow_tearing = true;
@@ -387,27 +381,19 @@ in
   };
 
   # Cursor Theme
-  home.file.".local/share/icons/${theme_name}".source = "${theme_pkg}/share/icons/${theme_name}-cursors";
+  # home.file.".local/share/icons/${theme_name}".source = "${theme_pkg}/share/icons/${theme_name}-cursors";
 
   # Wallpaper
   home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
 
-  # Yazi Theme
-  home.file.".config/yazi/theme.toml".source = "${yazi_theme}";
+  # programs.rofi = {
+  #   enable = true;
+  # };
 
-  # Rofi theme
-  home.file.".config/rofi/${theme_name}.rasi".source = "${rofi_theme}";
-
-  programs.rofi = {
-    enable = true;
-  };
+  programs.fuzzel.enable = true;
 
   gtk = {
     enable = true;
-    cursorTheme = {
-      name = "${theme_name}";
-      size = cursor_size;
-    };
   };
 
   services.clipse.enable = true;

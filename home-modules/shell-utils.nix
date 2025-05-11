@@ -5,44 +5,46 @@ let
 in
 {
   home.packages = attrValues
-    {
-      inherit (pkgs)
-        # cargo
-        # rustc
-        python3
+  {
+    inherit (pkgs)
+      # cargo
+      # rustc
+      python3
 
-        git
-        lazygit
-        cloudflared
+      git
+      lazygit
+      cloudflared
 
-        ffmpeg
-        wget
-        zip
-        unzip
+      ffmpeg
+      wget
+      zip
+      unzip
 
-        erdtree
-        bottom
-        eza
-	      ripgrep
-      	ripgrep-all
-        bat
-      	fd
-      	procs
-      	sd
-      	du-dust
-      	# rustscan
-        
-        jq
-      	# tailspin # Commented due to build error
-      	jless
-      	grex
-        glow
-	      killall
-        ;
-    };
+      erdtree
+      bottom
+      eza
+      ripgrep
+    	ripgrep-all
+      bat
+    	fd
+    	procs
+    	sd
+    	du-dust
+    	# rustscan
+      
+      jq
+    	# tailspin # Commented due to build error
+    	jless
+    	grex
+      glow
+      killall
+      ;
+  };
+
+  services.tldr-update.enable = true;
 
   programs = {
-
+    gitui.enable = true;
     superfile = {
       enable = true;
       settings = {

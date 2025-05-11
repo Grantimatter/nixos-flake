@@ -1,4 +1,4 @@
-{ inputs, modulesPath, pkgs,  ... }:
+{ inputs, modulesPath, catppuccin, pkgs, ... }:
 let
   systemPackages = with pkgs; [
       # Hyprland
@@ -12,7 +12,7 @@ let
       kdePackages.xwaylandvideobridge
 
       # Theming
-      catppuccin-cursors
+      # catppuccin-cursors
 
       # Core
       bash
@@ -21,6 +21,7 @@ let
       coreutils
       usbutils
       home-manager
+      tealdeer
 
       # Audio
       libbs2b
@@ -35,7 +36,6 @@ let
       # wine-wayland
       # wine64Packages.wayland
     ];
-
 in
 {
   time.timeZone = "US/Central";
@@ -50,25 +50,9 @@ in
   services.pulseaudio.extraConfig = "load-module module-combine-sink";
   hardware.bluetooth.enable = true;
 
-  systemd = {
-    # user.services."polkit-agent" = {
-    #   description = "polkit-kde-agent for Hyprland";
-    #   wantedBy = [ "graphical-session.target" ];
-    #   wants = [ "graphical-session.target" ];
-    #   after = [ "graphical-session.target" ];
-
-    #   serviceConfig = {
-    #     Type = "simple";
-    #     ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
-    #     Restart = "on-failure";
-    #     RestartSec = 1;
-    #     TimeoutStopSec = 10;
-    #   };
-    # };
-  };
-
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.catppuccin.nixosModules.catppuccin
     # inputs.rust-overlay.overlays.default
     #../overlays
   ];
@@ -106,10 +90,19 @@ in
     ];
   };
 
+  catppuccin.enable = true;
+  catppuccin.flavor = catppuccin.flavor;
+  catppuccin.accent = catppuccin.accent;
+  catppuccin.sddm.enable = false;
+  catppuccin.fcitx5.enable = false;
+  catppuccin.grub.enable = false;
+  catppuccin.plymouth.enable = false;
+
   fonts.packages = with pkgs; [
     fira-code
-    # (nerdfonts.override { fonts = [ "FiraCode" ]; })
     nerd-fonts.fira-code
+    nerd-fonts.tinos
+    fira-sans
   ];
 
   networking = {
@@ -159,9 +152,15 @@ in
 
   system = {
     stateVersion = "23.11";
-    autoUpgrade.enable = true;
-    autoUpgrade.allowReboot = true;
-    autoUpgrade.channel = "https://nixos/channels/nixos-24.05";
+
+    autoUpgrade = {
+      enable = true;
+      flake = inputs.self.outPath;
+      flags = [ "--update-input" "nixpkgs" "-L" ];
+      dates = "02:00";
+      randomizedDelaySec = "45min";
+      allowReboot = true;
+    };
   };
 
   services = {

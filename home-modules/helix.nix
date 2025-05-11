@@ -9,7 +9,7 @@ in
     enable = true;
     defaultEditor = true;
     settings = {
-     theme = "catppuccin_mocha"; 
+     # theme = "catppuccin_mocha"; 
       editor = {
         line-number = "relative";
         scrolloff = 15;
