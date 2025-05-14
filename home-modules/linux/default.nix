@@ -2,13 +2,22 @@
 let
   inherit (lib) attrValues;
   
+  wrapElectronApp = appName: appPkg: pkgs.symlinkJoin {
+    name = "${appName}-wrapped";
+    paths = [ appPkg ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/${appName} \
+        --add-flags "--enable-features=WaylandLinuxDrmSyncobj"
+    '';
+  };
+  
   packages = with (pkgs); [
     libreoffice
     dmenu
     kdePackages.spectacle
     prismlauncher
     webcord-vencord
-    vesktop
     discord
     vlc
     spotify
@@ -17,6 +26,9 @@ let
     blender
     gimp
     wl-clipboard-rs
+  ] ++ [
+    (wrapElectronApp "vesktop" pkgs.vesktop)
+    (wrapElectronApp "obsidian" pkgs.obsidian)
   ];
 in
 {
