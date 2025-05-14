@@ -12,6 +12,7 @@ in
       python3
 
       git
+      git-filter-repo
       lazygit
       cloudflared
 
