@@ -8,6 +8,7 @@ let
       egl-wayland
       hyprpaper
       hyprcursor
+      hyprpicker
       eww
       kdePackages.xwaylandvideobridge
 
@@ -25,7 +26,9 @@ let
 
       # Audio
       libbs2b
-      pavucontrol
+      lxqt.pavucontrol-qt
+      libsForQt5.qt5ct
+      libsForQt5.qtstyleplugin-kvantum
       qjackctl
 
       # Input
