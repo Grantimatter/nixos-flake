@@ -159,6 +159,7 @@ in
       # "$mod, W, exec, $window"
       "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
       "$mod, tab, hy3:togglefocuslayer"
+      "$mod, P, hyprpicker -a"
 
       "$mod, H, hy3:makegroup, h"
       "$mod, V, hy3:makegroup, v"
