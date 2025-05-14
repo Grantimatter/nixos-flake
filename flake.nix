@@ -63,7 +63,7 @@
         earlyModuleArgs = {
           catppuccin = {
             flavor = "mocha";
-            accent = "mauve";
+            accent = "red";
             secondary = "pink";
           };
         };

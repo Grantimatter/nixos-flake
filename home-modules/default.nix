@@ -23,9 +23,14 @@
     packages = [
       pkgs.bitwarden-cli
       pkgs.calibre
-      pkgs.obsidian
       pkgs.zettlr
     ];
+  };
+
+  qt = {
+    enable = true;
+    style.name = "kvantum";
+    platformTheme.name = "kvantum";
   };
 
   catppuccin.enable = true;

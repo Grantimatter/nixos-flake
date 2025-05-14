@@ -76,7 +76,7 @@ in
     "$terminal" = "uwsm-app -- ghostty";
     "$shell" = "fish";
     # Yazi using fish function (y)
-    "$fileManager" = "nautilus";
+    "$fileManager" = "uwsm-app -- nautilus";
     # "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
     "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes";
     # "$run" = "uwsm-app fuzzel --";
@@ -136,7 +136,7 @@ in
       "noinitialfocus, class:.*xwaylandvideobridge"
       "maxsize 1 1, class:.*xwaylandvideobridge"
       "noblur, class:.*xwaylandvideobridge"
-      "float, tag:floating"
+      "float, tag:floating*"
       "size 622 652, title:.*clipse"
       "stayfocused, title:.*clipse"
       "opacity 0.8 override 0.75 override, title:.*clipse"
@@ -156,7 +156,7 @@ in
       "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
-      "$mod, W, exec, $window"
+      # "$mod, W, exec, $window"
       "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
       "$mod, tab, hy3:togglefocuslayer"
 
@@ -240,7 +240,8 @@ in
 
       # Electron
       "NIXOS_OZONE_WL,1"
-      "ELECTRON_OZONE_PLATFORM_HINT,auto"
+      "ELECTRON_OZONE_PLATFORM_HINT,wayland"
+      "ELECTRON_ENABLE_WAYLAND,1"
 
       # Toolkit env
       "SDL_VIDEODRIVER,wayland"
@@ -263,7 +264,7 @@ in
       "NVD_BACKEND,direct"
 
       # Theme
-      "HYPRCURSOR_THEME,default"
+      "HYPRCURSOR_THEME,${cursor_theme}"
       "HYPRCURSOR_SIZE,${toString(cursor_size)}"
       "XCURSOR_THEME,${cursor_theme}"
       # "XCURSOR_THEME,catppuccin-${catppuccin-home.flavor}-${catppuccin-home.accent}-cursors"
@@ -420,7 +421,7 @@ in
           lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
           before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
           # before_sleep_cmd = "";
-          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+          # after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
         };
 
       listener = [

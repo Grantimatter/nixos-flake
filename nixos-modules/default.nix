@@ -12,7 +12,7 @@ let
       kdePackages.xwaylandvideobridge
 
       # Theming
-      # catppuccin-cursors
+      kdePackages.qtstyleplugin-kvantum
 
       # Core
       bash
@@ -30,6 +30,7 @@ let
 
       # Input
       evtest
+      overskride
 
       kdePackages.polkit-kde-agent-1
       # wine64
@@ -49,6 +50,7 @@ in
   services.pulseaudio.enable = false;
   services.pulseaudio.extraConfig = "load-module module-combine-sink";
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -165,6 +167,7 @@ in
 
   services = {
     pipewire = {
+
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
