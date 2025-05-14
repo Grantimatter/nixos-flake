@@ -203,6 +203,7 @@ in
     TTYHangup = true;
     TTYVTDisallocate = true;
   };
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   services.xserver = {
     enable = true;
