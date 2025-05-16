@@ -235,6 +235,7 @@ in
       # Dev
       git
       helix
+      adbtuifm
       
       # Gamedev
       godot_4      
@@ -277,6 +278,9 @@ in
     ];
 
   programs = {
+    adb = {
+      enable = true;
+    };
     steam.enable = true;
     steam.extraCompatPackages = with pkgs; [
       proton-ge-bin
