@@ -159,7 +159,7 @@ in
       # "$mod, W, exec, $window"
       "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
       "$mod, tab, hy3:togglefocuslayer"
-      "$mod, P, hyprpicker -a"
+      "$mod, P, exec, uwsm-app -- hyprpicker -a"
 
       "$mod, H, hy3:makegroup, h"
       "$mod, V, hy3:makegroup, v"
@@ -293,7 +293,7 @@ in
     general = {
       gaps_in = 0;
       gaps_out = 0;
-      border_size = 1;
+      border_size = 2;
       "col.active_border" = "\$${catppuccin.accent} \$${catppuccin.secondary} 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
