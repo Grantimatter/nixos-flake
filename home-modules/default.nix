@@ -16,8 +16,9 @@
       linux
       eww
       hyprland
+      themes
       ;
-  } ++ [ inputs.catppuccin.homeModules.catppuccin ];
+  };
 
   home = {
     packages = [
@@ -27,19 +28,7 @@
     ];
   };
 
-  qt = {
-    enable = true;
-    style.name = "kvantum";
-    platformTheme.name = "kvantum";
-  };
-
-  catppuccin.enable = true;
-  catppuccin.flavor = catppuccin.flavor;
-  catppuccin.accent = catppuccin.accent;
-  catppuccin.gtk.enable = true;
-  catppuccin.atuin.enable = false;
-  catppuccin.starship.enable = true;
-  catppuccin.cursors.enable = true;
+  qt.enable = true;
 
   nixpkgs.config = import ../nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ../nixpkgs-config.nix;
