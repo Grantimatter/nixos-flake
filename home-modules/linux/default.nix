@@ -20,7 +20,7 @@ let
     webcord-vencord
     discord
     vlc
-    spotify
+    # spotify
     # spotify-player
     # spotify-qt
     blender
@@ -29,6 +29,7 @@ let
   ] ++ [
     (wrapElectronApp "vesktop" pkgs.vesktop)
     (wrapElectronApp "obsidian" pkgs.obsidian)
+    (wrapElectronApp "spotify" pkgs.spotify)
   ];
 in
 {
