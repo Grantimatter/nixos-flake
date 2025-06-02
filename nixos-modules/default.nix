@@ -34,6 +34,7 @@ let
       # Input
       evtest
       overskride
+      smile
 
       kdePackages.polkit-kde-agent-1
       # wine64
@@ -123,6 +124,8 @@ in
     enable = true;
     #servers = ["us.pool.ntp.org"];
   };
+
+  services.udisks2.enable = true;
 
   users.defaultUserShell = pkgs.fish;
 

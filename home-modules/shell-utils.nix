@@ -46,6 +46,7 @@ in
 
   programs = {
     gitui.enable = true;
+    git-cliff.enable = true;
     bun.enable = true;
     superfile = {
       enable = true;

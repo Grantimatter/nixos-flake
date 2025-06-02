@@ -236,6 +236,7 @@ in
       git
       helix
       adbtuifm
+      qemu
       
       # Gamedev
       godot_4      
@@ -266,6 +267,7 @@ in
       kdePackages.kdenlive
       ardour
       audacity
+      guitarix
 
       # Desktop
       rofi-wayland

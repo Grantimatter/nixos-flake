@@ -49,6 +49,9 @@ in
   };
 
   services.spotifyd.enable = true;
+  services.udiskie = {
+    enable = true;
+  };
 
   home = {
     inherit packages;
