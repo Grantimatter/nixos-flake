@@ -208,6 +208,8 @@ in
   services.xserver = {
     enable = true;
     # desktopManager.gnome.enable = true;
+    # displayManager.gdm.enable = true;
+    # displayManager.gdm.wayland = false;
     desktopManager.xterm.enable = false;
     excludePackages = [ pkgs.xterm ];
 #    layout = "us";
@@ -237,6 +239,7 @@ in
       helix
       adbtuifm
       qemu
+      jetbrains.rider
       
       # Gamedev
       godot_4      
@@ -297,6 +300,7 @@ in
     partition-manager.enable = true;
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;
+    nix-ld.enable = true;
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

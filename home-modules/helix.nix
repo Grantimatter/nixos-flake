@@ -24,7 +24,7 @@ in
         indent-guides.render = true;
         indent-guides.skip-levels = 2;
 
-        end-of-line-diagnostics = "hint";
+        end-of-line-diagnostics = "error";
         inline-diagnostics = {
           cursor-line = "warning";
         };

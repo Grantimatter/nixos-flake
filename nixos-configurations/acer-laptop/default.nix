@@ -23,8 +23,8 @@
   services.xserver = {
     enable = true;
 
-    #displayManager.gdm.enable = true;
-    #desktopManager.gnome.enable = true;
+    # displayManager.gdm.enable = true;
+    # desktopManager.gnome.enable = true;
     #desktopManager.xterm.enable = false;
     displayManager.lightdm.enable = true;
     displayManager.defaultSession = "none+i3";

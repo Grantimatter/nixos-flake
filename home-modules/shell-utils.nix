@@ -12,6 +12,7 @@ in
       python3
 
       git
+      git-lfs
       git-filter-repo
       lazygit
       cloudflared
@@ -31,6 +32,7 @@ in
     	procs
     	sd
     	du-dust
+      duf
     	# rustscan
       
       jq

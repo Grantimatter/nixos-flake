@@ -1,9 +1,60 @@
 { config, pkgs, ... }:
+let
+    ue-build-function = {
+        body = ''
+            set -l TARGET (string trim -- $argv[1])
+            set -l CONFIG (string trim -- $argv[2])
+            set -l UPROJECT (realpath (find . -maxdepth 1 -name "*.uproject" | head -n 1))
+
+            if test -z "$CONFIG"
+                set CONFIG "Development"
+            end
+
+            if test -z "$UPROJECT"
+                echo "❌ No .uproject file found in current directory."
+                return 1
+            end
+
+            if test -z "$UE_ENGINE_DIR"
+                echo "❌ UE_ENGINE_DIR is not set. Please export it in your shell or devShell."
+                return 1
+            end
+
+            echo "🚧 Building $TARGET ($CONFIG)"
+            echo "📁 Project: $UPROJECT"
+
+            steam-run $UE_ENGINE_DIR/Engine/Build/BatchFiles/Linux/Build.sh \
+            $TARGET Linux $CONFIG $UPROJECT
+       '';
+    };
+
+    ue-run-function = {
+        body = ''
+          set -l UPROJECT (realpath (find . -maxdepth 1 -name "*.uproject" | head -n 1))
+
+          if test -z "$UPROJECT"
+            echo "❌ No .uproject file found in current directory."
+            return 1
+          end
+
+          if test -z "$UE_ENGINE_DIR"
+            echo "❌ UE_ENGINE_DIR is not set. Please export it in your shell or devShell."
+            return 1
+          end
+
+          echo "🚀 Launching Unreal Editor"
+          echo "📁 Project: $UPROJECT"
+
+          steam-run $UE_ENGINE_DIR/Engine/Binaries/Linux/UnrealEditor "$UPROJECT"        '';
+    };
+in
 {
   programs.fish = {
     enable = true;
 
     functions = {
+        ue-build = ue-build-function;
+        ue-run = ue-run-function;
       fish_greeting = {
         body = ''
         '';  
