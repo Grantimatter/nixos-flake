@@ -16,7 +16,7 @@ in
     accent = catppuccin.accent;
 
     gtk.enable = true;
-    gtk.icon.enable = false;
+    gtk.icon.enable = true;
 
     atuin.enable = false;
     starship.enable = true;

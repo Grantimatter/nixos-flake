@@ -323,7 +323,7 @@ in
     };
     
     decoration = {
-      rounding = 4;
+      rounding = 0;
       dim_inactive = true;
       dim_strength = 0.05;
       shadow = {

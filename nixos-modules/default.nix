@@ -26,7 +26,8 @@ let
 
       # Audio
       libbs2b
-      lxqt.pavucontrol-qt
+      # lxqt.pavucontrol-qt
+      pavucontrol
       libsForQt5.qt5ct
       libsForQt5.qtstyleplugin-kvantum
       qjackctl
