@@ -9,6 +9,7 @@
 
   programs.git = {
     enable = true;
+    lfs.enable = true;
     userName = "Grant Wiswell";
     userEmail = "wiswellgrant@gmail.com";
     extraConfig = {
