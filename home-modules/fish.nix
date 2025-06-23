@@ -23,13 +23,15 @@ let
             echo "🚧 Building $TARGET ($CONFIG)"
             echo "📁 Project: $UPROJECT"
 
-            steam-run $UE_ENGINE_DIR/Engine/Build/BatchFiles/Linux/Build.sh \
+            $UE_ENGINE_DIR/Engine/Build/BatchFiles/Linux/Build.sh \
             $TARGET Linux $CONFIG $UPROJECT
        '';
     };
 
     ue-run-function = {
         body = ''
+          set -x SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR 0
+          set -x SDL_VIDEODRIVER x11
           set -l UPROJECT (realpath (find . -maxdepth 1 -name "*.uproject" | head -n 1))
 
           if test -z "$UPROJECT"
@@ -45,7 +47,8 @@ let
           echo "🚀 Launching Unreal Editor"
           echo "📁 Project: $UPROJECT"
 
-          steam-run $UE_ENGINE_DIR/Engine/Binaries/Linux/UnrealEditor "$UPROJECT"        '';
+          $UE_ENGINE_DIR/Engine/Binaries/Linux/UnrealEditor "$UPROJECT"
+          '';
     };
 in
 {

@@ -19,6 +19,8 @@ let
     prismlauncher
     webcord-vencord
     discord
+    catppuccin-discord
+    # vesktop
     vlc
     # spotify
     # spotify-player
@@ -27,7 +29,7 @@ let
     gimp
     wl-clipboard-rs
   ] ++ [
-    (wrapElectronApp "vesktop" pkgs.vesktop)
+    # (wrapElectronApp "vesktop" pkgs.vesktop)
     (wrapElectronApp "obsidian" pkgs.obsidian)
     (wrapElectronApp "spotify" pkgs.spotify)
   ];
@@ -39,6 +41,10 @@ in
       BlockAboutConfig = true;
       ManualAppUpdateOnly = true;
     };
+  };
+
+  programs.vesktop = {
+    enable = true;
   };
 
   programs.thunderbird = {

@@ -68,6 +68,14 @@ in
 
   hardware.nvidia.forceFullCompositionPipeline = false;
 
+  hardware.opengl = {
+    enable = true;
+    # driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [ vulkan-loader ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [ vulkan-loader ];
+  };
+
   hardware.sane = {
     enable = true;
     brscan5.enable = true;
@@ -234,53 +242,59 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-      # Dev
-      git
-      helix
-      adbtuifm
-      qemu
-      jetbrains.rider
-      
-      # Gamedev
-      godot_4      
-      unityhub
+    # Dev
+    git
+    helix
+    adbtuifm
+    qemu
+    jetbrains.rider
 
-      # Downloads
-      motrix
-      
-      # Gaming
-      lutris
-      atlauncher
-      dualsensectl
-      umu-launcher
-      heroic
+    # Gamedev
+    godot_4      
+    unityhub
 
-      # Nvidia
-      nvidia-vaapi-driver
+    # Unreal Engine
+    p4
+    p4d
+    p4v
 
-      # Hyprland
-      xdg-desktop-portal-hyprland
-      greetd.tuigreet
-      shadps4b
-      nautilus
-      kdePackages.dolphin
-      # shadps4
-      
-      # Creation
-      kdePackages.kdenlive
-      ardour
-      audacity
-      guitarix
+    # Downloads
+    motrix
 
-      # Desktop
-      rofi-wayland
-      brightnessctl
-      ddcutil
-      librewolf-wayland
+    # Gaming
+    lutris
+    atlauncher
+    dualsensectl
+    umu-launcher
+    heroic
 
-      # Printers (yay)
-      naps2
-    ];
+    # Nvidia
+    nvidia-vaapi-driver
+
+    # Hyprland
+    xdg-desktop-portal-hyprland
+    greetd.tuigreet
+    shadps4b
+    nautilus
+    gnome-calculator
+    kdePackages.dolphin
+    # shadps4
+
+    # Creation
+    kdePackages.kdenlive
+    ardour
+    audacity
+    guitarix
+
+    # Desktop
+    rofi-wayland
+    brightnessctl
+    ddcutil
+    librewolf-wayland
+
+    # Printers (yay)
+    naps2
+  ];
 
   programs = {
     adb = {
@@ -301,6 +315,18 @@ in
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;
     nix-ld.enable = true;
+  };
+
+  systemd.services.p4d-service = {
+    enable = true;
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    description = "P4 (Perforce Helix) Server";
+    serviceConfig = {
+      Type = "simple";
+      # ExecStart = ''${pkgs.p4d}/bin/p4d -p 1666 -r /mnt/sdb2/Git/P4ROOT -xD LILAC20250610'';
+      ExecStart = ''${pkgs.p4d}/bin/p4d -p 192.168.50.158:1666 -r /mnt/sdb2/Git/P4ROOT'';
+    };
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

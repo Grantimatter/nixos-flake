@@ -117,6 +117,9 @@ in
     };
 
     windowrulev2 = [
+      "unset,class:^(UnrealEditor)$,title:^\w*$"
+      "noinitialfocus,class:^(UnrealEditor)$,title:^\w*$"
+      "noanim,class:^(UnrealEditor)$,title:^\w*$"
       "suppressevent maximize, class:.*"
       "tag +term, class:.*ghostty"
       "tag +term, class:.*wezterm"
