@@ -116,6 +116,11 @@ in
     networkmanager.enable = true;
 
     firewall = {
+      allowedTCPPorts = [
+        1666 # P4 (Perforce)
+        8096 # Jellyfin HTTP
+        8920 # Jellyfin HTTPS
+      ];
       enable = true;
       allowPing = true;
     };
