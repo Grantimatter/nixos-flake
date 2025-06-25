@@ -14,6 +14,7 @@
 
   programs.steam.enable = true;
 
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
@@ -67,7 +68,8 @@
     inherit (pkgs)
       git
       neovim
-      ;
+      moonlight-qt
+            ;
 #     inherit (pkgs.gnomeExtensions)
 #       hide-top-bar
 #       pixel-saver
