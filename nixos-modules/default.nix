@@ -173,7 +173,7 @@ in
       flags = [ "--update-input" "nixpkgs" "-L" ];
       dates = "02:00";
       randomizedDelaySec = "45min";
-      allowReboot = true;
+      allowReboot = false;
     };
   };
 
