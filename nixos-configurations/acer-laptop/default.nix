@@ -20,20 +20,18 @@
     settings.PasswordAuthentication = false;
   };
 
+  services.displayManager.cosmic-greeter.enable = true;
+  services.desktopManager.cosmic = {
+    enable = true;
+  };
+
   services.tailscale.enable = true;
   services.xserver = {
     enable = true;
 
-    # displayManager.gdm.enable = true;
-    # desktopManager.gnome.enable = true;
-    #desktopManager.xterm.enable = false;
-    displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+i3";
-    windowManager.i3.enable = true;
-
     excludePackages = [ pkgs.xterm ];
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   networking = {
