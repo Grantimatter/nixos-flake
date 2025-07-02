@@ -116,6 +116,10 @@ in
       no_gaps_when_only = 1;
     };
 
+    debug = {
+      full_cm_proto = true;
+    };
+
     windowrulev2 = [
       "unset,class:^(UnrealEditor)$,title:^\w*$"
       "noinitialfocus,class:^(UnrealEditor)$,title:^\w*$"

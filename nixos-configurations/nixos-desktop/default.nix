@@ -1,18 +1,18 @@
 { config, inputs, lib, modulesPath, pkgs, ... }:
 let
-   shadps4b = pkgs.shadps4.overrideAttrs (oa: {
-        version = "0.6.0";
+  #  shadps4b = pkgs.shadps4.overrideAttrs (oa: {
+  #       version = "0.6.0";
         
-        src = pkgs.fetchFromGitHub {
-          owner = "shadps4-emu";
-          repo = "shadPS4";
-          tag = "v.0.6.0";
-          fetchSubmodules = true;
-          hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
-        };
+  #       src = pkgs.fetchFromGitHub {
+  #         owner = "shadps4-emu";
+  #         repo = "shadPS4";
+  #         tag = "v.0.6.0";
+  #         fetchSubmodules = true;
+  #         hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
+  #       };
 
-        patches = [];
-  });
+  #       patches = [];
+  # });
 in
 {
   imports = [
@@ -68,10 +68,10 @@ in
 
   hardware.nvidia.forceFullCompositionPipeline = false;
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     # driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [ vulkan-loader ];
     extraPackages32 = with pkgs.pkgsi686Linux; [ vulkan-loader ];
   };
@@ -123,6 +123,8 @@ in
     enable = true;
     settings.PasswordAuthentication = false;
   };
+
+  services.onlyoffice.enable = true;
 
   services.printing = {
     enable = true;
@@ -251,7 +253,7 @@ in
 
     # Gamedev
     godot_4      
-    unityhub
+    # unityhub
 
     # Unreal Engine
     p4
@@ -274,15 +276,16 @@ in
     # Hyprland
     xdg-desktop-portal-hyprland
     greetd.tuigreet
-    shadps4b
+    # shadps4b
     nautilus
     gnome-calculator
     kdePackages.dolphin
-    # shadps4
+    shadps4
 
     # Creation
     kdePackages.kdenlive
     ardour
+    # lmms
     audacity
     guitarix
 

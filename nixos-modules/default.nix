@@ -209,22 +209,21 @@ in
     hyprland.withUWSM = true;
     gamemode.enable = true;
     gamemode.enableRenice = true;
-    # gamescope.enable = true;
-    # gamescope.capSysNice = true;
-    # gamescope.args = [
-    #   "--expose-wayland"
-    #   # "--backend wayland"
-    #   # "--hdr-enabled"
-    #   # "--immediate-flips"
-    #   "-W 3840"
-    #   "-H 2160"
-    #   "-w 3840"
-    #   "-h 2160"
-    #   # "-b"
-    #   "-r 144"
-    #   "-o 144"
-    #   # "--adaptive-sync"
-    # ];
+    gamescope.enable = true;
+    gamescope.capSysNice = true;
+    gamescope.args = [
+      "--expose-wayland"
+      "--backend wayland"
+      # "--hdr-enabled"
+      "--immediate-flips"
+      "-W 3840"
+      "-H 2160"
+      "-w 3840"
+      "-h 2160"
+      "-r 144"
+      "-o 144"
+      "--adaptive-sync"
+    ];
     hyprlock.enable = true;
   };
 

@@ -43,6 +43,8 @@ in
     };
   };
 
+  programs.onlyoffice.enable = true;
+
   programs.vesktop = {
     enable = true;
   };
