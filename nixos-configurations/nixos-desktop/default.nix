@@ -43,7 +43,8 @@ in
       consoleMode = "max";
       editor = false;
     };
-    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
     kernelParams = [
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       "module_blacklist=amdgpu"
@@ -328,7 +329,9 @@ in
     serviceConfig = {
       Type = "simple";
       # ExecStart = ''${pkgs.p4d}/bin/p4d -p 1666 -r /mnt/sdb2/Git/P4ROOT -xD LILAC20250610'';
-      ExecStart = ''${pkgs.p4d}/bin/p4d -p 192.168.50.158:1666 -r /mnt/sdb2/Git/P4ROOT'';
+      ExecStart = ''${pkgs.p4d}/bin/p4d -p 192.168.1.183:1666 -r /mnt/sdb2/Git/P4ROOT'';
+      Restart="on-failure";
+      RestartSec="5s";
     };
   };
 
