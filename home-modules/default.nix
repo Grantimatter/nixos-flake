@@ -17,6 +17,7 @@
       eww
       hyprland
       themes
+      zen-browser
       ;
   };
 
@@ -28,7 +29,7 @@
     ];
   };
 
-  qt.enable = true;
+  # qt.enable = true;
 
   nixpkgs.config = import ../nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ../nixpkgs-config.nix;
