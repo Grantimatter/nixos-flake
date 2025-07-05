@@ -1,4 +1,4 @@
-{ config, inputs, lib, modulesPath, pkgs, ... }:
+{ config, inputs, lib, modulesPath, pkgs, pkgs-stable, ... }:
 let
   #  shadps4b = pkgs.shadps4.overrideAttrs (oa: {
   #       version = "0.6.0";
@@ -13,6 +13,11 @@ let
 
   #       patches = [];
   # });
+  # pkgs-unstable = import nixpkgs-unstable { inherit system; };
+  inherit (pkgs) system;
+  inherit (inputs)
+    nixpkgs-stable;
+  pkgs-stable = import nixpkgs-stable { inherit system; };
 in
 {
   imports = [
@@ -44,7 +49,7 @@ in
       editor = false;
     };
     # kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       "module_blacklist=amdgpu"
@@ -244,7 +249,7 @@ in
     };
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     # Dev
     git
     helix
@@ -286,7 +291,6 @@ in
     # Creation
     kdePackages.kdenlive
     ardour
-    # lmms
     audacity
     guitarix
 
@@ -298,7 +302,11 @@ in
 
     # Printers (yay)
     naps2
-  ];
+  ])
+  ++
+  (with pkgs-stable; [
+    lmms
+  ]);
 
   programs = {
     adb = {
