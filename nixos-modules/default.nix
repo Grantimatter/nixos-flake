@@ -60,15 +60,13 @@ in
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.catppuccin.nixosModules.catppuccin
-    # inputs.rust-overlay.overlays.default
-    #../overlays
   ];
 
   nixpkgs.config = import ../nixpkgs-config.nix;
 
   environment = {
     pathsToLink = [ "/share/zsh" ];
-    systemPackages = systemPackages ++ [ inputs.zen-browser.packages.x86_64-linux.default ];
+    systemPackages = systemPackages;
   };
   
   documentation = {
