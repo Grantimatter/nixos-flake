@@ -1,4 +1,5 @@
 { inputs, catppuccin, config, pkgs, lib, ...}:
+
 let
   cursor_theme = "catppuccin-${catppuccin.flavor}-${catppuccin.accent}-cursors";
   cursor_size = 32;
@@ -57,7 +58,7 @@ in
   # Hyprland Config
   
   wayland.windowManager.hyprland.plugins = [
-    pkgs.hyprlandPlugins.hypr-dynamic-cursors
+    # pkgs.hyprlandPlugins.hypr-dynamic-cursors
     pkgs.hyprlandPlugins.hy3
   ];
 
@@ -70,15 +71,11 @@ in
   ];
   
   wayland.windowManager.hyprland.settings = {
-    # inherit theme_config;
-    # "#Catppuccin Theme" = theme_config;
-    # "$theme" = "${theme_name}";
     "$terminal" = "uwsm-app -- ghostty";
     "$shell" = "fish";
     # Yazi using fish function (y)
     "$fileManager" = "uwsm-app -- nautilus";
-    # "$menu" = "rofi -show drun -run-command \"uwsm-app -- {cmd}\"";
-    "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes";
+    "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
     # "$run" = "uwsm-app fuzzel --";
     # "$window" = "";
     # "$window" = "rofi -show window";
@@ -282,7 +279,7 @@ in
       # Scaling
       "GDK_SCALE,1"
       "GDK_DPI_SCALE = 1"
-      "QT_SCALE_FACTOR = \"1\""
+      "QT_SCALE_FACTOR = \"1.25\""
       "QT_AUTO_SCREEN_SCALE_FACTOR,0"
       "XCURSOR_SIZE,${toString(cursor_size)}"
       "XDG_SCALE_FACTOR, 1"
