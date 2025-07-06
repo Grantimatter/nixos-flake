@@ -12,12 +12,12 @@
     "electron-25.9.0"
   ];
   
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-#  boot.loader.systemd-boot.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.loader.systemd-boot.enable = true;
   boot.plymouth.enable = true;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.device = "nodev";
+  # boot.loader.grub.useOSProber = true;
 
   programs.steam.enable = true;
 
@@ -29,16 +29,20 @@
   services.tailscale.enable = true;
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    # displayManager.gdm.enable = true;
     desktopManager.xterm.enable = false;
 #    displayManager.lightdm.enable = true;
 #    displayManager.defaultSession = "none+i3";
 #    windowManager.i3.enable = true;
 
     excludePackages = [ pkgs.xterm ];
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
+
+  services.desktopManager = {
+    gnome.enable = true;
+    cosmic.enable = true;
   };
 
   networking = {
