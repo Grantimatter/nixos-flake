@@ -278,11 +278,11 @@ in
       
       # Scaling
       "GDK_SCALE,1"
-      "GDK_DPI_SCALE = 1"
-      "QT_SCALE_FACTOR = \"1.25\""
+      "GDK_DPI_SCALE,1"
+      "QT_SCALE_FACTOR,1.25"
       "QT_AUTO_SCREEN_SCALE_FACTOR,0"
       "XCURSOR_SIZE,${toString(cursor_size)}"
-      "XDG_SCALE_FACTOR, 1"
+      "XDG_SCALE_FACTOR,1"
 
       # # Extra
       # "_JAVA_AWT_WM_NONREPARENTING=1"
