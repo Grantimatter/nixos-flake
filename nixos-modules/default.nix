@@ -26,11 +26,11 @@ let
 
       # Audio
       libbs2b
-      # lxqt.pavucontrol-qt
-      pavucontrol
+      pwvucontrol
       libsForQt5.qt5ct
       libsForQt5.qtstyleplugin-kvantum
       qjackctl
+      alsa-utils
 
       # Input
       evtest
@@ -137,7 +137,7 @@ in
     isNormalUser = true;
     home = "/home/grant";
     description = "Grant";
-    extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio"];
+    extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio" "audio" ];
     initialPassword = "password";
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFY4/o4gfaJwr/B0+aB51QwiOI4jGCYodnCWM7Pj8iYH grant wiswell@Grant-Desktop"

@@ -23,10 +23,12 @@ in
   imports = [
     ./hardware-configuration.nix
     ../nvidia.nix
+    inputs.musnix.nixosModules.musnix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   nixpkgs.hostPlatform = "x86_64-linux";
+  musnix.enable = true;
 
   boot = {
     plymouth = {
@@ -291,8 +293,17 @@ in
     # Creation
     kdePackages.kdenlive
     ardour
+    coppwr
     audacity
     guitarix
+    yabridge
+    yabridgectl
+    pianobooster
+
+    # VST3 plugin requirements
+    wineWowPackages.staging
+    mesa
+    libGL
 
     # Desktop
     rofi-wayland

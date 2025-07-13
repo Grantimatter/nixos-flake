@@ -47,6 +47,10 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    musnix = {
+      url = "github:musnix/musnix";
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake
