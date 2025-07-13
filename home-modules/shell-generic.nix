@@ -14,7 +14,7 @@ in
       inherit homeSwitch;
 
       vim = "nvim";
-      direnv-init = ''echo "use flake" >> .envrc'';
+      direnv-init = ''echo "use flake" >> .envrc && direnv allow'';
       ".." = "cd ..";
       "..." = "cd ../..";
       top = "btm";

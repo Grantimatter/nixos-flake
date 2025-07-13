@@ -1,4 +1,4 @@
-{ inputs, ezModules, catppuccin, lib, pkgs, ... }:
+{ ezModules, lib, pkgs, ... }:
 {
   imports = lib.attrValues {
     inherit (ezModules)
@@ -18,6 +18,7 @@
       hyprland
       themes
       zen-browser
+      direnv
       ;
   };
 
@@ -29,7 +30,6 @@
     ];
   };
 
-  # qt.enable = true;
 
   nixpkgs.config = import ../nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ../nixpkgs-config.nix;
