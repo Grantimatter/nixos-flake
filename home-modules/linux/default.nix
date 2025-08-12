@@ -49,12 +49,6 @@ in
     enable = true;
   };
 
-  programs.thunderbird = {
-    enable = true;
-    profiles = {
-      
-    };
-  };
 
   services.spotifyd.enable = true;
   services.udiskie = {

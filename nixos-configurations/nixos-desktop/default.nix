@@ -207,7 +207,7 @@ in
     enable = true;    
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet -r --remember-session --time --user-menu --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red";
+        command = "${pkgs.tuigreet}/bin/tuigreet -r --remember-session --time --user-menu --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red";
       };
     };
   };
@@ -231,6 +231,22 @@ in
     desktopManager.xterm.enable = false;
     excludePackages = [ pkgs.xterm ];
 #    layout = "us";
+  };
+
+  services.pipewire = {
+    extraConfig.pipewire = {
+      "01-quantum" = {
+        "context.properties" = {
+          "default.clock.rate" = 192000;
+          "default.clock.allowed-rates" = [ 44100 48000 88200 96000 192000 ];
+          "default.clock.min-quantum" = 16;
+          "default.clock.max-quantum" = 1024;
+          "default.clock.quantum" = 64;
+          "default.clock.quantum-floor" = 4;
+          "default.clock.quantum-limit" = 8192;
+        };
+      };
+    };
   };
 
   networking = {
@@ -283,7 +299,7 @@ in
 
     # Hyprland
     xdg-desktop-portal-hyprland
-    greetd.tuigreet
+    tuigreet
     # shadps4b
     nautilus
     gnome-calculator
@@ -301,7 +317,7 @@ in
     pianobooster
 
     # VST3 plugin requirements
-    wineWowPackages.staging
+    wineWowPackages.yabridge
     mesa
     libGL
 

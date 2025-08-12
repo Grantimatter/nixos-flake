@@ -15,8 +15,8 @@ in
     flavor = catppuccin.flavor;
     accent = catppuccin.accent;
 
-    gtk.enable = true;
-    gtk.icon.enable = true;
+    # gtk.enable = true;
+    # gtk.icon.enable = true;
 
     atuin.enable = false;
     starship.enable = true;

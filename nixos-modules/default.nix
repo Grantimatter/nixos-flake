@@ -24,6 +24,9 @@ let
       home-manager
       tealdeer
 
+      # Media
+      emulsion # Image Viewer
+
       # Audio
       libbs2b
       pwvucontrol
@@ -38,9 +41,6 @@ let
       smile
 
       kdePackages.polkit-kde-agent-1
-      # wine64
-      # wine-wayland
-      # wine64Packages.wayland
     ];
 in
 {

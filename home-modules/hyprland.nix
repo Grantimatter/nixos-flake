@@ -239,7 +239,7 @@ in
     ];
 
     cursor = {
-      no_hardware_cursors = true;
+      no_hardware_cursors = 1;
     };
 
     env = [
@@ -322,8 +322,8 @@ in
     };
 
     render = {
-      explicit_sync = 1;
-      direct_scanout = true;
+      direct_scanout = 2;
+      cm_auto_hdr = 1;
     };
     
     decoration = {
@@ -335,11 +335,6 @@ in
         range = 4;
         render_power = 3;
       };
-      #shadow = 1;
-      # shadow_range = 20;
-      # shadow_render_power = 2;
-      # "col.shadow" = "rgba(00000044)";
-      # shadow_offset = "0 0";
       blur = {
         enabled = 1;
         size = 8;
@@ -369,6 +364,7 @@ in
 
     misc = {
       vfr = true;
+      vrr = 1;
       animate_manual_resizes = true;
       force_default_wallpaper = 0;
     };
