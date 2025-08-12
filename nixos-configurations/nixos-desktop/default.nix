@@ -302,6 +302,7 @@ in
     tuigreet
     # shadps4b
     nautilus
+    cosmic-files
     gnome-calculator
     kdePackages.dolphin
     shadps4
