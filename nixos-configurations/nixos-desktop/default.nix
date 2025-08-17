@@ -354,7 +354,12 @@ in
     partition-manager.enable = true;
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;
-    nix-ld.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        kdePackages.wayland
+      ];
+    };
   };
 
   systemd.services.p4d-service = {
