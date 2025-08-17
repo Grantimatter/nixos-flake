@@ -23,6 +23,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ../nvidia.nix
+    ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -354,12 +355,6 @@ in
     partition-manager.enable = true;
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        kdePackages.wayland
-      ];
-    };
   };
 
   systemd.services.p4d-service = {
