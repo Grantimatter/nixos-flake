@@ -35,7 +35,7 @@ in
       duf
     	# rustscan
       
-      jq
+    	jaq
     	# tailspin # Commented due to build error
     	jless
     	grex
