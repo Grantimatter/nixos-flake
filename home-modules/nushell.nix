@@ -11,6 +11,6 @@
     # envFile = ''
       
     # '';
-    shellAliases = config.home.shellAliases;
+    # shellAliases = config.home.shellAliases;
   };
 }

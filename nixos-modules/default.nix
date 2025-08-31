@@ -9,7 +9,6 @@ let
       hyprpaper
       hyprcursor
       hyprpicker
-      eww
       kdePackages.xwaylandvideobridge
 
       # Theming
@@ -224,6 +223,10 @@ in
     ];
     hyprlock.enable = true;
   };
+
+  # programs.hyprlock.settings = {
+    
+  # };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

@@ -1,15 +1,22 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 let
-  inherit (pkgs.stdenv) isLinux;
-  inherit (lib) optionals attrValues;
-  inherit (config.home) homeDirectory;
+  inherit (lib) attrValues;
 in
 {
   programs.helix = {
     enable = true;
     defaultEditor = true;
     settings = {
-     # theme = "catppuccin_mocha"; 
+      keys.normal = {
+        C-right = "jump_view_right";
+        C-left = "jump_view_left";
+        C-up = "jump_view_up";
+        C-down = "jump_view_down";
+        C-A-v = "vsplit";
+        C-A-h = "hsplit";
+        C-A-c = "wclose";
+        C-A-w = ":bclose";
+      };
       editor = {
         line-number = "relative";
         scrolloff = 15;
@@ -50,6 +57,9 @@ in
           language-servers = [ "marskman" "markdown-oxide" "lsp-ai" ];
         }
       ];
+      language-server.rust-analyzer.config = {
+        check.command = "clippy";
+      };
       language-server.lsp-ai = {
         command = "${pkgs.lsp-ai}/bin/lsp-ai";
         config = {
@@ -153,6 +163,7 @@ in
 
         # Formatters
         nixpkgs-fmt
+        kdlfmt
         ;
     };
   };

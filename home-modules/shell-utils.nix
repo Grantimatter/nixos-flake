@@ -4,9 +4,7 @@ let
   inherit (lib) optionals attrValues;
 in
 {
-  home.packages = attrValues
-  {
-    inherit (pkgs)
+  home.packages = with pkgs; [
       # cargo
       # rustc
       python3
@@ -27,8 +25,10 @@ in
       eza
       ripgrep
     	ripgrep-all
-      bat
+      # bat
+      bat-extras.batman
     	fd
+    	fzf
     	procs
     	sd
     	du-dust
@@ -41,8 +41,7 @@ in
     	grex
       glow
       killall
-      ;
-  };
+  ];
 
   services.tldr-update.enable = true;
 
@@ -50,6 +49,8 @@ in
     gitui.enable = true;
     git-cliff.enable = true;
     bun.enable = true;
+    bat.enable = true;
+
     superfile = {
       enable = true;
       settings = {
@@ -69,6 +70,7 @@ in
       enableBashIntegration = true;
       enableFishIntegration = true;
       enableZshIntegration = true;
+      enableNushellIntegration = true;
     };
 
     zoxide = {
@@ -104,11 +106,6 @@ in
       enable = true;
     };
 
-    #zellij = {
-    #  enable = true;
-    #  enableZshIntegration = true;
-    #  enableBashIntegration = true;
-    #};
 
     #alacritty = {
     #  enable = true;

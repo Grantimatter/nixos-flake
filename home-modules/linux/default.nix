@@ -1,39 +1,4 @@
-{ lib, pkgs, ...}:
-let
-  inherit (lib) attrValues;
-  
-  wrapElectronApp = appName: appPkg: pkgs.symlinkJoin {
-    name = "${appName}-wrapped";
-    paths = [ appPkg ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/${appName} \
-        --add-flags "--enable-features=WaylandLinuxDrmSyncobj"
-    '';
-  };
-  
-  packages = with (pkgs); [
-    libreoffice
-    dmenu
-    kdePackages.spectacle
-    prismlauncher
-    webcord-vencord
-    discord
-    catppuccin-discord
-    # vesktop
-    vlc
-    # spotify
-    # spotify-player
-    # spotify-qt
-    blender
-    gimp
-    wl-clipboard-rs
-  ] ++ [
-    # (wrapElectronApp "vesktop" pkgs.vesktop)
-    (wrapElectronApp "obsidian" pkgs.obsidian)
-    (wrapElectronApp "spotify" pkgs.spotify)
-  ];
-in
+{ pkgs, ...}:
 {
   programs.firefox = {
     enable = true;
@@ -49,13 +14,26 @@ in
     enable = true;
   };
 
+  programs.obsidian.enable = true;
 
   services.spotifyd.enable = true;
   services.udiskie = {
     enable = true;
   };
 
-  home = {
-    inherit packages;
-  };
+  home.packages = with (pkgs); [
+    libreoffice
+    dmenu
+    kdePackages.spectacle
+    prismlauncher
+    webcord-vencord
+    discord
+    vlc
+    spotify
+    spotify-player
+    blender
+    gimp
+    wl-clipboard-rs
+  ];
+
 }

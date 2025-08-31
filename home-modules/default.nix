@@ -19,6 +19,7 @@
       themes
       zen-browser
       direnv
+      zellij
       ;
   };
 

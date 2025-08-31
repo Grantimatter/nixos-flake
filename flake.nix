@@ -51,6 +51,8 @@
     musnix = {
       url = "github:musnix/musnix";
     };
+
+    vicinae.url = "github:tomromeo/vicinae-nix";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake

@@ -9,9 +9,15 @@ let
   };
 in
 {
-  # imports = [
-  #   inputs.catppuccin.homeModules.catppuccin
-  # ];
+  imports = [
+    inputs.vicinae.homeManagerModules.default
+  ];
+
+  # services.vicinae = {
+  #   enable = true;
+  #   autoStart = true;
+  # };
+
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   # home.sessionVariables.ROFI_WAYLAND = "1";
@@ -74,8 +80,9 @@ in
     "$terminal" = "uwsm-app -- ghostty";
     "$shell" = "fish";
     # Yazi using fish function (y)
-    "$fileManager" = "uwsm-app -- nautilus";
+    "$fileManager" = "uwsm-app -- cosmic-files";
     "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
+    # "$menu" = "uwsm-app -- vicinae";
     # "$run" = "uwsm-app fuzzel --";
     # "$window" = "";
     # "$window" = "rofi -show window";
@@ -148,7 +155,7 @@ in
     ];
 
     monitor = [
-      "DP-3, highres@highrr, auto, 1, vrr, 1"
+      "DP-3, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
       # ", highres@highrr, auto, 1"
     ];
     
@@ -228,10 +235,13 @@ in
     exec-once = [
       #"waybar"
       "uwsm-app -- hyprpaper"
-      "uwsm-app -- clipse -listen"
+      # "uwsm-app -- clipse -listen"
       # "systemctl --user start plasma-polkit-agent"
       # "systemctl --user start polkit-agent"
+      # "systemctl --user start clipse.service"
       "systemctl --user start hyprpolkitagent"
+      # "systemctl --user enable --now clipse.service"
+      "systemctl --user enable --now hypridle.service"
       "walker --gapplication-service"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "dbus-update-activation-environment --systemd --all"
@@ -384,15 +394,8 @@ in
     };
   };
 
-  # Cursor Theme
-  # home.file.".local/share/icons/${theme_name}".source = "${theme_pkg}/share/icons/${theme_name}-cursors";
-
   # Wallpaper
   home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
-
-  # programs.rofi = {
-  #   enable = true;
-  # };
 
   programs.fuzzel.enable = true;
 
@@ -422,30 +425,29 @@ in
     settings = {
         general = {
           lock_cmd = "pidof hyprlock || hyprlock";       # avoid starting multiple hyprlock instances.
-          before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
-          # before_sleep_cmd = "";
+          # before_sleep_cmd = "loginctl lock-session";    # lock before suspend.
           # after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
         };
 
       listener = [
+        # {
+        #   timeout = 150;                                  # 2.5min.
+        #   "on-timeout" = "brightnessctl -s set 10";       # set monitor backlight to minimum, avoid 0 on OLED monitor.
+        #   "on-resume" = "brightnessctl -r";               # monitor backlight restore.
+        # }
         {
-          timeout = 150;                                    # 2.5min.
-          "on-timeout" = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
-          "on-resume" = "brightnessctl -r";                 # monitor backlight restore.
+          timeout = 600;                                    # 10min
+          on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
         }
 
         # {
-        #   timeout = 300;                                    # 5min
-        #   on-timeout = "loginctl lock-session";             # lock screen when timeout has passed
-        # }
-        # {
-        #   timeout = 330;                                    # 5.5min
+        #   timeout = 1800;                                   # 30min
         #   on-timeout = "hyprctl dispatch dpms off";         # screen off when timeout has passed
         #   on-resume = "hyprctl dispatch dpms on";           # screen on when activity is detected after timeout has fired.
         # }
         # {
-        #   timeout = 1800;                                  # 30min
-        #   on-timeout = "systemctl suspend";                # suspend pc
+        #   timeout = 1800;                                 # 30min
+        #   on-timeout = "systemctl suspend";               # suspend pc
         # }
       ];
     };

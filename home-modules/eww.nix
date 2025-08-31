@@ -1,13 +1,6 @@
-{ config, pkgs, ...}:
-let
-  inherit (config.xdg)
-      configHome
-    ;
-in
 {
   programs.eww = {
-    enable = false;
-    configDir = ./eww-config-dir;
+    enable = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
     enableFishIntegration = true;

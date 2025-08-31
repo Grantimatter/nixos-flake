@@ -9,12 +9,11 @@ let
 in
 {
   home = {
-    packages = [ pkgs.powershell ];
     shellAliases = {
       inherit homeSwitch;
 
       vim = "nvim";
-      direnv-init = ''echo "use flake" >> .envrc && direnv allow'';
+      direnv-init = ''echo "use flake" >> .envrc; direnv allow'';
       ".." = "cd ..";
       "..." = "cd ../..";
       top = "btm";
@@ -38,9 +37,4 @@ in
       SOPS_AGE_KEY_FILE = config.xdg.configHome + "/sops/keys/age/keys.txt";
     };
   };
-
-  xdg.configFile."powershell/Microsoft.PowerShell_profile.ps1".text = ''
-    Invoke-Expressin (&staship init powershell)
-    Set-PSReadlineOption -EditMode Vi -ViModeIndicator Cursor
-  '';
 } 

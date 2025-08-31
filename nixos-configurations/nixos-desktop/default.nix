@@ -42,7 +42,6 @@ in
            ];
         })
       ];
-      # theme = "lone";
     };
     consoleLogLevel = 3;
     initrd.verbose = false;
@@ -51,7 +50,6 @@ in
       consoleMode = "max";
       editor = false;
     };
-    # kernelPackages = pkgs.linuxPackages_latest;
     kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
@@ -287,6 +285,7 @@ in
 
     # Downloads
     motrix
+    unrar
 
     # Gaming
     lutris
@@ -294,6 +293,7 @@ in
     dualsensectl
     umu-launcher
     heroic
+    cabextract
 
     # Nvidia
     nvidia-vaapi-driver
@@ -304,6 +304,8 @@ in
     # shadps4b
     nautilus
     cosmic-files
+    cosmic-ext-calculator
+    cosmic-settings
     gnome-calculator
     kdePackages.dolphin
     shadps4

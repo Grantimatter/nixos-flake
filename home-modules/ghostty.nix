@@ -6,14 +6,23 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
     settings = {
-      theme = "catppuccin-mocha";
-      shell-integration = "fish";
+      # shell-integration = "fish";
       font-family = "FiraCode Nerd Font Mono";
       keybind = [
-        "alt+ctrl+u=resize_split:down,40"
-        "alt+ctrl+y=resize_split:up,40"
-        "alt+ctrl+l=resize_split:left,40"
-        "alt+ctrl+apostrophe=resize_split:right,40"
+        "ctrl+shift+o=unbind"
+        "ctrl+shift+e=unbind"
+        "ctrl+shift+i=unbind"
+        "ctrl+shift+n=unbind"
+        "ctrl+shift+w=unbind"
+        "ctrl+shift+t=unbind"
+        "ctrl+alt+left=unbind"
+        "ctrl+alt+right=unbind"
+        "ctrl+alt+up=unbind"
+        "ctrl+alt+down=unbind"
+        "ctrl+tab=unbind"
+        "ctrl+shift+tab=unbind"
+        "alt+left=unbind"
+        "alt+right=unbind"
       ];
     };
   };
