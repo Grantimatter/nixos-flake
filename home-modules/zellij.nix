@@ -6,7 +6,30 @@
     enableFishIntegration = true;
     exitShellOnExit = true;
 
+    layouts.minimal.layout._children = [
+      {
+        pane = {};
+      }
+      {
+        pane = {
+          size = 1;
+          borderless = true;
+          plugin.location = "zellij:compact-bar";
+        };
+      }
+    ];
+
+    settings.show_startup_tips = false;
+    settings.default_layout = "minimal";
+    settings.pane_frames = true;
+    settings.copy_on_select = false;
+
     settings.keybinds.normal._children = [
+      {
+        unbind = {
+          _args = [ "Ctrl h" ];
+        };
+      }
       {
         bind = {
           _args = [ "Ctrl Shift e" ];
@@ -28,37 +51,37 @@
       {
         bind = {
           _args = [ "Ctrl Alt Left" ];
-          MovePane  = [ "Left" ];
+          MovePane = [ "Left" ];
         };
       }
       {
         bind = {
           _args = [ "Ctrl Alt Up" ];
-          MovePane  = [ "Up" ];
+          MovePane = [ "Up" ];
         };
       }
       {
         bind = {
           _args = [ "Ctrl Alt Down" ];
-          MovePane  = [ "Down" ];
+          MovePane = [ "Down" ];
         };
       }
       {
         bind = {
           _args = [ "Ctrl Tab" ];
-          GoToNextTab = {};
+          GoToNextTab = { };
         };
       }
       {
         bind = {
           _args = [ "Ctrl Shift Tab" ];
-          GoToPreviousTab = {};
+          GoToPreviousTab = { };
         };
       }
       {
         bind = {
           _args = [ "Ctrl Shift w" ];
-          CloseTab = {};
+          CloseTab = { };
         };
       }
       {
@@ -96,62 +119,9 @@
       {
         bind = {
           _args = [ "Ctrl Shift f" ];
-          TogglePaneFrames = [];
+          TogglePaneFrames = [ ];
         };
       }
     ];
-
-    settings.show_startup_tips = false;
-    settings.default_layout = "minimal";
-    settings.pane_frames = true;
-    settings.copy_on_select = false;
-
-    layouts.minimal.layout._children = [
-      {
-        pane = {
-          size = 1;
-          borderless = true;
-          plugin.location = "zellij:compact-bar";
-        };
-      }
-      {
-        pane = {
-          size = "100%";
-          # borderless = true;
-        };
-      }
-    ];    
-
-    # layouts = {
-    #   default = {
-    #     layout = {
-    #       _children = [
-    #         {
-    #           default_tab_template = {
-    #             pane = {
-    #               size = 1;
-    #               borderless = true;
-    #             };
-    #           };
-    #         }
-    #         {
-    #           new_tab_template = {
-    #             pane = {
-    #               size = 1;
-    #               borderless = true;
-    #             };
-    #           };
-    #         }
-    #         # {
-    #         #   pane_template = {
-    #         #     # name = "pane-bl";
-    #         #     size = 1;
-    #         #     borderless = true;
-    #         #   };
-    #         # }
-    #       ];
-    #     };
-    #   };
-    # };
   };
 }
