@@ -1,22 +1,23 @@
-{ config, inputs, lib, modulesPath, pkgs, pkgs-stable, ... }:
+{
+  config,
+  inputs,
+  lib,
+  modulesPath,
+  pkgs,
+  pkgs-stable,
+  fetchzip,
+  buildDotnetModule,
+  ...
+}:
 let
-  #  shadps4b = pkgs.shadps4.overrideAttrs (oa: {
-  #       version = "0.6.0";
-        
-  #       src = pkgs.fetchFromGitHub {
-  #         owner = "shadps4-emu";
-  #         repo = "shadPS4";
-  #         tag = "v.0.6.0";
-  #         fetchSubmodules = true;
-  #         hash = "sha256-uzbeWhokLGvCEk3COXaJJ6DHvlyDJxj9/qEu2HnuAtI=";
-  #       };
-
-  #       patches = [];
-  # });
-  # pkgs-unstable = import nixpkgs-unstable { inherit system; };
+  jdkWithFX = pkgs.openjdk.override {
+    enableJavaFX = true;
+    openjfx_jdk = pkgs.openjfx.override { withWebKit = true; };
+  };
   inherit (pkgs) system;
   inherit (inputs)
-    nixpkgs-stable;
+    nixpkgs-stable
+    ;
   pkgs-stable = import nixpkgs-stable { inherit system; };
 in
 {
@@ -39,7 +40,7 @@ in
         (adi1090x-plymouth-themes.override {
           selected_themes = [
             "lone"
-           ];
+          ];
         })
       ];
     };
@@ -66,7 +67,10 @@ in
       "rd.systemd.show_status=auto"
     ];
     loader.timeout = 0;
-    kernelModules = [ "snd-seq" "snd-rawmidi" ];
+    kernelModules = [
+      "snd-seq"
+      "snd-rawmidi"
+    ];
   };
   # boot.extraModProbeConfig = ''
   # options nvidia_drm modeset=1
@@ -94,36 +98,60 @@ in
   fileSystems."/mnt/nvme0n1p2" = {
     device = "/dev/disk/by-uuid/3A828F16828ED633";
     fsType = "ntfs-3g";
-    options = ["rw" "uid=1000" "x-gvfs-show"];
+    options = [
+      "rw"
+      "uid=1000"
+      "x-gvfs-show"
+    ];
   };
 
   fileSystems."/mnt/sdb2" = {
     device = "/dev/disk/by-uuid/3E0C584A0C57FB7B";
     fsType = "ntfs";
     neededForBoot = false;
-    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+    options = [
+      "rw"
+      "uid=1000"
+      "x-gvfs-show"
+      "nofail"
+    ];
   };
 
   fileSystems."/mnt/NVMEG" = {
     device = "/dev/disk/by-uuid/70EC442EEC43ECC2";
     fsType = "ntfs";
     neededForBoot = false;
-    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+    options = [
+      "rw"
+      "uid=1000"
+      "x-gvfs-show"
+      "nofail"
+    ];
   };
 
   fileSystems."/mnt/Games" = {
     device = "/dev/disk/by-uuid/ee7603cd-7a67-4b24-a6c2-eecb0a92075c";
     neededForBoot = false;
     fsType = "ext4";
-    options = [ "nofail" "rw" "x-gvfs-show" "x-initrd.mount" ];
+    options = [
+      "nofail"
+      "rw"
+      "x-gvfs-show"
+      "x-initrd.mount"
+    ];
     # options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
   };
-  
+
   fileSystems."/mnt/sda2" = {
     device = "/dev/disk/by-uuid/C076DEC576DEBB7C";
     fsType = "ntfs";
     neededForBoot = false;
-    options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
+    options = [
+      "rw"
+      "uid=1000"
+      "x-gvfs-show"
+      "nofail"
+    ];
   };
 
   services.openssh = {
@@ -203,7 +231,7 @@ in
   services.deluge.enable = true;
   services.deluge.web.enable = true;
   services.greetd = {
-    enable = true;    
+    enable = true;
     settings = {
       default_session = {
         command = "${pkgs.tuigreet}/bin/tuigreet -r --remember-session --time --user-menu --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red";
@@ -229,7 +257,7 @@ in
     # displayManager.gdm.wayland = false;
     desktopManager.xterm.enable = false;
     excludePackages = [ pkgs.xterm ];
-#    layout = "us";
+    #    layout = "us";
   };
 
   services.pipewire = {
@@ -237,7 +265,13 @@ in
       "01-quantum" = {
         "context.properties" = {
           "default.clock.rate" = 192000;
-          "default.clock.allowed-rates" = [ 44100 48000 88200 96000 192000 ];
+          "default.clock.allowed-rates" = [
+            44100
+            48000
+            88200
+            96000
+            192000
+          ];
           "default.clock.min-quantum" = 16;
           "default.clock.max-quantum" = 1024;
           "default.clock.quantum" = 64;
@@ -266,78 +300,99 @@ in
     };
   };
 
-  environment.systemPackages = (with pkgs; [
-    # Dev
-    git
-    helix
-    adbtuifm
-    qemu
-    jetbrains.rider
+  environment.systemPackages =
+    (with pkgs; [
+      # Dev
+      git
+      helix
+      adbtuifm
+      qemu
+      jetbrains.rider
 
-    # Gamedev
-    godot_4      
-    # unityhub
+      # Gamedev
+      godot_4
+      # unityhub
 
-    # Unreal Engine
-    p4
-    p4d
-    p4v
+      # Unreal Engine
+      p4
+      p4d
+      p4v
 
-    # Downloads
-    motrix
-    unrar
+      # Downloads
+      motrix
+      unrar
 
-    # Gaming
-    lutris
-    atlauncher
-    dualsensectl
-    umu-launcher
-    heroic
-    cabextract
+      # Gaming
+      lutris
+      atlauncher
+      dualsensectl
+      umu-launcher
+      heroic
+      cabextract
+      glxinfo
 
-    # Nvidia
-    nvidia-vaapi-driver
+      ## Ryujinx
+      # ryujinx-new
+      ryubing
+      tkmm
+      jdkWithFX
+      xwayland-run
 
-    # Hyprland
-    xdg-desktop-portal-hyprland
-    tuigreet
-    # shadps4b
-    nautilus
-    cosmic-files
-    cosmic-ext-calculator
-    cosmic-settings
-    gnome-calculator
-    kdePackages.dolphin
-    shadps4
+      # Nvidia
+      nvidia-vaapi-driver
 
-    # Creation
-    kdePackages.kdenlive
-    ardour
-    coppwr
-    audacity
-    guitarix
-    yabridge
-    yabridgectl
-    pianobooster
+      # Hyprland
+      xdg-desktop-portal-hyprland
+      tuigreet
+      # shadps4b
+      nautilus
+      cosmic-files
+      cosmic-ext-calculator
+      cosmic-settings
+      gnome-calculator
+      kdePackages.dolphin
+      shadps4
 
-    # VST3 plugin requirements
-    wineWowPackages.yabridge
-    mesa
-    libGL
+      # Creation
+      kdePackages.kdenlive
+      ardour
+      coppwr
+      audacity
+      guitarix
+      yabridge
+      yabridgectl
+      pianobooster
 
-    # Desktop
-    rofi-wayland
-    brightnessctl
-    ddcutil
-    librewolf-wayland
+      # VST3 plugin requirements
+      wineWowPackages.yabridge
+      mesa
+      libGL
 
-    # Printers (yay)
-    naps2
-  ])
-  ++
-  (with pkgs-stable; [
-    lmms
-  ]);
+      # Desktop
+      amberol
+      termusic
+      rofi-wayland
+      brightnessctl
+      ddcutil
+      librewolf-wayland
+
+      # Printers (yay)
+      naps2
+    ])
+    ++ (with pkgs-stable; [
+      lmms
+    ]);
+
+  # nixpkgs.overlays = [
+  #   (final: prev: {
+  #     ryubing = prev.ryubing.override {
+  #       # extraPkgs = pkgs: with pkgs; [
+  #       #   xorg.libX11.dev
+  #       # ];
+  #       pname = "lol";
+  #     };
+  #   })
+  # ];
 
   programs = {
     adb = {
@@ -368,13 +423,12 @@ in
       Type = "simple";
       # ExecStart = ''${pkgs.p4d}/bin/p4d -p 1666 -r /mnt/sdb2/Git/P4ROOT -xD LILAC20250610'';
       ExecStart = ''${pkgs.p4d}/bin/p4d -p 192.168.1.183:1666 -r /mnt/sdb2/Git/P4ROOT'';
-      Restart="on-failure";
-      RestartSec="5s";
+      Restart = "on-failure";
+      RestartSec = "5s";
     };
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
 
   system.stateVersion = "23.11";
 }
