@@ -81,8 +81,8 @@ in
     "$shell" = "fish";
     # Yazi using fish function (y)
     "$fileManager" = "uwsm-app -- cosmic-files";
-    "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
-    # "$menu" = "uwsm-app -- vicinae";
+    # "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
+    "$menu" = "uwsm-app -- vicinae";
     # "$run" = "uwsm-app fuzzel --";
     # "$window" = "";
     # "$window" = "rofi -show window";
