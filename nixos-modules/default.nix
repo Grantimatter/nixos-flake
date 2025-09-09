@@ -142,6 +142,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFY4/o4gfaJwr/B0+aB51QwiOI4jGCYodnCWM7Pj8iYH grant wiswell@Grant-Desktop"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMpXeGgPkUi9Vfb3LBinNk03/x07y4pYoHcRWcReZ4E grant@wsl"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJDMez1O0MFXBZS1vQ6lYBb4SiGZwmlDwMzeJtdXIQLu grant@acer-laptop"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyq7bB/Hdd8s2ZY5G2iB9w4O9DKd0EtvCU6wpjAp1n2 predator-laptop"
     ];
   };
 
