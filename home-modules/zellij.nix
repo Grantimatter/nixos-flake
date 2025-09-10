@@ -4,7 +4,8 @@
     enableZshIntegration = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
-    exitShellOnExit = true;
+    # exitShellOnExit = true;
+    attachExistingSession = true;
 
     layouts.minimal.layout._children = [
       {
