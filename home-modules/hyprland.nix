@@ -398,6 +398,10 @@ in
   home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
 
   programs.fuzzel.enable = true;
+  programs.hyprlock.enable = true;
+  # programs.hyprlock.settings = {
+    
+  # };
 
   gtk = {
     enable = true;

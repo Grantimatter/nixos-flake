@@ -222,7 +222,7 @@ in
       "-o 144"
       "--adaptive-sync"
     ];
-    hyprlock.enable = true;
+    # hyprlock.enable = true;
   };
 
   # programs.hyprlock.settings = {
