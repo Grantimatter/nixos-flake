@@ -84,7 +84,6 @@
       firefox
       wezterm
       #wowup-cf
-      discord
       r2modman
       deluge
       ;

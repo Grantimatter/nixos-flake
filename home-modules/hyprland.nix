@@ -13,10 +13,10 @@ in
     inputs.vicinae.homeManagerModules.default
   ];
 
-  # services.vicinae = {
-  #   enable = true;
-  #   autoStart = true;
-  # };
+  services.vicinae = {
+    enable = true;
+    autoStart = true;
+  };
 
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -82,7 +82,7 @@ in
     # Yazi using fish function (y)
     "$fileManager" = "uwsm-app -- cosmic-files";
     # "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
-    "$menu" = "uwsm-app -- vicinae";
+    "$menu" = "uwsm-app -- vicinae toggle";
     # "$run" = "uwsm-app fuzzel --";
     # "$window" = "";
     # "$window" = "rofi -show window";
@@ -235,6 +235,7 @@ in
     exec-once = [
       #"waybar"
       "uwsm-app -- hyprpaper"
+      "uwsm-app -- vicinae server -d"
       # "uwsm-app -- clipse -listen"
       # "systemctl --user start plasma-polkit-agent"
       # "systemctl --user start polkit-agent"

@@ -114,9 +114,19 @@ in
 
     firewall = {
       allowedTCPPorts = [
-        1666 # P4 (Perforce)
-        8096 # Jellyfin HTTP
-        8920 # Jellyfin HTTPS
+        1666  # P4 (Perforce)
+        8096  # Jellyfin HTTP
+        8920  # Jellyfin HTTPS
+
+        # Sunshine
+        47984
+        47989
+        47990
+        48010 
+      ];
+      allowedUDPPortRanges = [
+        { from = 47998; to = 48000; }
+        { from = 8000; to = 8010; }
       ];
       enable = true;
       allowPing = true;

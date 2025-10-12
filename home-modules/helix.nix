@@ -12,6 +12,8 @@ in
         C-left = "jump_view_left";
         C-up = "jump_view_up";
         C-down = "jump_view_down";
+        C-y = "jump_forward";
+        C-u = "jump_backward";
         C-A-v = "vsplit";
         C-A-h = "hsplit";
         C-A-c = "wclose";
@@ -39,14 +41,27 @@ in
     };
     languages = {
       language = [
-        # {
-        #   name = "ai-complete";
-        #   file-types = [ "md" "rs" "toml" "nix" ];
-        #   language-servers = [ "lsp-ai" ];
-        # }
         {
           name = "rust";
           language-servers = [ "rust-analyzer" "lsp-ai" ];
+          # debugger = {
+          #   command = "bs";
+          #   name = "bugstalker";
+          #   # port-arg = "-p {}";
+          #   transport = "stdio";
+          #   templates = [{
+          #     name = "binary";
+          #     request = "launch";
+          #     completion = [{
+          #       completion = "filename";
+          #       name = "binary";
+          #     }];
+          #     args = {
+          #       program = "{0}";
+          #       # runInTerminal = true;
+          #     };
+          #   }];
+          # };
         }
         {
           name = "nix";
@@ -138,14 +153,13 @@ in
   };
 
   home = {
-    packages = (attrValues) {
-      inherit (pkgs)
+    packages = with pkgs; [
         # LSPs
         nil
         lsp-ai
-        
+       
         rust-analyzer
-        marksman
+        markdown-oxide
         lua-language-server
         typescript-language-server
         vscode-langservers-extracted
@@ -164,7 +178,12 @@ in
         # Formatters
         nixpkgs-fmt
         kdlfmt
-        ;
-    };
+
+        # Debuggers
+        bugstalker # Rust debugger
+
+        # Preview
+        gh-markdown-preview
+    ];
   };
 }

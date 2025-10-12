@@ -6,9 +6,11 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
     settings = {
-      # shell-integration = "fish";
       font-family = "FiraCode Nerd Font Mono";
       keybind = [
+        "ctrl+shift+c=copy_to_clipboard"
+
+        # Unbind
         "ctrl+shift+o=unbind"
         "ctrl+shift+e=unbind"
         "ctrl+shift+i=unbind"

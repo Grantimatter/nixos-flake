@@ -30,6 +30,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    eden = {
+      url = "github:grantimatter/eden-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     catppuccin.url = "github:catppuccin/nix";
 
     # Rust Overlay
@@ -52,7 +57,10 @@
       url = "github:musnix/musnix";
     };
 
-    vicinae.url = "github:tomromeo/vicinae-nix";
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake

@@ -23,7 +23,8 @@
     settings.show_startup_tips = false;
     settings.default_layout = "minimal";
     settings.pane_frames = true;
-    settings.copy_on_select = false;
+    settings.copy_on_select = true;
+    # settings.copy_clipboard = "system";
 
     settings.keybinds.normal._children = [
       {

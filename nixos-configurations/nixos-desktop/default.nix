@@ -139,7 +139,6 @@ in
       "x-gvfs-show"
       "x-initrd.mount"
     ];
-    # options = ["rw" "uid=1000" "x-gvfs-show" "nofail"];
   };
 
   fileSystems."/mnt/sda2" = {
@@ -219,17 +218,30 @@ in
   networking.firewall.allowPing = true;
   networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
 
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    # user = "grant";
-  };
   services.jellyfin = {
     enable = true;
   };
+  services.sunshine = {
+    enable = true;
+    openFirewall = true;
+    autoStart = true;
+    capSysAdmin = true;
+  };
 
-  services.deluge.enable = true;
-  services.deluge.web.enable = true;
+  services.n8n = {
+    enable = true;
+    openFirewall = true;
+    # settings = {
+    #   "N8N_PORT" = "5679";
+    # };
+  };
+
+  services.deluge = {
+    enable = true;
+    web.enable = true;
+    # declarative = true;
+  };
+
   services.greetd = {
     enable = true;
     settings = {
@@ -264,7 +276,7 @@ in
     extraConfig.pipewire = {
       "01-quantum" = {
         "context.properties" = {
-          "default.clock.rate" = 192000;
+          # "default.clock.rate" = 192000;
           "default.clock.allowed-rates" = [
             44100
             48000
@@ -272,11 +284,11 @@ in
             96000
             192000
           ];
-          "default.clock.min-quantum" = 16;
-          "default.clock.max-quantum" = 1024;
-          "default.clock.quantum" = 64;
-          "default.clock.quantum-floor" = 4;
-          "default.clock.quantum-limit" = 8192;
+          # "default.clock.min-quantum" = 16;
+          # "default.clock.max-quantum" = 1024;
+          # "default.clock.quantum" = 64;
+          # "default.clock.quantum-floor" = 4;
+          # "default.clock.quantum-limit" = 8192;
         };
       };
     };
@@ -330,6 +342,7 @@ in
       heroic
       cabextract
       glxinfo
+      steam-rom-manager
 
       ## Ryujinx
       # ryujinx-new
@@ -371,13 +384,16 @@ in
       # Desktop
       amberol
       termusic
-      rofi-wayland
+      rofi
       brightnessctl
       ddcutil
       librewolf-wayland
 
       # Printers (yay)
       naps2
+
+      # Automation
+      n8n
     ])
     ++ (with pkgs-stable; [
       lmms

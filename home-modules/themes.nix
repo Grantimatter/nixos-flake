@@ -24,15 +24,16 @@ in
     cursors.enable = true;
     flavor = catppuccin.flavor;
     accent = catppuccin.accent;
+    kvantum.apply = true;
 
     atuin.enable = false;
     starship.enable = true;
   };
 
-  qt = {
-    style.name = "kvantum";
-    platformTheme.name = "kvantum";
-  };
+  # qt = {
+  #   style.name = "kvantum";
+  #   platformTheme.name = "kvantum";
+  # };
 
   # Setup manual config files
 

@@ -26,8 +26,7 @@
     dmenu
     kdePackages.spectacle
     prismlauncher
-    webcord-vencord
-    discord
+    revolt-desktop
     vlc
     spotify
     spotify-player
