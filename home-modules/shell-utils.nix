@@ -35,17 +35,22 @@
   services.tldr-update.enable = true;
 
   programs = {
-    gitui.enable = true;
-    git-cliff.enable = true;
-    bun.enable = true;
+    atuin = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      enableNushellIntegration = true;
+    };
+
     bat.enable = true;
 
-    superfile = {
+    broot = {
       enable = true;
-      settings = {
-        theme = "catppuccin";
-      };
+      enableNushellIntegration = true;
     };
+
+    bun.enable = true;
 
     carapace = {
       enable = true;
@@ -54,22 +59,6 @@
       enableNushellIntegration = true;
     };
     
-    starship = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-      enableZshIntegration = true;
-      enableNushellIntegration = true;
-    };
-
-    zoxide = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
-
     fzf = {
       enable = true;
     };
@@ -83,29 +72,13 @@
        };
      };
 
-    lazydocker = {
-      enable = true;
-    };
-
-    yazi = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
+    git-cliff.enable = true;
 
     gh = {
       enable = true;
     };
 
-    atuin = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
+    lazydocker.enable = true;
 
     skim = {
       enable = true;
@@ -116,12 +89,36 @@
 
     ssh.enable = true;
 
+    starship = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+      enableNushellIntegration = true;
+    };
+
     vivid = {
       enable = true;
       activeTheme = "catppuccin-mocha";
       enableBashIntegration = true;
       enableFishIntegration = true;
       enableZshIntegration = true;
+    };
+
+    yazi = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      enableNushellIntegration = true;
+    };
+
+    zoxide = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      enableNushellIntegration = true;
     };
   };
 }
