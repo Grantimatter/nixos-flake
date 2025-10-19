@@ -1,15 +1,19 @@
+{ osConfig, ... }:
+let
+  inherit (osConfig.users) defaultUserShell;
+in
 {
   programs.zellij = {
     enable = true;
-    enableZshIntegration = true;
+    # enableZshIntegration = true;
     enableBashIntegration = true;
-    enableFishIntegration = true;
+    # enableFishIntegration = true;
     # exitShellOnExit = true;
     attachExistingSession = true;
 
     layouts.minimal.layout._children = [
       {
-        pane = {};
+        pane = { };
       }
       {
         pane = {
@@ -24,6 +28,7 @@
     settings.default_layout = "minimal";
     settings.pane_frames = true;
     settings.copy_on_select = true;
+    settings.default_shell = defaultUserShell;
     # settings.copy_clipboard = "system";
 
     settings.keybinds.normal._children = [

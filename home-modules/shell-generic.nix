@@ -3,6 +3,7 @@ let
   inherit (osConfig.networking) hostName;
   inherit (pkgs.stdenv) isLinux;
   inherit (config.home) username;
+  inherit (osConfig.users) defaultUserShell;
 
   homeSwitch = "home-manager switch --flake '/home/${username}/nixos-flake/#${username}@${hostName}'";
   nixosSwitch = "sudo nixos-rebuild switch --flake '/home/${username}/nixos-flake/#${hostName}'";
@@ -11,20 +12,14 @@ in
   home = {
     shellAliases = {
       inherit homeSwitch;
-
-      vim = "nvim";
-      direnv-init = ''echo "use flake" >> .envrc; direnv allow'';
-      ".." = "cd ..";
-      "..." = "cd ../..";
+      cat = "bat -p";
+      # direnv-init = ''echo "use flake" >> .envrc; direnv allow'';
       top = "btm";
       btop = "btm";
-      ls = "eza";
-      cat = "bat -p";
-      tree = "erd --layout inverted --icons --human";
-      grep = "rg";
       cd = "z";
-      nixshell = "nix-shell -c $SHELL";
-      nixdev = "nix develop -c $SHELL";
+      nixshell = "nix-shell -c ${defaultUserShell}";
+      nixdev = "nix develop -c ${defaultUserShell}";
+      tree = "erd --layout inverted --icons --human";
     } // (
       if isLinux then
         { inherit nixosSwitch; }

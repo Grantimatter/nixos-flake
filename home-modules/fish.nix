@@ -66,21 +66,17 @@ in
       fish_greeting = {
         body = '''';
       };
-      bt = {
-        body = ''
-          overskride
-        '';
-      };
-      y = {
-        body = ''
-          set tmp (mktemp -t "yazi-cwd.XXXXXX")
-          yazi $argv --cwd-file="$tmp"
-          if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-          builtin cd -- "$cwd"
-          end
-          rm -f -- "$tmp"
-        '';
-      };
+      ls.body = "eza";
+      cat.body = "bat -p";
+      bt.body = "overskride";
+      y.body = ''
+        set tmp (mktemp -t "yazi-cwd.XXXXXX")
+        yazi $argv --cwd-file="$tmp"
+        if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+        end
+        rm -f -- "$tmp"
+      '';
       link_report = {
         description = "Deluxe link info: hardlinks, symlinks, warnings";
         body = ''

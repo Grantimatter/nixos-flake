@@ -1,12 +1,7 @@
 {
-  config,
   inputs,
-  lib,
   modulesPath,
   pkgs,
-  pkgs-stable,
-  fetchzip,
-  buildDotnetModule,
   ...
 }:
 let
@@ -17,8 +12,15 @@ let
   inherit (pkgs) system;
   inherit (inputs)
     nixpkgs-stable
+    nixpkgs-master
     ;
   pkgs-stable = import nixpkgs-stable { inherit system; };
+  pkgs-master = import nixpkgs-master { inherit system; config = import ../../nixpkgs-config.nix; };
+  duckstation-wayland = pkgs-master.duckstation.overrideAttrs (oldAttrs: {
+    postInstall = (oldAttrs.postInstall or "") + ''
+      wrapProgram $out/bin/duckstation-qt --set QT_QPA_PLATFORM wayland
+    '';
+  });
 in
 {
   imports = [
@@ -26,6 +28,7 @@ in
     ../nvidia.nix
     ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
+    # inputs.eden.nixosModules.default
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
@@ -72,16 +75,11 @@ in
       "snd-rawmidi"
     ];
   };
-  # boot.extraModProbeConfig = ''
-  # options nvidia_drm modeset=1
-  # options nvidia_drm fbdev=1
-  # '';
 
   hardware.nvidia.forceFullCompositionPipeline = false;
 
   hardware.graphics = {
     enable = true;
-    # driSupport = true;
     enable32Bit = true;
     extraPackages = with pkgs; [ vulkan-loader ];
     extraPackages32 = with pkgs.pkgsi686Linux; [ vulkan-loader ];
@@ -93,7 +91,6 @@ in
   };
 
   hardware.i2c.enable = true;
-  #hardware.nvidia.powerManagement.enable = true;
 
   fileSystems."/mnt/nvme0n1p2" = {
     device = "/dev/disk/by-uuid/3A828F16828ED633";
@@ -231,15 +228,11 @@ in
   services.n8n = {
     enable = true;
     openFirewall = true;
-    # settings = {
-    #   "N8N_PORT" = "5679";
-    # };
   };
 
   services.deluge = {
     enable = true;
     web.enable = true;
-    # declarative = true;
   };
 
   services.greetd = {
@@ -264,19 +257,14 @@ in
 
   services.xserver = {
     enable = true;
-    # desktopManager.gnome.enable = true;
-    # displayManager.gdm.enable = true;
-    # displayManager.gdm.wayland = false;
     desktopManager.xterm.enable = false;
     excludePackages = [ pkgs.xterm ];
-    #    layout = "us";
   };
 
   services.pipewire = {
     extraConfig.pipewire = {
       "01-quantum" = {
         "context.properties" = {
-          # "default.clock.rate" = 192000;
           "default.clock.allowed-rates" = [
             44100
             48000
@@ -284,11 +272,6 @@ in
             96000
             192000
           ];
-          # "default.clock.min-quantum" = 16;
-          # "default.clock.max-quantum" = 1024;
-          # "default.clock.quantum" = 64;
-          # "default.clock.quantum-floor" = 4;
-          # "default.clock.quantum-limit" = 8192;
         };
       };
     };
@@ -321,18 +304,12 @@ in
       qemu
       jetbrains.rider
 
-      # Gamedev
-      godot_4
-      # unityhub
-
-      # Unreal Engine
-      p4
-      p4d
-      p4v
-
       # Downloads
       motrix
       unrar
+
+      # nix
+      cachix
 
       # Gaming
       lutris
@@ -344,27 +321,29 @@ in
       glxinfo
       steam-rom-manager
 
-      ## Ryujinx
-      # ryujinx-new
+      # Emulation
       ryubing
       tkmm
       jdkWithFX
       xwayland-run
 
+      mame-tools
+      duckstation-wayland
+      ares
+    
       # Nvidia
       nvidia-vaapi-driver
 
       # Hyprland
       xdg-desktop-portal-hyprland
       tuigreet
-      # shadps4b
       nautilus
       cosmic-files
       cosmic-ext-calculator
       cosmic-settings
       gnome-calculator
       kdePackages.dolphin
-      shadps4
+      # shadps4
 
       # Creation
       kdePackages.kdenlive
@@ -374,7 +353,7 @@ in
       guitarix
       yabridge
       yabridgectl
-      pianobooster
+      reaper
 
       # VST3 plugin requirements
       wineWowPackages.yabridge
@@ -387,7 +366,6 @@ in
       rofi
       brightnessctl
       ddcutil
-      librewolf-wayland
 
       # Printers (yay)
       naps2
@@ -399,49 +377,22 @@ in
       lmms
     ]);
 
-  # nixpkgs.overlays = [
-  #   (final: prev: {
-  #     ryubing = prev.ryubing.override {
-  #       # extraPkgs = pkgs: with pkgs; [
-  #       #   xorg.libX11.dev
-  #       # ];
-  #       pname = "lol";
-  #     };
-  #   })
-  # ];
-
   programs = {
     adb = {
       enable = true;
     };
+    # eden.enable = true;
     steam.enable = true;
     steam.extraCompatPackages = with pkgs; [
       proton-ge-bin
       gamemode
     ];
-    # steam.extraPackages = (pkgs: with pkgs; [
-    #   gamemode
-    # ]);
     steam.gamescopeSession.enable = true;
     steam.protontricks.enable = true;
     java.enable = true;
     partition-manager.enable = true;
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;
-  };
-
-  systemd.services.p4d-service = {
-    enable = true;
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    description = "P4 (Perforce Helix) Server";
-    serviceConfig = {
-      Type = "simple";
-      # ExecStart = ''${pkgs.p4d}/bin/p4d -p 1666 -r /mnt/sdb2/Git/P4ROOT -xD LILAC20250610'';
-      ExecStart = ''${pkgs.p4d}/bin/p4d -p 192.168.1.183:1666 -r /mnt/sdb2/Git/P4ROOT'';
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

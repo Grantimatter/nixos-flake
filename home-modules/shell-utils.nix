@@ -1,14 +1,6 @@
-{ config, lib, pkgs, ... }:
-let
-  inherit (pkgs.stdenv) isLinux;
-  inherit (lib) optionals attrValues;
-in
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
-      # cargo
-      # rustc
-      python3
-
       git
       git-lfs
       git-filter-repo
@@ -25,18 +17,15 @@ in
       eza
       ripgrep
     	ripgrep-all
-      # bat
       bat-extras.batman
     	fd
-    	fzf
     	procs
     	sd
     	du-dust
       duf
-    	# rustscan
       
     	jaq
-    	# tailspin # Commented due to build error
+    	tailspin # Commented due to build error
     	jless
     	grex
       glow
@@ -81,6 +70,10 @@ in
       enableNushellIntegration = true;
     };
 
+    fzf = {
+      enable = true;
+    };
+    
     git = {
       enable = true;
       delta.enable = true;
@@ -106,11 +99,6 @@ in
       enable = true;
     };
 
-
-    #alacritty = {
-    #  enable = true;
-    #};
-
     atuin = {
       enable = true;
       enableBashIntegration = true;
@@ -127,5 +115,13 @@ in
     };
 
     ssh.enable = true;
+
+    vivid = {
+      enable = true;
+      activeTheme = "catppuccin-mocha";
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+    };
   };
 }

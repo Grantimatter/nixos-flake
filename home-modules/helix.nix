@@ -1,7 +1,4 @@
-{ lib, pkgs, ... }:
-let
-  inherit (lib) attrValues;
-in
+{ pkgs, ... }:
 {
   programs.helix = {
     enable = true;
@@ -37,6 +34,7 @@ in
         inline-diagnostics = {
           cursor-line = "warning";
         };
+
       };
     };
     languages = {
@@ -150,6 +148,12 @@ in
         };
       };
     };
+    ignores = [
+      "!.gitignore"
+      ".build/"
+      "target/"
+      "flake.lock"
+    ];
   };
 
   home = {

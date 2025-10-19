@@ -1,12 +1,12 @@
 { pkgs, ...}:
 {
-  programs.firefox = {
-    enable = true;
-    policies = {
-      BlockAboutConfig = true;
-      ManualAppUpdateOnly = true;
-    };
-  };
+  # programs.firefox = {
+  #   enable = true;
+  #   policies = {
+  #     BlockAboutConfig = true;
+  #     ManualAppUpdateOnly = true;
+  #   };
+  # };
 
   programs.onlyoffice.enable = true;
 

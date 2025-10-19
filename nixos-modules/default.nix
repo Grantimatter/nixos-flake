@@ -1,6 +1,27 @@
 { inputs, modulesPath, catppuccin, pkgs, ... }:
-let
-  systemPackages = with pkgs; [
+{
+  time.timeZone = "US/Central";
+  i18n.defaultLocale = "en_US.UTF-8";
+  virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings.features.cdi = true;
+  virtualisation.docker.rootless.daemon.settings.featurse.cdi = true;
+  console.keyMap = "us";
+  systemd.services.upower.enable = true;
+  systemd.enableEmergencyMode = false;
+  services.pulseaudio.enable = false;
+  services.pulseaudio.extraConfig = "load-module module-combine-sink";
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.catppuccin.nixosModules.catppuccin
+  ];
+
+  nixpkgs.config = import ../nixpkgs-config.nix;
+
+  # environment.pathsToLink = [ "/share/zsh" ];
+  environment.systemPackages = with pkgs; [
       # Hyprland
       hyprpolkitagent
       hyprshot
@@ -17,6 +38,7 @@ let
       # Core
       bash
       zsh
+      nushell
       nnn
       coreutils
       usbutils
@@ -41,32 +63,6 @@ let
 
       kdePackages.polkit-kde-agent-1
     ];
-in
-{
-  time.timeZone = "US/Central";
-  i18n.defaultLocale = "en_US.UTF-8";
-  virtualisation.docker.enable = true;
-  virtualisation.docker.daemon.settings.features.cdi = true;
-  virtualisation.docker.rootless.daemon.settings.featurse.cdi = true;
-  console.keyMap = "us";
-  systemd.services.upower.enable = true;
-  systemd.enableEmergencyMode = false;
-  services.pulseaudio.enable = false;
-  services.pulseaudio.extraConfig = "load-module module-combine-sink";
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    inputs.catppuccin.nixosModules.catppuccin
-  ];
-
-  nixpkgs.config = import ../nixpkgs-config.nix;
-
-  environment = {
-    pathsToLink = [ "/share/zsh" ];
-    systemPackages = systemPackages;
-  };
   
   documentation = {
     enable = true;
@@ -79,6 +75,7 @@ in
 
     settings = {
       trusted-users = [ "@wheel" ];
+      auto-optimise-store = true;
     };
 
     gc = {
@@ -114,7 +111,6 @@ in
 
     firewall = {
       allowedTCPPorts = [
-        1666  # P4 (Perforce)
         8096  # Jellyfin HTTP
         8920  # Jellyfin HTTPS
 
@@ -140,7 +136,7 @@ in
 
   services.udisks2.enable = true;
 
-  users.defaultUserShell = pkgs.fish;
+  users.defaultUserShell = "${pkgs.nushell}/bin/nu";
 
   users.users.grant = {
     isNormalUser = true;
@@ -148,6 +144,7 @@ in
     description = "Grant";
     extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio" "audio" ];
     initialPassword = "password";
+    shell = pkgs.nushell;
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFY4/o4gfaJwr/B0+aB51QwiOI4jGCYodnCWM7Pj8iYH grant wiswell@Grant-Desktop"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMpXeGgPkUi9Vfb3LBinNk03/x07y4pYoHcRWcReZ4E grant@wsl"

@@ -1,18 +1,19 @@
-{ pkgs, config, inputs, ... }:
+{ ... }:
+let email = "grantwiswell@proton.me";
+in
 {
-  imports = [ inputs.eden.homeModules.default ];
   home = {
     username = "grant";
     stateVersion = "23.11";
     homeDirectory = "/home/grant";
-    sessionPath = [ "$HOME/.local/share/cargo/bin" ];
+    # sessionPath = [ "$HOME/.local/share/cargo/bin" ];
   };
 
   programs.git = {
     enable = true;
     lfs.enable = true;
     userName = "Grant Wiswell";
-    userEmail = "wiswellgrant@gmail.com";
+    userEmail = email;
     extraConfig = {
       init.defaultBranch = "main";
     };
@@ -20,22 +21,11 @@
 
   programs.jujutsu = {
     enable = true;
+    settings = {
+      user.name = "Grant Wiswell";
+      user.email = email;
+    };
   };
-
-  home.packages = with pkgs; [
-    lazyjj
-  ];
-
-  programs.nnn.enable = true;
-  programs.eden.enable = true;
-
-  # xdg.mime.defaultApplications = {
-  #   "text/html" = "zen.desktop";
-  # };
-
-  # users."grant".xdg.mimeApps = {
-  #   enable = true;
-  # };
 
   xdg.mimeApps = {
     enable = true;

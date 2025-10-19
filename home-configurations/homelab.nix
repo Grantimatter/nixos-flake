@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   home = {
     username = "homelab";
@@ -9,7 +9,7 @@
   programs.git = {
     enable = true;
     userName = "Grant Wiswell";
-    userEmail = "wiswellgrant@gmail.com";
+    userEmail = "grantwiswell@proton.me";
     extraConfig = {
       init.defaultBranch = "main";
     };

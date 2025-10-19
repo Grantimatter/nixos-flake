@@ -5,7 +5,7 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     enableFishIntegration = true;
-    enableNushellIntegration = true;
+    # enableNushellIntegration = true;
     icons = "auto";
     git = true;
 

@@ -1,4 +1,4 @@
-{ inputs, catppuccin, config, pkgs, lib, ...}:
+{ inputs, catppuccin, pkgs, osConfig, ...}:
 
 let
   cursor_theme = "catppuccin-${catppuccin.flavor}-${catppuccin.accent}-cursors";
@@ -7,6 +7,7 @@ let
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nixos-wallpaper-catppuccin-mocha.png";
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
   };
+  inherit (osConfig.users) defaultUserShell;
 in
 {
   imports = [
@@ -20,9 +21,6 @@ in
 
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
-  # home.sessionVariables.ROFI_WAYLAND = "1";
-  # wayland.windowManager.hyprland.systemd.variables = ["--all"];
-  # programs.wofi.enable = true;
 
   programs.mangohud = {
     enable = true;
@@ -59,17 +57,13 @@ in
     };
   };
 
-  # wayland.windowManager.hyprland.extraConfig = theme_config;
-
   # Hyprland Config
   
   wayland.windowManager.hyprland.plugins = [
-    # pkgs.hyprlandPlugins.hypr-dynamic-cursors
     pkgs.hyprlandPlugins.hy3
   ];
 
   wayland.windowManager.hyprland.importantPrefixes = [
-    # "#Catppuccin Theme"
     "$"
     "bezier"
     "name"
@@ -78,14 +72,9 @@ in
   
   wayland.windowManager.hyprland.settings = {
     "$terminal" = "uwsm-app -- ghostty";
-    "$shell" = "fish";
-    # Yazi using fish function (y)
+    "$shell" = "${defaultUserShell}";
     "$fileManager" = "uwsm-app -- cosmic-files";
-    # "$menu" = "uwsm-app -- fuzzel --dpi-aware=yes --launch-prefix=\"uwsm-app -- \"";
     "$menu" = "uwsm-app -- vicinae toggle";
-    # "$run" = "uwsm-app fuzzel --";
-    # "$window" = "";
-    # "$window" = "rofi -show window";
 
     "$mod" = "SUPER";
     "$shiftmod" = "SUPER_SHIFT";
@@ -138,11 +127,10 @@ in
       "tag +floating, title:^(Save As)"
       "tag +floating, class:naps2"
       "tag +floating, class:it.mijorus.smile"
-      # "tag +opac, class:(steam)"
-      # "tag +opac, class:(discord)"
       "opacity 0.95 override 0.9 override, tag:term"
       "opacity 0.95 override 0.9 override, tag:opac"
-      # xwaylandvideobridge
+
+      # xwaylandvideobridge #
       "opacity 0.0 override, class:.*xwaylandvideobridge"
       "noanim, class:.*xwaylandvideobridge"
       "noinitialfocus, class:.*xwaylandvideobridge"
@@ -156,8 +144,26 @@ in
 
     monitor = [
       "DP-3, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
-      # ", highres@highrr, auto, 1"
+      "HDMI-A-1, preferred@highrr, auto, 1, mirror, DP-3"
+      ", highres@highrr, auto, 1"
     ];
+
+    # monitorv2 = [
+    #   {
+    #     output = "DP-3";
+    #     mode = "highres@highrr";
+    #     scale = 1;
+    #     vrr = 1;
+    #     bitdepth = 10;
+    #   }
+    #   {
+    #     output = "HDMI-A-1";
+    #     mode = "highres@highrr";
+    #     scale = 1;
+    #     bitdepth = 10;
+    #     mirror = "DP-3";
+    #   }
+    # ];
     
     bind = [
       "$mod, F, fullscreen, 1"
@@ -169,7 +175,6 @@ in
       "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
-      # "$mod, W, exec, $window"
       "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
       "$mod, tab, hy3:togglefocuslayer"
       "$mod, P, exec, uwsm-app -- hyprpicker -a"
@@ -233,15 +238,12 @@ in
     ];
 
     exec-once = [
-      #"waybar"
       "uwsm-app -- hyprpaper"
       "uwsm-app -- vicinae server -d"
       # "uwsm-app -- clipse -listen"
-      # "systemctl --user start plasma-polkit-agent"
-      # "systemctl --user start polkit-agent"
       # "systemctl --user start clipse.service"
-      "systemctl --user start hyprpolkitagent"
       # "systemctl --user enable --now clipse.service"
+      "systemctl --user start hyprpolkitagent"
       "systemctl --user enable --now hypridle.service"
       "walker --gapplication-service"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
@@ -285,7 +287,6 @@ in
       "HYPRCURSOR_THEME,${cursor_theme}"
       "HYPRCURSOR_SIZE,${toString(cursor_size)}"
       "XCURSOR_THEME,${cursor_theme}"
-      # "XCURSOR_THEME,catppuccin-${catppuccin-home.flavor}-${catppuccin-home.accent}-cursors"
       
       # Scaling
       "GDK_SCALE,1"
@@ -349,6 +350,7 @@ in
       blur = {
         enabled = 1;
         size = 8;
+        passes = 2;
         ignore_opacity = 1;
         xray = false;
         new_optimizations = 1;
@@ -365,12 +367,9 @@ in
     };
 
     master = {
-      #new_is_master = false;
       new_on_top = false;
-      # no_gaps_when_only = false;
       orientation = "top";
       mfact = 0.6;
-      # always_center_master = false;
     };
 
     misc = {
@@ -398,11 +397,7 @@ in
   # Wallpaper
   home.file.".local/share/wallpapers/wallpaper".source = "${wallpaper}";
 
-  programs.fuzzel.enable = true;
   programs.hyprlock.enable = true;
-  # programs.hyprlock.settings = {
-    
-  # };
 
   gtk = {
     enable = true;
