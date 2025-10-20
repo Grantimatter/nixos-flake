@@ -28,7 +28,7 @@ in
     ../nvidia.nix
     ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
-    # inputs.eden.nixosModules.default
+    inputs.eden.nixosModules.default
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
@@ -77,6 +77,7 @@ in
   };
 
   hardware.nvidia.forceFullCompositionPipeline = false;
+  hardware.nvidia.open = true;
 
   hardware.graphics = {
     enable = true;
@@ -381,7 +382,7 @@ in
     adb = {
       enable = true;
     };
-    # eden.enable = true;
+    eden.enable = true;
     steam.enable = true;
     steam.extraCompatPackages = with pkgs; [
       proton-ge-bin

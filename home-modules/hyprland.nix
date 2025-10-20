@@ -122,6 +122,7 @@ in
       "tag +term, class:.*wezterm"
       "tag +floating, class:.*Calculator"
       "tag +floating, title:.*clipse"
+      "tag +floating, class:.*pwvucontrol"
       "tag +floating, title:.*\(Bitwarden Password Manager\).*"
       "tag +floating, class:.*SimpleScan"
       "tag +floating, title:^(Save As)"

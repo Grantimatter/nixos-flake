@@ -1,0 +1,10 @@
+(defwidget audio
+ (box
+    (audio-select)
+    (audio-volume))
+)
+
+(defwidget audio-select
+  "sel")
+(defwidget audio-volume
+  "vol")

@@ -55,6 +55,8 @@
       libsForQt5.qtstyleplugin-kvantum
       qjackctl
       alsa-utils
+      pulseaudio
+      pamixer
 
       # Input
       evtest

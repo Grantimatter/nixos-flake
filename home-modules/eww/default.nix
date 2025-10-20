@@ -1,3 +1,4 @@
+{ ... }:
 {
   programs.eww = {
     enable = true;
@@ -5,4 +6,7 @@
     enableZshIntegration = true;
     enableFishIntegration = true;
   };
+
+  xdg.configFile."eww".source = ./config;
+  xdg.configFile."eww".recursive = true;
 }
