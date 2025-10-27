@@ -8,10 +8,10 @@
 
   programs.git = {
     enable = true;
-    userName = "Grant Wiswell";
-    userEmail = "grantwiswell@proton.me";
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
+      user.name = "Grant Wiswell";
+      user.email = "grantwiswell@proton.me";
     };
   };
 

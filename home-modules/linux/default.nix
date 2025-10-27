@@ -28,6 +28,7 @@
     prismlauncher
     revolt-desktop
     vlc
+    loupe
     spotify
     spotify-player
     blender

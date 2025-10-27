@@ -12,9 +12,9 @@ in
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userName = "Grant Wiswell";
-    userEmail = email;
-    extraConfig = {
+    settings = {
+      user.name = "Grant Wiswell";
+      user.email = email;
       init.defaultBranch = "main";
     };
   };
@@ -40,6 +40,15 @@ in
       "application/x-extension-xht"= ["zen-twilight.desktop"]; 
       "application/x-extension-xhtml"= ["zen-twilight.desktop"]; 
       "application/xhtml+xml"= ["zen-twilight.desktop"]; 
+      "x-scheme-handler/chrome"=["zen-twilight.desktop"];
+      "x-scheme-handler/discord"=["vesktop.desktop"];
+      "x-scheme-handler/http"=["zen-twilight.desktop"];
+      "x-scheme-handler/https"=["zen-twilight.desktop"];
+      "inode/directory"=["com.system76.CosmicFiles.desktop"];
+
+      # Media
+      "image/jpeg" = ["org.gnome.Loupe.desktop"];
+      "image/png" = ["org.gnome.Loupe.desktop"];
     };
   };
 }

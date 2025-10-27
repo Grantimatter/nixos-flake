@@ -1,9 +1,6 @@
-{ ezModules, osConfig, ... }:
+{ osConfig, ... }:
 {
-  imports = [
-  ];
-
-  programs.ssh.enable = true;
+  # programs.ssh.enable = true;
 
   home = {
     username = "root";

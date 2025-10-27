@@ -1,10 +1,12 @@
-(defwidget audio
+(defwidget audio []
  (box
     (audio-select)
     (audio-volume))
 )
 
-(defwidget audio-select
-  "sel")
-(defwidget audio-volume
-  "vol")
+(defwidget audio-select []
+  (label :text "sel"))
+(defwidget audio-volume []
+  ; (eventbox :onhover "))
+  (label :text "vol")
+  )

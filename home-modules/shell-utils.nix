@@ -1,35 +1,35 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-      git
-      git-lfs
-      git-filter-repo
-      lazygit
-      cloudflared
+    git
+    git-lfs
+    git-filter-repo
+    lazygit
+    cloudflared
 
-      ffmpeg
-      wget
-      zip
-      unzip
+    ffmpeg
+    wget
+    zip
+    unzip
 
-      erdtree
-      bottom
-      eza
-      ripgrep
-    	ripgrep-all
-      bat-extras.batman
-    	fd
-    	procs
-    	sd
-    	du-dust
-      duf
-      
-    	jaq
-    	tailspin # Commented due to build error
-    	jless
-    	grex
-      glow
-      killall
+    erdtree
+    bottom
+    eza
+    ripgrep
+    ripgrep-all
+    bat-extras.batman
+    fd
+    procs
+    sd
+    du-dust
+    duf
+
+    jaq
+    tailspin # Commented due to build error
+    jless
+    grex
+    glow
+    killall
   ];
 
   services.tldr-update.enable = true;
@@ -58,19 +58,21 @@
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };
-    
+
     fzf = {
       enable = true;
     };
-    
+
     git = {
       enable = true;
-      delta.enable = true;
       extraConfig = {
         init.defaultBranch = "main";
         merge.conflictStyle = "diff3";
-       };
-     };
+      };
+    };
+
+    delta.enable = true;
+    delta.enableGitIntegration = true;
 
     git-cliff.enable = true;
 
@@ -86,8 +88,6 @@
       enableZshIntegration = true;
       enableFishIntegration = true;
     };
-
-    ssh.enable = true;
 
     starship = {
       enable = true;

@@ -12,6 +12,7 @@ in
 {
   imports = [
     inputs.vicinae.homeManagerModules.default
+    ./wired.nix
   ];
 
   services.vicinae = {
@@ -131,12 +132,6 @@ in
       "opacity 0.95 override 0.9 override, tag:term"
       "opacity 0.95 override 0.9 override, tag:opac"
 
-      # xwaylandvideobridge #
-      "opacity 0.0 override, class:.*xwaylandvideobridge"
-      "noanim, class:.*xwaylandvideobridge"
-      "noinitialfocus, class:.*xwaylandvideobridge"
-      "maxsize 1 1, class:.*xwaylandvideobridge"
-      "noblur, class:.*xwaylandvideobridge"
       "float, tag:floating*"
       "size 622 652, title:.*clipse"
       "stayfocused, title:.*clipse"
@@ -349,12 +344,12 @@ in
         render_power = 3;
       };
       blur = {
-        enabled = 1;
+        enabled = true;
         size = 8;
         passes = 2;
-        ignore_opacity = 1;
+        ignore_opacity = true;
         xray = false;
-        new_optimizations = 1;
+        new_optimizations = true;
         noise = 0.03;
         contrast = 1.0;
       };

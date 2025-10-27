@@ -20,7 +20,6 @@
 
   nixpkgs.config = import ../nixpkgs-config.nix;
 
-  # environment.pathsToLink = [ "/share/zsh" ];
   environment.systemPackages = with pkgs; [
       # Hyprland
       hyprpolkitagent
@@ -30,7 +29,6 @@
       hyprpaper
       hyprcursor
       hyprpicker
-      kdePackages.xwaylandvideobridge
 
       # Theming
       kdePackages.qtstyleplugin-kvantum

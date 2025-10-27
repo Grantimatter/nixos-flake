@@ -26,7 +26,7 @@
   home = {
     packages = [
       pkgs.bitwarden-cli
-      pkgs.calibre
+      # pkgs.calibre
       pkgs.zettlr
     ];
   };

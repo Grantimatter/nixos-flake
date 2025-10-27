@@ -15,12 +15,15 @@ let
     nixpkgs-master
     ;
   pkgs-stable = import nixpkgs-stable { inherit system; };
-  pkgs-master = import nixpkgs-master { inherit system; config = import ../../nixpkgs-config.nix; };
-  duckstation-wayland = pkgs-master.duckstation.overrideAttrs (oldAttrs: {
-    postInstall = (oldAttrs.postInstall or "") + ''
-      wrapProgram $out/bin/duckstation-qt --set QT_QPA_PLATFORM wayland
-    '';
-  });
+  pkgs-master = import nixpkgs-master {
+    inherit system;
+    config = import ../../nixpkgs-config.nix;
+  };
+  # duckstation-wayland = pkgs-master.duckstation.overrideAttrs (oldAttrs: {
+  #   postInstall = (oldAttrs.postInstall or "") + ''
+  #     wrapProgram $out/bin/duckstation-qt --set QT_QPA_PLATFORM wayland
+  #   '';
+  # });
 in
 {
   imports = [
@@ -151,6 +154,12 @@ in
     ];
   };
 
+  services.croc = {
+    enable = true;
+    openFirewall = true;
+    pass = "/run/secrets/croc";
+  };
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
@@ -212,9 +221,25 @@ in
     openFirewall = true;
   };
 
-  networking.firewall.enable = true;
-  networking.firewall.allowPing = true;
-  networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
+  networking = {
+    hostName = "nixos-desktop";
+
+    # Custom DNS - Disabled while using Pihole
+    networkmanager.enable = true;
+    networkmanager.dns = "none";
+    useDHCP = false;
+    dhcpcd.enable = false;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
+
+    firewall.enable = true;
+    firewall.allowPing = true;
+    firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
+  };
 
   services.jellyfin = {
     enable = true;
@@ -278,16 +303,15 @@ in
     };
   };
 
-  networking = {
-    hostName = "nixos-desktop";
-    networkmanager.enable = true;
-  };
-
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
+    
     settings.trusted-users = [
       "root"
     ];
+
+    settings.trusted-substituters = ["https://eden-flake.cachix.org"];
+    settings.trusted-public-keys = ["eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8="];
 
     gc = {
       automatic = true;
@@ -329,9 +353,10 @@ in
       xwayland-run
 
       mame-tools
-      duckstation-wayland
+      # duckstation-wayland
+      # duckstation
       ares
-    
+
       # Nvidia
       nvidia-vaapi-driver
 
