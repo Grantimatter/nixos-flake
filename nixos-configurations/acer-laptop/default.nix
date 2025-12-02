@@ -60,6 +60,7 @@
       nvidiaBusId = "PCI:1:0:0";
       sync.enable = true;
     };
+    open = false;
   };
 
   environment.systemPackages = lib.attrValues {
