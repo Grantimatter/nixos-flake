@@ -63,6 +63,7 @@
     open = false;
   };
 
+  environment.localBinInPath = true;
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git

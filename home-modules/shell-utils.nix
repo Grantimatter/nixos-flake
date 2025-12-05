@@ -21,7 +21,7 @@
     fd
     procs
     sd
-    du-dust
+    dust
     duf
 
     jaq
@@ -65,7 +65,7 @@
 
     git = {
       enable = true;
-      extraConfig = {
+      settings = {
         init.defaultBranch = "main";
         merge.conflictStyle = "diff3";
       };
