@@ -86,6 +86,7 @@
         "type": "github"
       }
     },
+<<<<<<< HEAD
     "eden": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -105,6 +106,28 @@
         "type": "github"
       }
     },
+||||||| parent of c2e912f (Setting up virtual display)
+=======
+    "eden": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1761528927,
+        "narHash": "sha256-qk4NPWrU6hAfnAWS8i/i993jqoB9jWBKHpxF69s63nA=",
+        "owner": "grantimatter",
+        "repo": "eden-flake",
+        "rev": "114e8c3a02cca6c07118f2c72bc615160ad1ee0c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "grantimatter",
+        "repo": "eden-flake",
+        "type": "github"
+      }
+    },
+>>>>>>> c2e912f (Setting up virtual display)
     "ez-configs": {
       "inputs": {
         "flake-parts": [
@@ -205,7 +228,31 @@
     },
     "flake-utils": {
       "inputs": {
+<<<<<<< HEAD
         "systems": "systems"
+||||||| parent of c2e912f (Setting up virtual display)
+        "systems": "systems_2"
+=======
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_3"
+>>>>>>> c2e912f (Setting up virtual display)
       },
       "locked": {
         "lastModified": 1731533236,
@@ -380,6 +427,13 @@
     },
     "nixpkgs_2": {
       "locked": {
+<<<<<<< HEAD
+        "lastModified": 1759381078,
+        "narHash": "sha256-gTrEEp5gEspIcCOx9PD8kMaF1iEmfBcTbO0Jag2QhQs=",
+||||||| parent of c2e912f (Setting up virtual display)
+        "lastModified": 1756542300,
+        "narHash": "sha256-tlOn88coG5fzdyqz6R93SQL5Gpq+m/DsWpekNFhqPQk=",
+=======
         "lastModified": 1759381078,
         "narHash": "sha256-gTrEEp5gEspIcCOx9PD8kMaF1iEmfBcTbO0Jag2QhQs=",
         "owner": "NixOS",
@@ -396,6 +450,23 @@
     },
     "nixpkgs_3": {
       "locked": {
+        "lastModified": 1756542300,
+        "narHash": "sha256-tlOn88coG5fzdyqz6R93SQL5Gpq+m/DsWpekNFhqPQk=",
+>>>>>>> c2e912f (Setting up virtual display)
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1764242076,
         "narHash": "sha256-sKoIWfnijJ0+9e4wRvIgm/HgE27bzwQxcEmo2J/gNpI=",
         "owner": "NixOS",
@@ -410,7 +481,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1764522689,
         "narHash": "sha256-SqUuBFjhl/kpDiVaKLQBoD8TLD+/cTUzzgVFoaHrkqY=",
@@ -458,7 +529,13 @@
         "type": "github"
       }
     },
+<<<<<<< HEAD
     "nixpkgs_7": {
+||||||| parent of c2e912f (Setting up virtual display)
+    "nixpkgs_5": {
+=======
+    "nixpkgs_6": {
+>>>>>>> c2e912f (Setting up virtual display)
       "locked": {
         "lastModified": 1744536153,
         "narHash": "sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg/N38=",
@@ -541,7 +618,13 @@
     },
     "rust-overlay_2": {
       "inputs": {
+<<<<<<< HEAD
         "nixpkgs": "nixpkgs_7"
+||||||| parent of c2e912f (Setting up virtual display)
+        "nixpkgs": "nixpkgs_5"
+=======
+        "nixpkgs": "nixpkgs_6"
+>>>>>>> c2e912f (Setting up virtual display)
       },
       "locked": {
         "lastModified": 1759199574,
@@ -641,6 +724,7 @@
         "type": "github"
       }
     },
+<<<<<<< HEAD
     "systems_3": {
       "locked": {
         "lastModified": 1681028828,
@@ -690,6 +774,24 @@
         "type": "github"
       }
     },
+||||||| parent of c2e912f (Setting up virtual display)
+=======
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+>>>>>>> c2e912f (Setting up virtual display)
     "tinted-foot": {
       "flake": false,
       "locked": {
@@ -773,6 +875,12 @@
     },
     "vicinae": {
       "inputs": {
+<<<<<<< HEAD
+||||||| parent of c2e912f (Setting up virtual display)
+        "flake-utils": "flake-utils",
+=======
+        "flake-utils": "flake-utils_2",
+>>>>>>> c2e912f (Setting up virtual display)
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -795,7 +903,13 @@
     "wired": {
       "inputs": {
         "flake-parts": "flake-parts_3",
+<<<<<<< HEAD
         "nixpkgs": "nixpkgs_6",
+||||||| parent of c2e912f (Setting up virtual display)
+        "nixpkgs": "nixpkgs_4",
+=======
+        "nixpkgs": "nixpkgs_5",
+>>>>>>> c2e912f (Setting up virtual display)
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {

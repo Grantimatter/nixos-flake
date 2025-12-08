@@ -9,6 +9,7 @@
       eza
       nushell
       ghostty
+      rio
       zsh
       fish
       kitty

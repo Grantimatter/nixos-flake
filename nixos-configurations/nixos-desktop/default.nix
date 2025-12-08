@@ -5,25 +5,11 @@
   ...
 }:
 let
-  jdkWithFX = pkgs.openjdk.override {
-    enableJavaFX = true;
-    openjfx_jdk = pkgs.openjfx.override { withWebKit = true; };
-  };
   inherit (pkgs) system;
   inherit (inputs)
     nixpkgs-stable
-    nixpkgs-master
     ;
   pkgs-stable = import nixpkgs-stable { inherit system; };
-  pkgs-master = import nixpkgs-master {
-    inherit system;
-    config = import ../../nixpkgs-config.nix;
-  };
-  # duckstation-wayland = pkgs-master.duckstation.overrideAttrs (oldAttrs: {
-  #   postInstall = (oldAttrs.postInstall or "") + ''
-  #     wrapProgram $out/bin/duckstation-qt --set QT_QPA_PLATFORM wayland
-  #   '';
-  # });
 in
 {
   imports = [
@@ -71,6 +57,8 @@ in
       "boot.shell_on_fail"
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
+      # Sunshine Virtual Display
+      "video=DP-2:1920x1080R@60D"
     ];
     loader.timeout = 0;
     kernelModules = [
@@ -157,7 +145,7 @@ in
   services.croc = {
     enable = true;
     openFirewall = true;
-    pass = "/run/secrets/croc";
+    # pass = "/run/secrets/croc";
   };
 
   services.openssh = {
@@ -221,20 +209,38 @@ in
     openFirewall = true;
   };
 
+  # services.minidlna = {
+  #   enable = true;
+  # };
+
+  # services.coredns = {
+  #   enable = true;
+  #   config = ''
+  #     . {
+  #       forward . 1.1.1.1 1.0.0.1 8.8.8.8 8.0.0.8
+  #       cache
+  #     }
+  #     local {
+  #       template IN A { answer "{{ .Name }} 0 IN A 127.0.0.1"}
+  #     }
+  #   '';
+  # };
+
   networking = {
     hostName = "nixos-desktop";
 
     # Custom DNS - Disabled while using Pihole
-    networkmanager.enable = true;
-    networkmanager.dns = "none";
-    useDHCP = false;
-    dhcpcd.enable = false;
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
+    # networkmanager.enable = true;
+    # networkmanager.dns = "none";
+    # networkmanager.insertNameservers = [ "127.0.0.1" ];
+    # useDHCP = false;
+    # dhcpcd.enable = false;
+    # nameservers = [
+    #   "1.1.1.1"
+    #   "1.0.0.1"
+    #   "8.8.8.8"
+    #   "8.8.4.4"
+    # ];
 
     firewall.enable = true;
     firewall.allowPing = true;
@@ -310,9 +316,6 @@ in
       "root"
     ];
 
-    settings.trusted-substituters = ["https://eden-flake.cachix.org"];
-    settings.trusted-public-keys = ["eden-flake.cachix.org-1:9orwA5vFfBgb67pnnpsxBqILQlb2UI2grWt4zHHAxs8="];
-
     gc = {
       automatic = true;
       dates = "daily";
@@ -332,6 +335,7 @@ in
       # Downloads
       motrix
       unrar
+      gparted
 
       # nix
       cachix
@@ -343,13 +347,13 @@ in
       umu-launcher
       heroic
       cabextract
-      glxinfo
+      mesa-demos
       steam-rom-manager
 
       # Emulation
       ryubing
       tkmm
-      jdkWithFX
+      # jdkWithFX
       xwayland-run
 
       mame-tools
@@ -392,12 +396,14 @@ in
       rofi
       brightnessctl
       ddcutil
+      affine
 
       # Printers (yay)
       naps2
 
       # Automation
       n8n
+      balena-cli
     ])
     ++ (with pkgs-stable; [
       lmms
@@ -408,6 +414,7 @@ in
       enable = true;
     };
     eden.enable = true;
+    eden.enableCache = true;
     steam.enable = true;
     steam.extraCompatPackages = with pkgs; [
       proton-ge-bin

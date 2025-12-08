@@ -11,6 +11,7 @@
     wget
     zip
     unzip
+    croc
 
     erdtree
     bottom
