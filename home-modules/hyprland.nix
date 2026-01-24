@@ -139,9 +139,10 @@ in
     ];
 
     monitor = [
-      "DP-3, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
+      "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
       "HDMI-A-1, preferred@highrr, auto, 1, mirror, DP-3"
-      ", highres@highrr, auto, 1"
+      "DP-2, highres@highrr, auto, 1, mirror, DP-3"
+      # ", highres@highrr, auto, 1"
     ];
 
     # monitorv2 = [

@@ -28,6 +28,7 @@
     jaq
     tailspin # Commented due to build error
     jless
+    rustscan
     grex
     glow
     killall

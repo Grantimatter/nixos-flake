@@ -6,10 +6,6 @@
 }:
 let
   inherit (pkgs) system;
-  inherit (inputs)
-    nixpkgs-stable
-    ;
-  pkgs-stable = import nixpkgs-stable { inherit system; };
 in
 {
   imports = [
@@ -40,12 +36,14 @@ in
     initrd.verbose = false;
     loader.systemd-boot = {
       enable = true;
-      consoleMode = "max";
+      consoleMode = "auto";
       editor = false;
     };
+    loader.timeout = 0;
     kernelPackages = pkgs.linuxPackages_zen;
     kernelParams = [
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp"
       "module_blacklist=amdgpu"
       "nvidia_drm.fbdev=1"
       "nvidia_drm.modeset=1"
@@ -58,9 +56,8 @@ in
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
       # Sunshine Virtual Display
-      "video=DP-2:1920x1080R@60D"
+      # "video=DP-2:1920x1080R@60D"
     ];
-    loader.timeout = 0;
     kernelModules = [
       "snd-seq"
       "snd-rawmidi"
@@ -153,7 +150,7 @@ in
     settings.PasswordAuthentication = false;
   };
 
-  services.onlyoffice.enable = true;
+  # services.onlyoffice.enable = true;
 
   services.printing = {
     enable = true;
@@ -327,10 +324,12 @@ in
     (with pkgs; [
       # Dev
       git
+      godot
       helix
       adbtuifm
       qemu
       jetbrains.rider
+      ghidra
 
       # Downloads
       motrix
@@ -349,6 +348,7 @@ in
       cabextract
       mesa-demos
       steam-rom-manager
+      retroarch-full
 
       # Emulation
       ryubing
@@ -384,6 +384,7 @@ in
       yabridge
       yabridgectl
       reaper
+      zrythm
 
       # VST3 plugin requirements
       wineWowPackages.yabridge
@@ -404,9 +405,6 @@ in
       # Automation
       n8n
       balena-cli
-    ])
-    ++ (with pkgs-stable; [
-      lmms
     ]);
 
   programs = {
