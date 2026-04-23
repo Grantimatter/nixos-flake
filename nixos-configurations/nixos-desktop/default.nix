@@ -1,24 +1,50 @@
 {
+  config,
   inputs,
   modulesPath,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 let
-  inherit (pkgs) system;
+  # inherit (inputs) nixpkgs-unstable;
+  # pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; };
 in
 {
+  disabledModules = [ "services/misc/n8n.nix" ];
   imports = [
     ./hardware-configuration.nix
     ../nvidia.nix
     ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
     inputs.eden.nixosModules.default
+    (inputs.nixpkgs-unstable + "/nixos/modules/services/misc/n8n.nix")
+    # (inputs.nixpkgs-unstable + "/nixos/pkgs/by-name/n8/n8n/package.nix")
+    # <nixos-unstable/nixos/modules/services/misc/n8n.nix>
+    # "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/n8n.nix"
+    # inputs.hytale-launcher.hytale-launcher
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+
   nixpkgs.hostPlatform = "x86_64-linux";
   musnix.enable = true;
+
+  nixpkgs.config = {
+    packageOverrides = pkgs: {
+      unstable = import inputs.nixpkgs-unstable {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+
+  # nixpkgs.config = {
+  #   packageOverrides = pkgs: {
+  #     unstable = import inputs.nixpkgs-unstable {
+  #       config = config.nixpkgs.config;
+  #     };
+  #   };
+  # };
 
   boot = {
     plymouth = {
@@ -254,10 +280,11 @@ in
     capSysAdmin = true;
   };
 
-  services.n8n = {
-    enable = true;
-    openFirewall = true;
-  };
+  # services.n8n = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   # package = pkgs.unstable.n8n;
+  # };
 
   services.deluge = {
     enable = true;
@@ -328,7 +355,7 @@ in
       helix
       adbtuifm
       qemu
-      jetbrains.rider
+      # jetbrains.rider
       ghidra
 
       # Downloads
@@ -348,7 +375,8 @@ in
       cabextract
       mesa-demos
       steam-rom-manager
-      retroarch-full
+      # retroarch-full
+      inputs.hytale-launcher.packages.x86_64-linux.hytale-launcher
 
       # Emulation
       ryubing
@@ -363,6 +391,8 @@ in
 
       # Nvidia
       nvidia-vaapi-driver
+
+      vulkan-tools
 
       # Hyprland
       xdg-desktop-portal-hyprland
@@ -398,12 +428,13 @@ in
       brightnessctl
       ddcutil
       affine
+      signal-desktop
 
       # Printers (yay)
       naps2
 
       # Automation
-      n8n
+      # n8n
       balena-cli
     ]);
 
@@ -421,6 +452,7 @@ in
     steam.gamescopeSession.enable = true;
     steam.protontricks.enable = true;
     java.enable = true;
+    java.package = pkgs.jdk25_headless;
     partition-manager.enable = true;
     obs-studio.enable = true;
     obs-studio.enableVirtualCamera = true;

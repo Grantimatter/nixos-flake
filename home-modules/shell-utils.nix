@@ -1,38 +1,46 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; };
+in
 {
-  home.packages = with pkgs; [
-    git
-    git-lfs
-    git-filter-repo
-    lazygit
-    cloudflared
+  home.packages =
+    with pkgs;
+    [
+      git
+      git-lfs
+      git-filter-repo
+      lazygit
+      cloudflared
 
-    ffmpeg
-    wget
-    zip
-    unzip
-    croc
+      ffmpeg
+      wget
+      zip
+      unzip
+      croc
 
-    erdtree
-    bottom
-    eza
-    ripgrep
-    ripgrep-all
-    bat-extras.batman
-    fd
-    procs
-    sd
-    dust
-    duf
+      erdtree
+      bottom
+      eza
+      ripgrep
+      ripgrep-all
+      bat-extras.batman
+      fd
+      procs
+      sd
+      dust
+      duf
 
-    jaq
-    tailspin # Commented due to build error
-    jless
-    rustscan
-    grex
-    glow
-    killall
-  ];
+      jaq
+      tailspin # Commented due to build error
+      jless
+      rustscan
+      grex
+      glow
+      killall
+    ]
+    ++ (with pkgs-unstable; [
+      witr
+    ]);
 
   services.tldr-update.enable = true;
 
@@ -105,6 +113,11 @@
       enableBashIntegration = true;
       enableFishIntegration = true;
       enableZshIntegration = true;
+    };
+
+    vicinae = {
+      enable = true;
+      systemd.enable = true;
     };
 
     yazi = {

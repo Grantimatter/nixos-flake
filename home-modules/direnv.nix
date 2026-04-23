@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; };
+in
 {
   programs.direnv = {
     enable = true;
@@ -11,6 +14,8 @@
   };
 
   home.packages = with pkgs; [
+    # devenv
+  ] ++ (with pkgs-unstable; [
     devenv
-  ];
+  ]);
 }

@@ -11,7 +11,8 @@ let
   cosmic-theme = "catppuccin-${catppuccin.flavor}-${catppuccin.accent}+round.ron";
 in
 {
-  imports = [ inputs.catppuccin.homeModules.catppuccin inputs.stylix.homeModules.stylix ];
+  # imports = [ inputs.catppuccin.homeModules.catppuccin inputs.stylix.homeModules.stylix ];
+  imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
@@ -30,35 +31,35 @@ in
     starship.enable = true;
   };
 
-  stylix = {
-    enable = false;
-    autoEnable = false;
+  # stylix = {
+  #   enable = false;
+  #   autoEnable = false;
 
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+  #   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
-    fonts = {
-      monospace = {
-        package = pkgs.nerd-fonts.fira-code;
-        name = "Fira Code";
-      };
-      serif = config.stylix.fonts.sansSerif;
-      sansSerif = {
-        package = pkgs.fira-sans;
-        name = "Fira Sans";
-      };
-      # emoji = config.stylix.fonts.monospace;
-    };
+  #   fonts = {
+  #     monospace = {
+  #       package = pkgs.nerd-fonts.fira-code;
+  #       name = "Fira Code";
+  #     };
+  #     serif = config.stylix.fonts.sansSerif;
+  #     sansSerif = {
+  #       package = pkgs.fira-sans;
+  #       name = "Fira Sans";
+  #     };
+  #     # emoji = config.stylix.fonts.monospace;
+  #   };
 
-    targets = {
-      gtk.enable = true;
-      gtk.extraCss = ''
-        // Remove rounded corners
-        window.background { border-radius: 0; }
-      '';
-      qt.enable = true;
-      # fzf.enable = true;
-    };
-  };
+  #   targets = {
+  #     gtk.enable = true;
+  #     gtk.extraCss = ''
+  #       // Remove rounded corners
+  #       window.background { border-radius: 0; }
+  #     '';
+  #     qt.enable = true;
+  #     # fzf.enable = true;
+  #   };
+  # };
 
   # Setup manual config files
 

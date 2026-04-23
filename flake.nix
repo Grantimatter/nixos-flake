@@ -6,7 +6,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
 
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     terminaltexteffects.url = "github:ChrisBuilds/terminaltexteffects";
 
@@ -36,11 +36,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hytale-launcher.url = "github:JPyke3/hytale-launcher-nix";
+
     eden = {
       url = "github:grantimatter/eden-flake";
     };
 
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Rust Overlay
     rust-overlay = {
@@ -57,19 +62,20 @@
       url = "github:musnix/musnix";
     };
 
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # stylix = {
+    #   url = "github:nix-community/stylix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    vicinae = {
-      url = "github:vicinaehq/vicinae";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # vicinae = {
+    #   url = "github:vicinaehq/vicinae";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 
@@ -102,8 +108,6 @@
       perSystem =
         {
           pkgs,
-          pkgs-stable,
-          pkgs-master,
           lib,
           system,
           ...

@@ -142,7 +142,7 @@
     isNormalUser = true;
     home = "/home/grant";
     description = "Grant";
-    extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "jackaudio" "audio" "adbusers" ];
     initialPassword = "password";
     shell = pkgs.nushell;
     openssh.authorizedKeys.keys = [ 
@@ -190,6 +190,7 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
+      wireplumber.enable = true;
     };
 
     blueman.enable = true;

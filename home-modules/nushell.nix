@@ -1,7 +1,30 @@
-{ pkgs, lib, catppuccin, ... }:
+{ config, pkgs, lib, catppuccin, ... }:
+let
+  inherit (config.xdg)
+    cacheHome
+    configHome
+    dataHome
+    ;
+
+  CARGO_HOME = "${dataHome}/cargo";
+in
 {
   programs.nushell = {
     enable = true;
+    environmentVariables = {
+      # $HOME/.rustup
+      RUSTUP_HOME = "${dataHome}/rustup";
+
+      # # $HOME/.cargo
+      inherit CARGO_HOME;
+
+      # $HOME/.nv
+      CUDA_CACHE_PATH = "${cacheHome}/nv";
+
+      # $HOME/.docker
+      DOCKER_CONFIG = "${configHome}/docker";
+      
+    };
 
     settings = {
       show_banner = false;
@@ -32,6 +55,8 @@
         }
       ];
 
+      $env.PATH ++= [${CARGO_HOME}/bin]
+
       def create_left_prompt [] {
           starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
       }
@@ -57,6 +82,7 @@
       # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = ^starship module time
 
       $env.CARAPACE_BRIDGES = 'fish,bash'
+
       '';
 
     shellAliases = {
@@ -64,6 +90,7 @@
       vim = "hx";
       nano = "hx";
     };
+    
   };
 
   programs.carapace = {

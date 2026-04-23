@@ -47,7 +47,6 @@ with lib;
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
     git
-    neovim
     ;
   };
 

@@ -5,15 +5,6 @@ let
   inherit (config.home) homeDirectory;
 in
 {
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    extraConfig = ''
-      set relativenumber
-    '';
-  };
-
   home = {
     packages = (attrValues) {
       inherit (pkgs)

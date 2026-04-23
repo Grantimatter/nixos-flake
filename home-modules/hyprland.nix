@@ -11,14 +11,9 @@ let
 in
 {
   imports = [
-    inputs.vicinae.homeManagerModules.default
+    # inputs.vicinae.homeManagerModules.default
     ./wired.nix
   ];
-
-  services.vicinae = {
-    enable = true;
-    autoStart = true;
-  };
 
   wayland.windowManager.hyprland.enable = true;
   home.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -140,7 +135,7 @@ in
 
     monitor = [
       "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
-      "HDMI-A-1, preferred@highrr, auto, 1, mirror, DP-3"
+      "HDMI-A-1, 3840x2160@119.88, auto, 1, bitdepth, 10"
       "DP-2, highres@highrr, auto, 1, mirror, DP-3"
       # ", highres@highrr, auto, 1"
     ];
@@ -172,9 +167,11 @@ in
       "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
-      "$mod+CTRL, V, exec, $terminal --title=clipse -e clipse"
+      "$mod+CTRL, V, exec, uwsm-app -- vicinae vicinae://extensions/vicinae/clipboard/history"
+      "$shiftmod, V, exec, uwsm-app -- pwvucontrol"
       "$mod, tab, hy3:togglefocuslayer"
       "$mod, P, exec, uwsm-app -- hyprpicker -a"
+      "Control_L&Shift_L, M, sendshortcut, Ctrl_Shift, M,class:^(vesktop)"
 
       "$mod, H, hy3:makegroup, h"
       "$mod, V, hy3:makegroup, v"
@@ -303,6 +300,9 @@ in
       # "WLR_USE_LIBINPUT,1"
       # "__GL_MaxFramesAllowed,1"
       # "WLR_RENDERER_ALLOW_SOFTWARE,1"
+      
+      # Fixes Hytale Launcher
+      "WEBKIT_DISABLE_DMABUF_RENDERER,1"
     ];
 
     general = {

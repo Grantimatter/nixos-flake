@@ -67,7 +67,6 @@
   environment.systemPackages = lib.attrValues {
     inherit (pkgs)
       git
-      neovim
       moonlight-qt
             ;
 #     inherit (pkgs.gnomeExtensions)

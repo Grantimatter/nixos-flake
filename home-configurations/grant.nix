@@ -44,6 +44,7 @@ in
       "x-scheme-handler/http"=["zen-twilight.desktop"];
       "x-scheme-handler/https"=["zen-twilight.desktop"];
       "inode/directory"=["com.system76.CosmicFiles.desktop"];
+      "org/gtk/Settings/FileChooser"=["com.system76.CosmicFiles.desktop"];
 
       # Media
       "image/jpeg" = ["org.gnome.Loupe.desktop"];

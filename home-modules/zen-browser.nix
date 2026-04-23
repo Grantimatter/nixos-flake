@@ -1,15 +1,7 @@
 { pkgs, inputs, ...}:
-let
-  # Workaround for zen-twilight and zen-desktop not working
-  # zen-desktop = pkgs.makeDesktopItem {
-  #   name = "zen";
-  #   desktopName = "Zen Browser";
-  #   exec = "zen";
-  # };
-in
 {
   imports = [
-    inputs.zen-browser.homeModules.twilight-official
+    inputs.zen-browser.homeModules.twilight
   ];
 
   programs.zen-browser = {
@@ -43,6 +35,4 @@ in
 
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
-
-  # home.packages = [ zen-desktop ];
 }
