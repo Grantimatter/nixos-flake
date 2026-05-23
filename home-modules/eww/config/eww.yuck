@@ -1,2 +1,167 @@
-(include "./bar/eww.yuck")
-(include "./audio/eww.yuck")
+;; Eww Dock - Control Center
+;; Catppuccin Mocha themed
+
+;; ===== Variables =====
+
+(defpoll workspaces :interval "1s" `eww-workspaces`)
+
+(defpoll audio :interval "2s" `eww-audio`)
+
+(defpoll wifi :interval "5s" `eww-wifi`)
+
+(defpoll system :interval "5s" `eww-system`)
+
+;; ===== Window =====
+
+(defwindow dock
+  :monitor 0
+  :stacking "overlay"
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "300px"
+    :height "100%"
+    :anchor "left center")
+  :windowtype "popup"
+  :hidden true
+  :wm-ignore true
+  (dock-container)
+)
+
+;; ===== Main Container =====
+
+(defwidget dock-container []
+  (box :class "dock" :orientation "v" :space-evenly false
+    (dock-header)
+    (workspace-section)
+    (box :class "divider" :orientation "h"
+      (label :text ""))
+    (audio-section)
+    (box :class "divider" :orientation "h"
+      (label :text ""))
+    (wifi-section)
+    (box :class "divider" :orientation "h"
+      (label :text ""))
+    (system-section)
+    (box :class "divider" :orientation "h"
+      (label :text ""))
+    (power-section)
+  )
+)
+
+;; ===== Dock Header =====
+
+(defwidget dock-header []
+  (box :class "dock-header" :orientation "h" :space-evenly false
+    (label :class "header-text" :text "Control Center")
+    (button :class "close-btn" :onclick "eww close dock"
+      (label :text "✕")))
+)
+
+;; ===== Workspace Section =====
+
+(defwidget workspace-section []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-label" :text "Workspaces")
+    (if workspaces
+      (box :class "workspaces" :orientation "h" :space-evenly true
+        (for ws in workspaces
+          (button :class (if ws.active "ws-btn active" "ws-btn")
+                  :onclick `hyprctl dispatch workspace ${ws.id}`
+            (label :class "ws-label" :text (string ws.id)))))
+      (box :class "workspaces" :orientation "h"
+        (label :class "ws-label" :text "...")))
+  )
+)
+
+;; ===== Audio Section =====
+
+(defwidget audio-section []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-label" :text "Audio")
+    (if audio
+      (box :orientation "v" :space-evenly false
+        (box :class "audio-volume" :orientation "h" :space-evenly false
+          (label :class "audio-btn mute-btn"
+                 :onclick "eww-audio-mute"
+                 :text (if audio.muted "🔇" "🔊"))
+          (label :class "volume-text" :text (string audio.volume "%"))
+          (button :class "audio-btn" :onclick "eww-audio-down"
+            (label :text "−"))
+          (button :class "audio-btn" :onclick "eww-audio-up"
+            (label :text "+")))
+        (label :class "sink-label" :text audio.sink_name)
+        (box :class "sink-list" :orientation "v" :space-evenly false
+          (for sink in audio.sinks
+            (button :class "sink-entry"
+                    :onclick `eww-audio-set-sink ${sink.name}`
+              (label :text sink.description :halign "start")))))
+      (label :class "sink-label" :text "Loading..."))
+  )
+)
+
+;; ===== WiFi Section =====
+
+(defwidget wifi-section []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-label" :text "Network")
+    (if wifi
+      (box :orientation "v" :space-evenly false
+        (box :class "wifi-status" :orientation "h" :space-evenly false
+          (label :class "wifi-icon" :text (if wifi.connected "📶" "📡"))
+          (label :class "wifi-ssid" :text (if wifi.connected wifi.ssid "Disconnected"))
+          (label :class "wifi-signal" :text (if wifi.connected (string wifi.signal "%") "")))
+        (box :class "wifi-actions" :orientation "h" :space-evenly false
+          (button :class "wifi-btn" :onclick "uwsm-app -- ghostty -e nmtui"
+            (label :text "Connect..."))
+          (button :class "wifi-btn" :onclick "eww-wifi-disconnect"
+            (label :text "Disconnect")))
+        (box :class "network-list" :orientation "v" :space-evenly false
+          (for net in wifi.networks
+            (button :class "network-entry"
+                    :onclick `nmcli device wifi connect ${net.ssid}`
+              (box :class "network-row" :orientation "h" :space-evenly false
+                (label :class "net-ssid" :text net.ssid :halign "start")
+                (label :class "net-signal" :text (string net.signal "%") :halign "end"))))))
+      (label :text "Loading..."))
+  )
+)
+
+;; ===== System Section =====
+
+(defwidget system-section []
+  (box :class "section" :orientation "v" :space-evenly false
+    (label :class "section-label" :text "System")
+    (if system
+      (box :orientation "v" :space-evenly false
+        (box :class "sys-row" :orientation "h" :space-evenly false
+          (label :class "sys-icon" :text "🖥")
+          (label :class "sys-label" :text "CPU:")
+          (label :class "sys-value" :text (string system.cpu "%")))
+        (box :class "sys-row" :orientation "h" :space-evenly false
+          (label :class "sys-icon" :text "🫗")
+          (label :class "sys-label" :text "Memory:")
+          (label :class "sys-value" :text (string system.memory "%")))
+        (box :class "sys-row" :orientation "h" :space-evenly false
+          (label :class "sys-icon" :text "💾")
+          (label :class "sys-label" :text "Disk:")
+          (label :class "sys-value" :text (string system.disk "%")))
+        (box :class "sys-row" :orientation "h" :space-evenly false
+          (label :class "sys-icon" :text "🕐")
+          (label :class "sys-label" :text "Uptime:")
+          (label :class "sys-value" :text (string system.uptime))))
+      (label :text "Loading..."))
+  )
+)
+
+;; ===== Power Section =====
+
+(defwidget power-section []
+  (box :class "power" :orientation "h" :space-evenly true
+    (button :class "power-btn" :onclick "loginctl lock-session"
+      (label :text "🔒 Lock"))
+    (button :class "power-btn" :onclick "systemctl suspend"
+      (label :text "💤 Suspend"))
+    (button :class "power-btn warn" :onclick "systemctl poweroff"
+      (label :text "⏻ Power Off")))
+)

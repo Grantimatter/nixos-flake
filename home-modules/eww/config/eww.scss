@@ -1,0 +1,242 @@
+* {
+  all: unset;
+  font-family: "JetBrains Mono", "FiraCode Nerd Font", monospace;
+  font-size: 13px;
+}
+
+.dock {
+  background-color: #1e1e2e;
+  border-right: 2px solid #313244;
+  padding: 12px;
+  min-width: 276px;
+}
+
+.dock-header {
+  margin-bottom: 16px;
+}
+
+.header-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #cdd6f4;
+}
+
+.close-btn {
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: #313244;
+  color: #f38ba8;
+}
+
+.close-btn:hover {
+  background-color: #45475a;
+}
+
+.section {
+  margin-bottom: 8px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #a6adc8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 0;
+}
+
+.divider {
+  background-color: #313244;
+  min-height: 1px;
+  padding: 0;
+  margin: 4px 0;
+}
+
+/* Workspaces */
+
+.workspaces {
+  margin: 4px 0;
+}
+
+.ws-btn {
+  background-color: #313244;
+  border-radius: 8px;
+  padding: 8px 6px;
+  min-width: 28px;
+}
+
+.ws-btn:hover {
+  background-color: #45475a;
+}
+
+.ws-btn.active {
+  background-color: #89b4fa;
+}
+
+.ws-label {
+  color: #cdd6f4;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.ws-btn.active .ws-label {
+  color: #1e1e2e;
+}
+
+/* Audio */
+
+.audio-volume {
+  margin: 4px 0;
+}
+
+.mute-btn {
+  font-size: 16px;
+  min-width: 32px;
+}
+
+.volume-text {
+  color: #a6e3a1;
+  font-weight: bold;
+  min-width: 48px;
+}
+
+.audio-btn {
+  background-color: #313244;
+  border-radius: 6px;
+  padding: 4px 12px;
+  color: #cdd6f4;
+}
+
+.audio-btn:hover {
+  background-color: #45475a;
+}
+
+.sink-label {
+  color: #6c7086;
+  font-size: 11px;
+  margin: 2px 0;
+}
+
+.sink-list {
+  margin: 2px 0;
+}
+
+.sink-entry {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.sink-entry:hover {
+  background-color: #313244;
+}
+
+/* WiFi */
+
+.wifi-status {
+  margin: 4px 0;
+}
+
+.wifi-icon {
+  font-size: 16px;
+  min-width: 24px;
+}
+
+.wifi-ssid {
+  color: #f5c2e7;
+  font-weight: bold;
+}
+
+.wifi-signal {
+  color: #6c7086;
+  margin-left: auto;
+}
+
+.wifi-actions {
+  margin: 4px 0;
+}
+
+.wifi-btn {
+  background-color: #313244;
+  border-radius: 6px;
+  padding: 4px 12px;
+  color: #cdd6f4;
+  font-size: 12px;
+}
+
+.wifi-btn:hover {
+  background-color: #45475a;
+}
+
+.network-list {
+  margin: 4px 0;
+}
+
+.network-entry {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.network-entry:hover {
+  background-color: #313244;
+}
+
+.network-row {
+  min-width: 260px;
+}
+
+.net-ssid {
+  color: #bac2de;
+}
+
+.net-signal {
+  color: #6c7086;
+}
+
+/* System */
+
+.sys-row {
+  margin: 2px 0;
+}
+
+.sys-icon {
+  min-width: 24px;
+  font-size: 14px;
+}
+
+.sys-label {
+  color: #a6adc8;
+  min-width: 60px;
+}
+
+.sys-value {
+  color: #fab387;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+/* Power */
+
+.power {
+  margin-top: 8px;
+}
+
+.power-btn {
+  background-color: #313244;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #cdd6f4;
+}
+
+.power-btn:hover {
+  background-color: #45475a;
+}
+
+.power-btn.warn {
+  color: #f38ba8;
+}
+
+.power-btn.warn:hover {
+  background-color: #45475a;
+}
