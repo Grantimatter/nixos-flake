@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   inputs,
   modulesPath,
   pkgs,
@@ -11,98 +10,12 @@ let
     inherit (pkgs) system;
     config.allowUnfree = true;
   };
-
-  hf-cli = pkgs-unstable.python314.withPackages (ps: [
-    ps.huggingface-hub
-    ps.hf-transfer   # Rust-backed fast downloader; opt-in via HF_HUB_ENABLE_HF_TRANSFER=1
-  ]);
-
-  # ============================================================
-  # llama.cpp override: latest build with CUDA + BLAS + native
-  # optimisations.  blasSupport enables OpenBLAS for CPU-offloaded
-  # layers — without it those layers run ~6x slower.
-  # ============================================================
-  llama-cpp-cuda = (pkgs-unstable.llama-cpp.overrideAttrs (old: {
-    version = "9276";
-    src = pkgs-unstable.fetchFromGitHub {
-      owner  = "ggml-org";
-      repo   = "llama.cpp";
-      tag    = "b9276";   
-      sha256 = "sha256-OfCq695HdTrxBDBS6nH9YzUl9Et2s7nczR1g4aMfwh0=";  # replace after first build attempt
-      # leaveDotGit = true;
-      postFetch = ''
-        git -C "$out" rev-parse --short HEAD > $out/COMMIT
-        find "$out" -name .git -print0 | xargs -0 rm -rf
-      '';
-    };
-    # Strip the npmConfigHook — it expects tools/server/webui which no
-    # longer exists in b9276 (moved to tools/ui). Without it the dist
-    # folder is never populated, causing xxd.cmake to fail.
-    nativeBuildInputs = builtins.filter
-      (x: (x.name or "") != "npm-config-hook")
-      (old.nativeBuildInputs or []);
-    preConfigure = ''
-        mkdir -p tools/ui/dist
-        echo "<html></html>" > tools/ui/dist/index.html
-        echo "<html></html>" > tools/ui/dist/loading.html
-        echo ""              > tools/ui/dist/bundle.css
-        echo ""              > tools/ui/dist/bundle.js
-      '';
-    cmakeFlags =
-      # lib.filter
-      #   (f: !(lib.hasPrefix "-DLLAMA_SERVER_BUILD_UI" f))
-        (old.cmakeFlags or [])
-      ++ [
-        "-DGGML_NATIVE=ON"              # CPU-specific optimisations (AVX2/AVX-512)
-        "-DGGML_CUDA_FA_ALL_QUANTS=ON"  # Flash Attention for all quantisation types
-        "-DGGML_CUDA_GRAPHS=ON"         # CUDA graph optimisation (reduces kernel launch overhead)
-        "-DLLAMA_BUILD_UI=OFF"   # web UI requires pre-built Node assets not in the tarball
-    ];
-  })).override {
-    cudaSupport = true;
-    rocmSupport = false;
-    blasSupport = true;   # OpenBLAS for CPU-offloaded layers
-  };
-  
-  # ============================================================
-  # llama-server launch flags for Qwen3.6-35B-A3B-MTP
-  #
-  # Key choices for 12 GB VRAM:
-  #   -ngl 99       : offload as many layers as possible to GPU
-  #   -ctk q8_0     : quantise KV cache keys   → saves ~40% VRAM vs f16
-  #   -ctv q8_0     : quantise KV cache values → same
-  #   -c 32768      : 32K context — safe default; raise if you have headroom
-  #   --flash-attn  : mandatory for reasonable prompt-processing speed
-  #   --spec-type draft-mtp
-  #   --spec-draft-n-max 2  : sweet spot on 12 GB (>2 tanks acceptance rate)
-  #   --no-mmap     : avoid page-fault stalls during generation
-  #   --parallel 1  : MTP requires single slot
-  # ============================================================
-  modelPath = "/mnt/sdb2/ai/llama-server/models/Qwen_Qwen3-14B-Q4_K_M.gguf";
-
-  llamaServerArgs = lib.concatStringsSep " " [
-    "-m ${modelPath}"
-    # "-ngl 99"
-    "--flash-attn on"
-    # "--no-mmap"
-    "-ctk q8_0"
-    "-ctv q8_0"
-    "-c 32768"
-    "--parallel 1"
-    # "--spec-type draft-mtp"
-    # "--spec-draft-n-max 2"
-    "--temp 0.6"
-    "--top-p 0.95"
-    "--top-k 20"
-    "--host 127.0.0.1"
-    "--port 8000"
-    # "--log-disable"   # remove for debugging
-  ];
 in
 {
   disabledModules = [ "services/misc/n8n.nix" ];
   imports = [
     ./hardware-configuration.nix
+    ../../nixos-modules/monitoring.nix
     ../nvidia.nix
     ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
@@ -118,6 +31,11 @@ in
   nixpkgs.hostPlatform = "x86_64-linux";
   musnix.enable = true;
 
+  monitoring = {
+    enable = true;
+    nvidiaGpu = true;
+  };
+
   nixpkgs.config = {
     packageOverrides = pkgs: {
       unstable = import inputs.nixpkgs-unstable {
@@ -128,14 +46,6 @@ in
     cudaCapabilities = [ "8.9" ];
     cudaEnableForwardCompat = false;
   };
-
-  # nixpkgs.config = {
-  #   packageOverrides = pkgs: {
-  #     unstable = import inputs.nixpkgs-unstable {
-  #       config = config.nixpkgs.config;
-  #     };
-  #   };
-  # };
 
   boot = {
     plymouth = {
@@ -262,18 +172,16 @@ in
     # pass = "/run/secrets/croc";
   };
 
-  services.ollama = {
-    enable = true;
-    package = pkgs-unstable.ollama-cuda;
-    models = "/mnt/sdb2/ollama/models";
-    loadModels = [ "qwen3.6:latest" ];
-    # acceleration = "cuda";
-  };
+  # services.ollama = {
+  #   enable = true;
+  #   package = pkgs-unstable.ollama-cuda;
+  #   models = "/mnt/sdb2/ollama/models";
+  # };
 
-  services.open-webui = {
-    enable = true;
-    package = pkgs-unstable.open-webui;
-  };
+  # services.open-webui = {
+  #   enable = true;
+  #   package = pkgs-unstable.open-webui;
+  # };
 
   services.openssh = {
     enable = true;
@@ -336,23 +244,6 @@ in
     openFirewall = true;
   };
 
-  # services.minidlna = {
-  #   enable = true;
-  # };
-
-  # services.coredns = {
-  #   enable = true;
-  #   config = ''
-  #     . {
-  #       forward . 1.1.1.1 1.0.0.1 8.8.8.8 8.0.0.8
-  #       cache
-  #     }
-  #     local {
-  #       template IN A { answer "{{ .Name }} 0 IN A 127.0.0.1"}
-  #     }
-  #   '';
-  # };
-
   networking = {
     hostName = "nixos-desktop";
 
@@ -384,12 +275,6 @@ in
     capSysAdmin = true;
   };
 
-  # services.n8n = {
-  #   enable = true;
-  #   openFirewall = true;
-  #   # package = pkgs.unstable.n8n;
-  # };
-
   services.deluge = {
     enable = true;
     web.enable = true;
@@ -403,6 +288,7 @@ in
       };
     };
   };
+
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
     StandardInput = "tty";
@@ -413,6 +299,7 @@ in
     TTYHangup = true;
     TTYVTDisallocate = true;
   };
+
   systemd.services.NetworkManager-wait-online.enable = false;
 
   services.xserver = {
@@ -530,10 +417,6 @@ in
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
 
-  # ============================================================
-  # 3. Binary cache for CUDA (avoids compiling CUDA locally)
-  #    Cache moved from cuda-maintainers.cachix.org → cache.nixos-cuda.org in Nov 2025
-  # ============================================================
     settings = {
       substituters = [
         "https://cache.nixos.org"
@@ -649,14 +532,8 @@ in
       with pkgs-unstable;
       [
         # AI
-        qwen-code
-        llama-cpp-cuda        # our overridden build
-        hf-cli                # for downloading the MTP GGUF
         nvtopPackages.nvidia  # GPU monitoring (nvidia + other vendors)
       ]
-      # ++ ([
-      #   (pkgs-unstable.llama-cpp.override { cudaSupport = true; })
-      # ])
     )
   );
 
@@ -690,61 +567,6 @@ in
 
     NIXOS_OZONE_WL = "1";
   };
-
-  # ============================================================
-  # 7. llama-server systemd service
-  #    Runs the OpenAI-compatible API on http://127.0.0.1:8000
-  # ============================================================
-  users.users.llama-server = {
-    isSystemUser = true;
-    group        = "llama-server";
-    home         = "/mnt/sdb2/ai/llama-server/";
-  };
-  users.groups.llama-server = {};
-
-  systemd.services.llama-server = {
-    description = "llama.cpp server — Qwen models";
-    after       = [ "network.target" "local-fs.target" ];
-    requires    = [ "mnt-sdb2.mount" ];
-    wantedBy    = [ "multi-user.target" ];
-
-    # Give the GPU time to initialise before starting
-    serviceConfig = {
-      User             = "llama-server";
-      Group            = "llama-server";
-      WorkingDirectory = "/mnt/sdb2/ai/llama-server/";
-      ExecStart        = "${llama-cpp-cuda}/bin/llama-server ${llamaServerArgs}";
-      Restart          = "on-failure";
-      RestartSec       = "10s";
-
-      # Allow access to the NVIDIA device nodes
-      SupplementaryGroups = [ "video" "render" ];
-
-      # Resource limits
-      LimitNOFILE = 65536;
-      LimitMEMLOCK = "infinity";   # needed for --no-mmap / mlock
-    };
-
-    environment = {
-      GGML_CUDA_GRAPH_OPT = "1";
-      CUDA_MODULE_LOADING = "LAZY";
-    };
-  };
-
-  # Optional: auto-restart every 4 hours as a stability measure
-  # (llama-server can have memory leaks on very long sessions)
-  systemd.timers.llama-server-restart = {
-    wantedBy  = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec         = "4h";
-      OnUnitActiveSec   = "4h";
-      Unit              = "llama-server.service";
-    };
-  };
-
-  systemd.tmpfiles.rules = [
-    "d /mnt/sdb2/ai/llama-server/models 0755 llama-server llama-server -"
-  ];
 
   system.stateVersion = "23.11";
 }
