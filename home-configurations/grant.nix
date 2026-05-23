@@ -39,11 +39,15 @@ in
   programs.opencode = {
     enable = true;
     package = pkgs-unstable.opencode;
+    settings = {
+      theme = "catppuccin";
+      lsp = true;
+    };
   };
 
   home.packages = with (pkgs-unstable); [
     claude-monitor
-    claude-code-acp
+    claude-agent-acp
   ];
 
   xdg.mimeApps = {

@@ -29,7 +29,7 @@ in
     sessionVariables = {
       EDITOR = "hx";
       VISUAL = "hx";
-      SOPS_AGE_KEY_FILE = config.xdg.configHome + "/sops/keys/age/keys.txt";
+      SOPS_AGE_KEY_FILE = config.xdg.configHome + "/sops/age/keys.txt";
     };
   };
 } 

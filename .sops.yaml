@@ -1,11 +1,8 @@
 keys:
   - &user_grant age1ey9zkargeqmr9ka65kh8pqjzvedy3mld74knhxusxzmun4px7aeqva9a9g
-  - &user_homelab
-  - &server_homelab age16mlz4u3wje9lhvcasemywxtcmhhrpwq96fvrz5fywp8dqr0uyg5qfr5k9q
 
 creation_rules:
-  - path_regex: sops/[^/]+\.(yaml|json|env|ini|toml)$
+  - path_regex: sops/.*
     key_groups:
       - age:
         - *user_grant
-        - *user_homelab
