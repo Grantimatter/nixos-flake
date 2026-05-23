@@ -1,5 +1,6 @@
 $env.LS_COLORS = (vivid generate catppuccin-($env.CATPPUCCIN_FLAVOR))
 $env.SHELL = "nu"
+$env.EDITOR = "hx"
 
 $env.config.keybindings ++= [
   {
