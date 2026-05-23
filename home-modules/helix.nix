@@ -169,7 +169,7 @@
         vscode-langservers-extracted
         zls
         bash-language-server
-        dockerfile-language-server-nodejs
+        dockerfile-language-server
         docker-compose-language-service
         gopls
         haskell-language-server

@@ -1,5 +1,10 @@
-{ ... }:
-let email = "grantwiswell@proton.me";
+{ pkgs, inputs, ... }:
+let
+  pkgs-unstable = import inputs.nixpkgs-unstable {
+    inherit (pkgs) system;
+    config.allowUnfree = true;
+  };
+  email = "grantwiswell@proton.me";
 in
 {
   home = {
@@ -25,6 +30,21 @@ in
       user.email = email;
     };
   };
+
+  programs.claude-code = {
+    enable = true;
+    package = pkgs-unstable.claude-code;
+  };
+
+  programs.opencode = {
+    enable = true;
+    package = pkgs-unstable.opencode;
+  };
+
+  home.packages = with (pkgs-unstable); [
+    claude-monitor
+    claude-code-acp
+  ];
 
   xdg.mimeApps = {
     enable = true;

@@ -1,13 +1,5 @@
 { pkgs, ...}:
 {
-  # programs.firefox = {
-  #   enable = true;
-  #   policies = {
-  #     BlockAboutConfig = true;
-  #     ManualAppUpdateOnly = true;
-  #   };
-  # };
-
   programs.onlyoffice.enable = true;
 
   programs.vesktop = {
@@ -20,6 +12,7 @@
   services.udiskie = {
     enable = true;
   };
+  services.gnome-keyring.enable = true;
 
   home.packages = with (pkgs); [
     libreoffice

@@ -1,10 +1,12 @@
-{ osConfig, ... }:
+{ osConfig, inputs, pkgs, ... }:
 let
   inherit (osConfig.users) defaultUserShell;
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; };
 in
 {
   programs.zellij = {
     enable = true;
+    package = pkgs-unstable.zellij;
     # enableZshIntegration = true;
     enableBashIntegration = true;
     # enableFishIntegration = true;
@@ -25,7 +27,7 @@ in
     ];
 
     settings.show_startup_tips = false;
-    settings.default_layout = "minimal";
+    settings.default_layout = "compact";
     settings.pane_frames = true;
     settings.copy_on_select = true;
     settings.default_shell = defaultUserShell;

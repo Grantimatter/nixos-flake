@@ -27,4 +27,6 @@
   };
 
   hardware.nvidia-container-toolkit.enable = true;
+
+  nixpkgs.config.cudaSupport = true;
 }

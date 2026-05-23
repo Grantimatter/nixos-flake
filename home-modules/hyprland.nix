@@ -67,7 +67,7 @@ in
   ];
   
   wayland.windowManager.hyprland.settings = {
-    "$terminal" = "uwsm-app -- ghostty";
+    "$terminal" = "uwsm-app -- ghostty -e zellij -l welcome";
     "$shell" = "${defaultUserShell}";
     "$fileManager" = "uwsm-app -- cosmic-files";
     "$menu" = "uwsm-app -- vicinae toggle";
@@ -123,7 +123,6 @@ in
       "tag +floating, class:.*SimpleScan"
       "tag +floating, title:^(Save As)"
       "tag +floating, class:naps2"
-      "tag +floating, class:it.mijorus.smile"
       "opacity 0.95 override 0.9 override, tag:term"
       "opacity 0.95 override 0.9 override, tag:opac"
 
@@ -134,40 +133,23 @@ in
     ];
 
     monitor = [
-      "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
-      "HDMI-A-1, 3840x2160@119.88, auto, 1, bitdepth, 10"
-      "DP-2, highres@highrr, auto, 1, mirror, DP-3"
+      # "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
+      "DP-2, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
+      "HDMI-A-1, 3840x2160@119.88, auto, 2, bitdepth, 10, mirror, DP-2"
       # ", highres@highrr, auto, 1"
     ];
 
-    # monitorv2 = [
-    #   {
-    #     output = "DP-3";
-    #     mode = "highres@highrr";
-    #     scale = 1;
-    #     vrr = 1;
-    #     bitdepth = 10;
-    #   }
-    #   {
-    #     output = "HDMI-A-1";
-    #     mode = "highres@highrr";
-    #     scale = 1;
-    #     bitdepth = 10;
-    #     mirror = "DP-3";
-    #   }
-    # ];
-    
     bind = [
       "$mod, F, fullscreen, 1"
       ", F11, fullscreen, 0"
       "$mod, Q, exec, $terminal"
       "$mod, C, hy3:killactive,"
       "$shiftmod, M, exec, uwsm stop"
-      "$shiftmod, E, exec, uwsm-app -- smile"
       "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod+CTRL, V, exec, uwsm-app -- vicinae vicinae://extensions/vicinae/clipboard/history"
+      "$mod+CTRL, E, exec, uwsm-app -- vicinae vicinae://extensions/vicinae/vicinae/search-emojis"
       "$shiftmod, V, exec, uwsm-app -- pwvucontrol"
       "$mod, tab, hy3:togglefocuslayer"
       "$mod, P, exec, uwsm-app -- hyprpicker -a"

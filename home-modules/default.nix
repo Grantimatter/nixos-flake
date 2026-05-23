@@ -1,4 +1,7 @@
-{ ezModules, lib, pkgs, ... }:
+{ ezModules, lib, pkgs, inputs, ... }:
+let
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; config.allowUnfree = true; };
+in
 {
   imports = lib.attrValues {
     inherit (ezModules)
@@ -27,8 +30,8 @@
   home = {
     packages = [
       pkgs.bitwarden-cli
-      # pkgs.calibre
       pkgs.zettlr
+      pkgs-unstable.zed-editor
     ];
   };
 

@@ -48,18 +48,21 @@
 
       # Audio
       libbs2b
+      pavucontrol
+      helvum
       pwvucontrol
       libsForQt5.qt5ct
       libsForQt5.qtstyleplugin-kvantum
       qjackctl
       alsa-utils
+      alsa-tools
       pulseaudio
+      qpwgraph
       pamixer
 
       # Input
       evtest
       overskride
-      smile
 
       kdePackages.polkit-kde-agent-1
     ];

@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; };
+  pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; config.allowUnfree = true; };
 in
 {
   home.packages =
@@ -11,6 +11,7 @@ in
       git-filter-repo
       lazygit
       cloudflared
+      docker-buildx
 
       ffmpeg
       wget
@@ -40,6 +41,7 @@ in
     ]
     ++ (with pkgs-unstable; [
       witr
+      github-copilot-cli
     ]);
 
   services.tldr-update.enable = true;
