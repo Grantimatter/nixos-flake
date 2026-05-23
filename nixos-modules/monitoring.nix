@@ -14,6 +14,7 @@ let
 
   nvidiaGpuExporter = pkgs.writeShellScriptBin "nvidia-gpu-exporter" ''
     set -o errexit
+    export PATH="/run/current-system/sw/bin:$PATH"
     OUTPUT="${textfileDir}/nvidia.prom"
     TMPFILE="''$(mktemp)"
     trap 'rm -f "$TMPFILE"' EXIT
