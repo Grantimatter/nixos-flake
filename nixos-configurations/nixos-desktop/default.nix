@@ -16,9 +16,13 @@ in
   imports = [
     ./hardware-configuration.nix
     ../../nixos-modules/monitoring.nix
+    ../../nixos-modules/sops.nix
+    ../../nixos-modules/local-ai.nix
+    ../../nixos-modules/honcho.nix
     ../nvidia.nix
     ../nix-ld.nix
     inputs.musnix.nixosModules.musnix
+    inputs.hermes-agent.nixosModules.default
     inputs.eden.nixosModules.default
     (inputs.nixpkgs-unstable + "/nixos/modules/services/misc/n8n.nix")
     # (inputs.nixpkgs-unstable + "/nixos/pkgs/by-name/n8/n8n/package.nix")
@@ -34,6 +38,13 @@ in
   monitoring = {
     enable = true;
     nvidiaGpu = true;
+  };
+
+  local-ai.enable = true;
+
+  services.honcho = {
+    enable = true;
+    openrouterApiKeyFile = config.sops.secrets."openrouter-key".path;
   };
 
   nixpkgs.config = {
@@ -172,23 +183,41 @@ in
     # pass = "/run/secrets/croc";
   };
 
-  # services.ollama = {
-  #   enable = true;
-  #   package = pkgs-unstable.ollama-cuda;
-  #   models = "/mnt/sdb2/ollama/models";
-  # };
+  services.hermes-agent = {
+    enable = true;
+    container.enable = true;
+    container.hostUsers = [ "grant" ];
+    addToSystemPackages = true;
+    environmentFiles = [ config.sops.secrets."hermes-env".path ];
+    extraDependencyGroups = [ "honcho" ];
+    settings.memory.provider = "honcho";
+  };
 
-  # services.open-webui = {
-  #   enable = true;
-  #   package = pkgs-unstable.open-webui;
-  # };
+  system.activationScripts."hermes-honcho-config" = {
+    deps = [ "users" "hermes-agent-setup" ];
+    text = ''
+      install -o hermes -g hermes -m 0640 ${pkgs.writeText "hermes-honcho.json" ''
+        {
+          "baseUrl": "http://localhost:8000",
+          "hosts": {
+            "hermes": {
+              "enabled": true,
+              "aiPeer": "hermes",
+              "workspace": "hermes",
+              "recallMode": "hybrid",
+              "sessionStrategy": "per-directory"
+            }
+          }
+        }
+      ''} /var/lib/hermes/.hermes/honcho.json
+    '';
+  };
 
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
   };
 
-  # services.onlyoffice.enable = true;
 
   services.printing = {
     enable = true;
@@ -439,6 +468,9 @@ in
   environment.systemPackages = (
     with pkgs;
     [
+      sops
+      age
+
       # Dev
       git
       godot
