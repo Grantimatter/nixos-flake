@@ -1,4 +1,4 @@
-{ ezModules, lib, pkgs, inputs, ... }:
+{ ezModules, config, lib, pkgs, inputs, ... }:
 let
   pkgs-unstable = import inputs.nixpkgs-unstable { inherit (pkgs) system; config.allowUnfree = true; };
 in
@@ -33,6 +33,18 @@ in
       pkgs.zettlr
       pkgs-unstable.zed-editor
     ];
+
+    activation.installOpencodeHoncho = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if ! grep -q "@honcho-ai/opencode-honcho" "$HOME/.config/opencode/opencode.json" 2>/dev/null; then
+        echo "home-manager: installing opencode honcho plugin..."
+        OPENCODE="$HOME/.nix-profile/bin/opencode"
+        if [ -x "$OPENCODE" ]; then
+          "$OPENCODE" plugin "@honcho-ai/opencode-honcho" --global 2>&1 || echo "home-manager: opencode plugin install failed (will retry next switch)"
+        else
+          echo "home-manager: opencode not found at $OPENCODE, skipping"
+        fi
+      fi
+    '';
   };
 
 
