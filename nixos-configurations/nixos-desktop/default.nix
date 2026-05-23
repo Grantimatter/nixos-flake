@@ -187,15 +187,22 @@ in
     enable = true;
     container.enable = true;
     container.hostUsers = [ "grant" ];
+    container.extraVolumes = [ "/etc/resolv.conf:/etc/resolv.conf:ro" ];
     addToSystemPackages = true;
     environmentFiles = [ config.sops.secrets."hermes-env".path ];
     extraDependencyGroups = [ "honcho" ];
     settings.memory.provider = "honcho";
   };
+    };
+  };
 
   system.activationScripts."hermes-honcho-config" = {
-    deps = [ "users" "hermes-agent-setup" ];
+    deps = [ "users" "hermes-agent-setup" "setupSecrets" ];
     text = ''
+      # restore group permissions if the container entrypoint stripped them
+      chmod 2770 /var/lib/hermes/.hermes
+      chmod 0640 /var/lib/hermes/.hermes/.env
+
       install -o hermes -g hermes -m 0640 ${pkgs.writeText "hermes-honcho.json" ''
         {
           "baseUrl": "http://localhost:8000",
@@ -210,6 +217,12 @@ in
           }
         }
       ''} /var/lib/hermes/.hermes/honcho.json
+
+      # inject the OpenRouter API key from sops into hermes .env
+      # (single source of truth shared with honcho service)
+      if [ -f /run/secrets/openrouter-key ]; then
+        echo "OPENROUTER_API_KEY=$(cat /run/secrets/openrouter-key)" >> /var/lib/hermes/.hermes/.env
+      fi
     '';
   };
 
