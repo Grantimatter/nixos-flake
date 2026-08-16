@@ -14,6 +14,10 @@ in
     homeDirectory = "/home/grant";
   };
 
+  programs.foliate = {
+    enable = true;
+  };
+
   programs.git = {
     enable = true;
     lfs.enable = true;
