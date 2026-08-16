@@ -29,6 +29,7 @@ in
 
     atuin.enable = false;
     starship.enable = true;
+    hyprland.enable = false;
   };
 
   # stylix = {

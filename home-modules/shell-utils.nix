@@ -38,10 +38,12 @@ in
       grex
       glow
       killall
+
     ]
     ++ (with pkgs-unstable; [
       witr
       github-copilot-cli
+      ratty
     ]);
 
   services.tldr-update.enable = true;
@@ -52,7 +54,7 @@ in
       enableBashIntegration = true;
       enableZshIntegration = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      # enableNushellIntegration = true;
     };
 
     bat.enable = true;

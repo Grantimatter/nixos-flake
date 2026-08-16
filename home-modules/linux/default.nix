@@ -8,7 +8,6 @@
 
   programs.obsidian.enable = true;
 
-  services.spotifyd.enable = true;
   services.udiskie = {
     enable = true;
   };
@@ -23,10 +22,11 @@
     vlc
     loupe
     spotify
-    spotify-player
     blender
     gimp
+    inkscape
     wl-clipboard-rs
+    signal-cli
   ];
 
 }

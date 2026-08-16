@@ -149,6 +149,7 @@ in
     "services/monitoring/loki.nix"
     "services/monitoring/alloy.nix"
     "services/monitoring/prometheus/default.nix"
+    "services/monitoring/pyroscope.nix"
   ];
 
   imports = [
@@ -188,6 +189,11 @@ in
           {
             job_name = "node";
             static_configs = [{ targets = [ "127.0.0.1:9100" ]; }];
+          }
+          {
+            job_name = "pushgateway";
+            honor_labels = true;
+            static_configs = [{ targets = [ "127.0.0.1:9091" ]; }];
           }
         ];
       };
@@ -280,6 +286,7 @@ in
           grafana-lokiexplore-app
           grafana-metricsdrilldown-app
           grafana-pyroscope-app
+          frser-sqlite-datasource
         ] ++ [ grafana-assistant-app ];
         settings = {
           security.secret_key = "$__file{/var/lib/grafana/secret_key}";
@@ -290,6 +297,7 @@ in
             root_url = "https://grafana.nixos-desktop.local";
           };
           analytics.check_for_plugin_updates = false;
+          feature_toggles.disable = ["dashboardScene"];
         };
         provision = {
           enable = true;
@@ -313,6 +321,24 @@ in
               access = "proxy";
               url = "http://127.0.0.1:4040";
             }
+            {
+              name = "Finance SQLite";
+              type = "frser-sqlite-datasource";
+              access = "proxy";
+              jsonData = {
+                path = "/var/lib/grafana/finance.db";
+              };
+            }
+          ];
+          dashboards.settings.providers = [
+            {
+              name = "Finance Dashboard";
+              orgId = 1;
+              folder = "Finance";
+              type = "file";
+              options.path = "/var/lib/grafana/dashboards/finance";
+              updateIntervalSeconds = 60;
+            }
           ];
         };
       };
@@ -321,7 +347,32 @@ in
 
       systemd.tmpfiles.rules = [
         "d /var/lib/loki 0750 loki loki -"
+        "d /var/lib/finance 0750 grafana grafana -"
       ];
+
+      systemd.services.finance-dashboards-sync = {
+        description = "Sync finance dashboard JSONs to Grafana provisioning dir";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+        };
+        script = ''
+          mkdir -p /var/lib/grafana/dashboards/finance
+          cp -r /home/grant/dev/finance_dashboard/grafana/dashboards/*.json /var/lib/grafana/dashboards/finance/
+          chown -R grafana:grafana /var/lib/grafana/dashboards/finance
+        '';
+      };
+
+      systemd.services.grafana.serviceConfig.BindReadOnlyPaths = [
+        "/home/grant/dev/finance_dashboard/data/finance.db:/var/lib/grafana/finance.db"
+      ];
+
+      systemd.services.finance-dashboards-sync = {
+        before = [ "grafana.service" ];
+        requiredBy = [ "grafana.service" ];
+      };
     })
 
     (mkIf (cfg.enable && cfg.nvidiaGpu) {

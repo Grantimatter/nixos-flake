@@ -49,7 +49,6 @@
       # Audio
       libbs2b
       pavucontrol
-      helvum
       pwvucontrol
       libsForQt5.qt5ct
       libsForQt5.qtstyleplugin-kvantum
@@ -219,7 +218,7 @@
     gamemode.enable = true;
     gamemode.enableRenice = true;
     gamescope.enable = true;
-    gamescope.capSysNice = true;
+    # gamescope.capSysNice = true;
     gamescope.args = [
       "--expose-wayland"
       "--backend wayland"

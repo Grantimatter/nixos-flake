@@ -3,6 +3,7 @@ let
   pkgs-unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs) system;
     config.allowUnfree = true;
+    overlays = import ../pkgs/default.nix;
   };
   email = "grantwiswell@proton.me";
 in
@@ -48,6 +49,7 @@ in
   home.packages = with (pkgs-unstable); [
     claude-monitor
     claude-agent-acp
+    opencode-monitor
   ];
 
   xdg.mimeApps = {

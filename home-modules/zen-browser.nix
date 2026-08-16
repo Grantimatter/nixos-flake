@@ -33,6 +33,6 @@
     };
 
 
-    nativeMessagingHosts = [ pkgs.firefoxpwa ];
+    # nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 }

@@ -15,6 +15,7 @@ in
   disabledModules = [ "services/misc/n8n.nix" ];
   imports = [
     ./hardware-configuration.nix
+    ./hermes-agent.nix
     ../../nixos-modules/monitoring.nix
     ../../nixos-modules/sops.nix
     ../../nixos-modules/local-ai.nix
@@ -183,47 +184,8 @@ in
     # pass = "/run/secrets/croc";
   };
 
-  services.hermes-agent = {
+  services.rustdesk-server = {
     enable = true;
-    container.enable = true;
-    container.hostUsers = [ "grant" ];
-    container.extraVolumes = [ "/etc/resolv.conf:/etc/resolv.conf:ro" ];
-    addToSystemPackages = true;
-    environmentFiles = [ config.sops.secrets."hermes-env".path ];
-    extraDependencyGroups = [ "honcho" ];
-    settings.memory.provider = "honcho";
-  };
-    };
-  };
-
-  system.activationScripts."hermes-honcho-config" = {
-    deps = [ "users" "hermes-agent-setup" "setupSecrets" ];
-    text = ''
-      # restore group permissions if the container entrypoint stripped them
-      chmod 2770 /var/lib/hermes/.hermes
-      chmod 0640 /var/lib/hermes/.hermes/.env
-
-      install -o hermes -g hermes -m 0640 ${pkgs.writeText "hermes-honcho.json" ''
-        {
-          "baseUrl": "http://localhost:8000",
-          "hosts": {
-            "hermes": {
-              "enabled": true,
-              "aiPeer": "hermes",
-              "workspace": "hermes",
-              "recallMode": "hybrid",
-              "sessionStrategy": "per-directory"
-            }
-          }
-        }
-      ''} /var/lib/hermes/.hermes/honcho.json
-
-      # inject the OpenRouter API key from sops into hermes .env
-      # (single source of truth shared with honcho service)
-      if [ -f /run/secrets/openrouter-key ]; then
-        echo "OPENROUTER_API_KEY=$(cat /run/secrets/openrouter-key)" >> /var/lib/hermes/.hermes/.env
-      fi
-    '';
   };
 
   services.openssh = {
@@ -322,6 +284,10 @@ in
     web.enable = true;
   };
 
+  # services.graphite.web = {
+  #   enable = true;
+  # };
+
   services.greetd = {
     enable = true;
     settings = {
@@ -351,105 +317,19 @@ in
   };
 
   services.pipewire = {
-    configPackages = [
-      (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/10-loopback.conf" ''
-        context.modules = [
-          { name = libpipewire-module-loopback
-            args = {
-              node.description = "Hisense 5.1 Suround"
-              capture.props = {
-                node.target = "alsa_output.pci-0000_01_00.1.hdmi-surround"
-                node.passive = true
-              }
-              playback.props = {
-                
-              }
-            }
-          }
-        ]
-      '')
-    ];
-    wireplumber.configPackages = [
-      (pkgs.writeTextDir "share/wireplumber/main.lua.d/99-alsa-surround.lua" ''
-        alsa_montor.rules {
-          {
-            matches = {{{ "node.name", "matches", "alsa_output.pci-0000_01_00.1.hdmi-surround"' }}};
-            apply_properties = {
-              ["audio.format"] = "dtshd-iec61937",
-              ["audio.channels"] = 6,
-              ["audio.position"] = "FL,FR,RL,RR,FC,LFE",
-            },
-          },
-        }
-      '')
-    ];
-    wireplumber.extraConfig = {
-      "hdmi-surround" = {
-        "monitor.alsa.rules" = [
-          {
-            matches = [
-              {
-                "node.name" = "alsa_output.pci-0000_01_00.1.hdmi-surround";
-              }
-            ];
-            actions = {
-              update-props = {
-                # "audio.channels" = "6";
-                # "audio.position" = "FL,FR,RL,RR,FC,LFE";
-              };
-            };
-          }
-        ];
-      };
-    };
-    # extraConfig.pipewire-pulse."99-dts.conf" = {
-    #   pulse.rules = [
-    #     {
-    #       matches = [ { pulse.access = * } ]
-    #     }
-    #   ];
-    # };
-    # extraConfig.pipewire-pulse."99-ac3-passthrough" = {
-    #   "pulse.rules" = [
-    #     {
-    #       matches = [ { "pulse.access"  = "*"; } ];
-    #       actions = {
-    #         "update-props" = {
-    #           "pulse.formats" = "ac3-iec61937, eac-iec61937, pcm";
-    #         };
-    #       };
-    #     }
-    #   ];
-    # };
     extraConfig.pipewire = {
-      # "99-spdif-surround" = {
-      #   "context.modules" = [
-      #     {
-      #       name = "libpipewire-module-filter-chain";
-      #       args = {
-      #         "node.description" = "Surround Sound AC3 Encoder";
-      #         "node.name" = "Surround Sound AC3 Encoder";
-      #         "filter.graph" = {
-      #           nodes = [
-      #             {
-      #               type = "builtin";
-      #               name = "mixer";
-      #               label = "mixer";
-      #             }
-      #           ];
-      #         };
-      #       };
-      #     }
-      #   ];
-      # };
       "01-quantum" = {
         "context.properties" = {
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 800;
+          "default.clock.min-quantum" = 512;
+          "default.clock.max-quantum" = 1024;
           "default.clock.allowed-rates" = [
-            44100
+            # 44100
             48000
-            88200
-            96000
-            192000
+            # 88200
+            # 96000
+            # 192000
           ];
         };
       };
@@ -512,6 +392,7 @@ in
       steam-rom-manager
       # retroarch-full
       inputs.hytale-launcher.packages.x86_64-linux.hytale-launcher
+      ultrastardx
 
       # Emulation
       ryubing
@@ -543,6 +424,8 @@ in
       # Creation
       kdePackages.kdenlive
       ardour
+      # sfizz # VST Piano
+      sfizz-ui
       coppwr
       audacity
       guitarix
@@ -552,7 +435,7 @@ in
       zrythm
 
       # VST3 plugin requirements
-      wineWowPackages.yabridge
+      wineWow64Packages.yabridge
       mesa
       libGL
 
@@ -564,6 +447,7 @@ in
       ddcutil
       affine
       signal-desktop
+      telegram-desktop
 
       # Printers (yay)
       naps2
@@ -578,14 +462,16 @@ in
       [
         # AI
         nvtopPackages.nvidia  # GPU monitoring (nvidia + other vendors)
+        # graphite # Graphic Design
+
+        shadps4
+        shadps4-qtlauncher
       ]
     )
   );
 
   programs = {
-    adb = {
-      enable = true;
-    };
+    # android-tools.enable= true;
     eden.enable = true;
     eden.enableCache = true;
     steam.enable = true;

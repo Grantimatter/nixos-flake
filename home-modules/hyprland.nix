@@ -8,6 +8,33 @@ let
     sha256 = "7e6285630da06006058cebf896bf089173ed65f135fbcf32290e2f8c471ac75b";
   };
   inherit (osConfig.users) defaultUserShell;
+
+  controllerDoubletap = pkgs.writeShellScript "controller-doubletap" ''
+    DEVICE="/dev/input/by-id/usb-Flydigi_Flydigi_VADER3-event-joystick"
+    TAP_FILE="/tmp/controller-home-tap"
+    TIMEOUT_MS=400
+
+    if [ ! -e "$DEVICE" ]; then exit 1; fi
+
+    while IFS= read -r line; do
+      case "$line" in
+        *"Event: time"*"319"*"value 1"*)
+          now=$(date +%s%N)
+          if [ -f "$TAP_FILE" ]; then
+            last=$(cat "$TAP_FILE")
+            elapsed_ms=$(( (now - last) / 1000000 ))
+            if [ "$elapsed_ms" -lt "$TIMEOUT_MS" ]; then
+              rm -f "$TAP_FILE"
+              steam -bigpicture &
+              continue
+            fi
+          fi
+          printf '%s' "$now" > "$TAP_FILE"
+          (sleep 0.5; [ -f "$TAP_FILE" ] && rm -f "$TAP_FILE") &
+          ;;
+      esac
+    done < <(stdbuf -oL evtest "$DEVICE" 2>/dev/null)
+  '';
 in
 {
   imports = [
@@ -55,10 +82,6 @@ in
 
   # Hyprland Config
   
-  wayland.windowManager.hyprland.plugins = [
-    pkgs.hyprlandPlugins.hy3
-  ];
-
   wayland.windowManager.hyprland.importantPrefixes = [
     "$"
     "bezier"
@@ -101,6 +124,8 @@ in
       };
     };
 
+    plugin = "${pkgs.hyprlandPlugins.hy3}/lib/libhy3.so";
+
     "plugin:hy3" = {
       no_gaps_when_only = 1;
     };
@@ -109,32 +134,37 @@ in
       full_cm_proto = true;
     };
 
-    windowrulev2 = [
-      "unset,class:^(UnrealEditor)$,title:^\w*$"
-      "noinitialfocus,class:^(UnrealEditor)$,title:^\w*$"
-      "noanim,class:^(UnrealEditor)$,title:^\w*$"
-      "suppressevent maximize, class:.*"
-      "tag +term, class:.*ghostty"
-      "tag +term, class:.*wezterm"
-      "tag +floating, class:.*Calculator"
-      "tag +floating, title:.*clipse"
-      "tag +floating, class:.*pwvucontrol"
-      "tag +floating, title:.*\(Bitwarden Password Manager\).*"
-      "tag +floating, class:.*SimpleScan"
-      "tag +floating, title:^(Save As)"
-      "tag +floating, class:naps2"
-      "opacity 0.95 override 0.9 override, tag:term"
-      "opacity 0.95 override 0.9 override, tag:opac"
+    # windowrulev2 = [
+    #   "unset,class:^(UnrealEditor)$,title:^\w*$"
+    #   "noinitialfocus,class:^(UnrealEditor)$,title:^\w*$"
+    #   "noanim,class:^(UnrealEditor)$,title:^\w*$"
+    #   "suppressevent maximize, class:.*"
+    #   "tag +term, class:.*ghostty"
+    #   "tag +term, class:.*wezterm"
+    #   "tag +floating, class:.*Calculator"
+    #   "tag +floating, title:.*clipse"
+    #   "tag +floating, class:.*pwvucontrol"
+    #   "tag +floating, title:.*\(Bitwarden Password Manager\).*"
+    #   "tag +floating, class:.*SimpleScan"
+    #   "tag +floating, title:^(Save As)"
+    #   "tag +floating, class:naps2"
+    #   "opacity 0.95 override 0.9 override, tag:term"
+    #   "opacity 0.95 override 0.9 override, tag:opac"
 
-      "float, tag:floating*"
-      "size 622 652, title:.*clipse"
-      "stayfocused, title:.*clipse"
-      "opacity 0.8 override 0.75 override, title:.*clipse"
+    #   "float, tag:floating*"
+    #   "size 622 652, title:.*clipse"
+    #   "stayfocused, title:.*clipse"
+    #   "opacity 0.8 override 0.75 override, title:.*clipse"
+    # ];
+
+    windowrule = [
+      "border_size 0, match:fullscreen 1"
+      "border_size 0, match:fullscreen 0"
     ];
 
     monitor = [
-      # "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
-      "DP-2, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
+      "DP-3, highres@highrr, 0x0, 1, vrr, 1, bitdepth, 10"
+      # "DP-2, highres@highrr, auto, 1, vrr, 1, bitdepth, 10"
       "HDMI-A-1, 3840x2160@119.88, auto, 2, bitdepth, 10, mirror, DP-2"
       # ", highres@highrr, auto, 1"
     ];
@@ -144,13 +174,14 @@ in
       ", F11, fullscreen, 0"
       "$mod, Q, exec, $terminal"
       "$mod, C, hy3:killactive,"
-      "$shiftmod, M, exec, uwsm stop"
+      "$shiftmod, L, exec, uwsm stop"
       "$mod, E, exec, $fileManager"
       "$shiftmod, F, togglefloating,"
       "$mod, R, exec, $menu"
       "$mod+CTRL, V, exec, uwsm-app -- vicinae vicinae://extensions/vicinae/clipboard/history"
       "$mod+CTRL, E, exec, uwsm-app -- vicinae vicinae://extensions/vicinae/vicinae/search-emojis"
       "$shiftmod, V, exec, uwsm-app -- pwvucontrol"
+      "$mod, B, exec, systemctl --user restart wireplumber"
       "$mod, tab, hy3:togglefocuslayer"
       "$mod, P, exec, uwsm-app -- hyprpicker -a"
       "Control_L&Shift_L, M, sendshortcut, Ctrl_Shift, M,class:^(vesktop)"
@@ -214,6 +245,7 @@ in
     ];
 
     exec-once = [
+      "${controllerDoubletap}"
       "uwsm-app -- hyprpaper"
       "uwsm-app -- vicinae server -d"
       # "uwsm-app -- clipse -listen"
@@ -291,7 +323,7 @@ in
       gaps_in = 0;
       gaps_out = 0;
       border_size = 2;
-      "col.active_border" = "\$${catppuccin.accent} \$${catppuccin.secondary} 45deg";
+      # "col.active_border" = "\$${catppuccin.accent} \$${catppuccin.secondary} 45deg";
       "col.inactive_border" = "rgba(595959aa)";
 
       allow_tearing = true;
@@ -339,7 +371,7 @@ in
     };
 
     dwindle = {
-      pseudotile = 0;
+      # pseudotile = 0;
       force_split = 2;
       preserve_split = 1;
       default_split_ratio = 1.3;
@@ -352,7 +384,7 @@ in
     };
 
     misc = {
-      vfr = true;
+      # vfr = true;
       vrr = 1;
       animate_manual_resizes = true;
       force_default_wallpaper = 0;

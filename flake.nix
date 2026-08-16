@@ -3,11 +3,19 @@
 
   inputs = {
     # Nix Inputs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    # nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+   # hyprland-plugins = {
+   #    url = "github:hyprwm/hyprland-plugins";
+   #    inputs.hyprland.follows = "hyprland";
+   #  };   
+    
     terminaltexteffects.url = "github:ChrisBuilds/terminaltexteffects";
 
     nixos-hardware = {
@@ -31,10 +39,6 @@
       };
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     hytale-launcher.url = "github:JPyke3/hytale-launcher-nix";
 
@@ -43,7 +47,7 @@
     };
 
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

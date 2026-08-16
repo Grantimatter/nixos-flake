@@ -48,6 +48,7 @@ in
       vi = "hx";
       vim = "hx";
       nano = "hx";
+      ht = "hermes --tui";
     };
     
   };

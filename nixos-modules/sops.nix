@@ -13,5 +13,20 @@
       sopsFile = ../nixos-configurations/nixos-desktop/sops/openrouter-key.yaml;
       format = "binary";
     };
+
+    secrets."opencode-zen-key" = {
+      sopsFile = ../nixos-configurations/nixos-desktop/sops/opencode-zen-key.yaml;
+      format = "binary";
+    };
+
+    secrets."opencode-go-key" = {
+      sopsFile = ../nixos-configurations/nixos-desktop/sops/opencode-zen-key.yaml;
+      format = "binary";
+    };
+
+    secrets."searx-env" = {
+      sopsFile = ../nixos-configurations/nixos-desktop/sops/searx-env;
+      format = "binary";
+    };
   };
 }

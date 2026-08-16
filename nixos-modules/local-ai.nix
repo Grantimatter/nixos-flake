@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     services.ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
       models = modelsDir;
       host = if cfg.exposeLan then "0.0.0.0" else "127.0.0.1";
       environmentVariables = {

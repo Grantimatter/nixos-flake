@@ -31,6 +31,7 @@ in
     settings.pane_frames = true;
     settings.copy_on_select = true;
     settings.default_shell = defaultUserShell;
+    settings.mouse_hover_effects = false;
     # settings.copy_clipboard = "system";
 
     settings.keybinds.normal._children = [
